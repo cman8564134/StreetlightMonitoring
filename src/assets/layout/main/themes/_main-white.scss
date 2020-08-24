@@ -1,0 +1,73 @@
+// Theme White
+
+// Variables
+
+$app-container-bg: #f1f4f6;
+$app-sidebar-bg: #ffffff;
+$app-header-bg: #fafbfc;
+$app-header-logo-bg: rgba(255, 255, 255, .9);
+
+// Content
+
+.app-theme-white {
+
+  &.app-container {
+    background: $app-container-bg;
+  }
+
+  .app-sidebar {
+    background: $app-sidebar-bg;
+  }
+
+  .app-page-title {
+    background: rgba(255, 255, 255, .55);
+  }
+
+  .app-footer .app-footer__inner,
+  .app-header {
+    background: $app-header-bg;
+  }
+
+  &.fixed-header {
+    .app-header__logo {
+      background: rgba($app-header-bg, .1);
+    }
+  }
+
+}
+
+.card {
+  border-width: 1px;
+}
+
+.main-card {
+  box-shadow: 0 0 0 0 transparent !important;
+
+  & > .card-body {
+
+    & > .card-title {
+      text-transform: none;
+      font-size: $font-size-lg;
+      font-weight: normal;
+      border-bottom: $gray-300 solid 1px;
+      position: relative;
+      padding: 0 0 ($card-spacer-y * 1.5);
+      margin: 0 0 ($card-spacer-y * 1.5);
+
+      &::before {
+        position: absolute;
+        width: 40px;
+        background: $primary;
+        @include border-radius(30px);
+        height: 5px;
+        left: 0;
+        bottom: -2px;
+        content: "";
+      }
+    }
+  }
+}
+
+.app-inner-layout__sidebar {
+  border-left: 0 !important;
+}

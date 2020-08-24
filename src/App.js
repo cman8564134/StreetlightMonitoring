@@ -1,26 +1,133 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, Suspense } from 'react';
+import cx from 'classnames';
+import ResizeDetector from 'react-resize-detector';
+import {connect} from 'react-redux';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-function App() {
+import Login from './containers/Login/LoginBoxed';
+import Loader from './components/Loader/BallClipRotateMultiple/BallClipRotateMultiple';
+import * as actions from './store/actions/index';
+
+const Dashboard = React.lazy(() => {
+  return import('./containers/Dashboard/Dashboard');
+});
+
+const ConcessionDetails = React.lazy(() => {
+  return import('./containers/Dashboard/ConcessionDetails/ConcessionDetails');
+});
+
+const SectionDetails = React.lazy(() => {
+  return import('./containers/Dashboard/SectionDetails/SectionDetails');
+});
+
+const SubsectionDetails = React.lazy(() => {
+  return import('./containers/Dashboard/SubsectionDetails/SubsectionDetails');
+});
+
+const FeederPillarDetails = React.lazy(() => {
+  return import('./containers/Dashboard/FeederPillarDetails/FeederPillarDetails');
+});
+
+const ElectricityBilling = React.lazy(() => {
+  return import('./containers/ElectricityBilling/ElectricityBilling');
+});
+
+// const Inverter = React.lazy(() => {
+//   return import('./containers/Inverter/Inverter');
+// });
+
+const Alert = React.lazy(() => {
+  return import('./containers/Alert/Alert');
+});
+
+// const Configurations = React.lazy(() => {
+//   return import('./containers/Configurations/Configurations');
+// });
+
+const Report = React.lazy(() => {
+  return import('./containers/Report/Report');
+});
+
+const App = ( props ) => {
+  const [ closedSmallerSidebar ] = useState(false);
+  let {
+    colorScheme,
+    enableFixedHeader,
+    enableFixedSidebar,
+    enableFixedFooter,
+    enableClosedSidebar,
+    enableMobileMenu,
+    enablePageTabsAlt,
+    // onTryAutoSignIn
+  } = props;
+
+  // useEffect (() => {
+  //   onTryAutoSignIn()
+  //     .then(response => {
+  //       if(!response.isLoggedIn){
+  //         props.history.push('/');
+  //       }
+  //     });
+  // }, [onTryAutoSignIn, props.history]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ResizeDetector 
+      handleWidth
+      render={( {width} ) => (
+        <div className={cx(
+          "app-container app-theme-" + colorScheme,
+          {'fixed-header': enableFixedHeader},
+          {'fixed-sidebar': enableFixedSidebar || width < 1250},
+          {'fixed-footer': enableFixedFooter},
+          {'closed-sidebar': enableClosedSidebar || width < 1250},
+          {'closed-sidebar-mobile': closedSmallerSidebar || width < 1250},
+          {'sidebar-mobile-open': enableMobileMenu},
+          {'body-tabs-shadow-btn': enablePageTabsAlt},
+        )}>
+          <Suspense fallback={
+            <div className="loader-container">
+            <div className="loader-container-inner">
+                <div className="text-center">
+                    <Loader />
+                </div>
+            </div>
+        </div>
+          }>
+            <Switch>
+              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:feederPillarId" render={(props) => <FeederPillarDetails {...props}/>}/>
+              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId" render={(props) => <SubsectionDetails {...props}/>}/>
+              <Route path="/dashboard/:concessionId/:sectionId" render={(props) => <SectionDetails {...props}/>}/>
+              <Route path="/dashboard/:concessionId" render={(props) => <ConcessionDetails {...props}/>}/>
+              <Route path="/dashboard" render={(props) => <Dashboard {...props}/>}/>
+              <Route path="/billing" render={(props) => <ElectricityBilling {...props}/>}/>
+              {/* <Route path="/inverter" render={(props) => <Inverter {...props}/>}/> */}
+              <Route path="/alert" render={(props) => <Alert {...props}/>}/>
+              {/* <Route path="/configurations" render={(props) => <Configurations {...props}/>}/> */}
+              <Route path="/report" render={(props) => <Report {...props}/>}/>
+              <Route path="/" exact component={Login} />
+              <Redirect to="/"/>  
+            </Switch>
+          </Suspense>
+          
+        </div>
+      )}
+    />
   );
 }
 
-export default App;
+
+const mapStateToProp = state => ({
+  colorScheme: state.ThemeOptions.colorScheme,
+  enableFixedHeader: state.ThemeOptions.enableFixedHeader,
+  enableMobileMenu: state.ThemeOptions.enableMobileMenu,
+  enableFixedFooter: state.ThemeOptions.enableFixedFooter,
+  enableFixedSidebar: state.ThemeOptions.enableFixedSidebar,
+  enableClosedSidebar: state.ThemeOptions.enableClosedSidebar,
+  enablePageTabsAlt: state.ThemeOptions.enablePageTabsAlt
+});
+
+const mapDispatchToProps = dispatch => ({
+  // onTryAutoSignIn: () => dispatch(actions.authCheckState())
+});
+
+export default withRouter(connect(mapStateToProp, mapDispatchToProps)(App));
