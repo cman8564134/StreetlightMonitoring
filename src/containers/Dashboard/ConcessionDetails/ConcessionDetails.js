@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import {
     faHome
@@ -14,13 +14,14 @@ import {
 import { connect } from 'react-redux';
 
 import * as actions from '../../../store/actions/index';
-// import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionTypes from '../../../store/actions/actionTypes';
 
 import Layout from '../../../hoc/Layout/Layout';
 import PageTitle from '../../../components/Layout/PageTitle/PageTitle';
 import BasicTab from '../../../components/Tab/BasicTab/BasicTab';
 import DataTable from '../../../components/Tables/DataTable/DataTable';
-import Overview from '../../../components/Dashboard/Overview/Overview';
+import AdvancedOverview from "../../../components/Dashboard/Overview/AdvancedOverview";
+import { getCurrentDateTimeInDBFormat, subtractMinuteFromDateTime, formatDateByDateFormat } from "../../../shared/utility";
 
 const ConcessionDetails = ( props ) => {
     const {
@@ -30,19 +31,125 @@ const ConcessionDetails = ( props ) => {
         sectionsTableData,
         loadingSectionsTable,
         onFetchSectionsByConcession,
-        onFetchConcessionMetricCharts,
-        concessionMetricCharts,
-        loadingConcessionMetricChart
+        onFetchConcessionRealTimeChart,
+        onFetchWeather,
+        onFetchWeatherForecast,
+        loadingWeather,
+        city,
+        weatherDate,
+        weatherTime,
+        temperature,
+        weatherId,
+        weatherDesc,
+        loadingWeatherForecast,
+        weatherForecasts,
+        realTimePowerUsageChartData,
+        dailyPowerUsageChartData,
+        monthlyPowerUsageChartData,
+        realTimeElectricityBillChartData,
+        dailyElectricityBillChartData,
+        monthlyElectricityBillChartData,
+        onFetchConcessionRealTimeElectricityBillChart
     } = props;
 
     useEffect(() => {
         const concessionId = props.match.params.concessionId;
-        
-        onFetchConcessionDetails({concession_id: concessionId});
-        onFetchSectionsByConcession();
-        onFetchConcessionMetricCharts();
 
-    }, [props.match.params.concessionId, onFetchConcessionDetails, onFetchSectionsByConcession, onFetchConcessionMetricCharts])
+        let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        let isRefresh = false; 
+        
+        const realTimePowerUsageChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_START;
+        const realTimePowerUsageChartSuccessType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_SUCCESS;
+        const realTimePowerUsageChartFailType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_FAIL;
+        const realTimeElectricityBillChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_START;
+        const realTimeElectricityBillChartSuccessType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_SUCCESS;
+        const realTimeElectricityBillChartFailType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_FAIL;
+
+        onFetchConcessionDetails({isRefresh: isRefresh, concessionId: concessionId});
+        onFetchSectionsByConcession({concessionId: concessionId});
+        onFetchConcessionRealTimeChart({
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo, 
+            dataKey: ['thdc1'], 
+            chartType: 'realtime', 
+            chartId: 'power_usage',
+            concessions: [concessionId],
+            startType: realTimePowerUsageChartStartType,
+            successType: realTimePowerUsageChartSuccessType,
+            failType: realTimePowerUsageChartFailType,
+        });
+        onFetchConcessionRealTimeElectricityBillChart({
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo, 
+            dataKey: ['thdc1'], 
+            chartType: 'realtime', 
+            chartId: concession.concession_name,
+            concessions: [concessionId],
+            startType: realTimeElectricityBillChartStartType,
+            successType: realTimeElectricityBillChartSuccessType,
+            failType: realTimeElectricityBillChartFailType,
+        });
+        onFetchWeather();
+        onFetchWeatherForecast();
+
+        const interval = setInterval(() => {
+            dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+            isRefresh = true; 
+    
+            const realTimePowerUsageChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_START;
+            const realTimePowerUsageChartSuccessType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_SUCCESS;
+            const realTimePowerUsageChartFailType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_FAIL;
+            const realTimeElectricityBillChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_START;
+            const realTimeElectricityBillChartSuccessType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_SUCCESS;
+            const realTimeElectricityBillChartFailType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_FAIL;
+    
+            onFetchConcessionDetails({isRefresh: isRefresh, concessionId: concessionId});
+
+            onFetchConcessionRealTimeChart({
+                isRefresh: isRefresh, 
+                dateTimeFrom: dateFrom, 
+                dateTimeTo: dateTo, 
+                dataKey: ['thdc1'], 
+                chartType: 'realtime', 
+                chartId: 'power_usage',
+                concessions: [concessionId],
+                startType: realTimePowerUsageChartStartType,
+                successType: realTimePowerUsageChartSuccessType,
+                failType: realTimePowerUsageChartFailType
+            });
+    
+            onFetchConcessionRealTimeElectricityBillChart({
+                isRefresh: isRefresh, 
+                dateTimeFrom: dateFrom, 
+                dateTimeTo: dateTo, 
+                dataKey: ['thdc1'], 
+                chartType: 'realtime', 
+                chartId: concession.concession_name,
+                concessions: [concessionId],
+                startType: realTimeElectricityBillChartStartType,
+                successType: realTimeElectricityBillChartSuccessType,
+                failType: realTimeElectricityBillChartFailType,
+            });
+        }, 5000);
+
+        return () => clearInterval(interval);
+
+    }, [
+        props.match.params.concessionId, 
+        concession.concession_name,
+        onFetchConcessionDetails, 
+        onFetchSectionsByConcession, 
+        onFetchConcessionRealTimeChart,
+        onFetchConcessionRealTimeElectricityBillChart,
+        onFetchWeather,
+        onFetchWeatherForecast
+    ])
+
+    
     
     const breadcrumbItems = [
         {
@@ -84,12 +191,8 @@ const ConcessionDetails = ( props ) => {
                     accessor: 'uptime_percentage'
                 },
                 {
-                    Header: 'Downtime %',
-                    accessor: 'downtime_percentage'
-                },
-                {
                     Header: 'Electrical Bill (Monthly)',
-                    accessor: 'electrical_bill'
+                    accessor: 'electricity_bill'
                 },
                 {
                     Header: 'Carbon Footprint',
@@ -105,7 +208,7 @@ const ConcessionDetails = ( props ) => {
             columns: [
                 {
                     Header: 'Actions',
-                    accessor: 'id',
+                    accessor: 'section_id',
                     Cell: row => (
                         <div className="d-block w-100 text-center">
                             <Button size="sm" color="primary" onClick={()=>{onClickViewDetailsHandler(row.value)}}>
@@ -120,23 +223,34 @@ const ConcessionDetails = ( props ) => {
 
     const highlightsHeaders = [
         {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage"},
-        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_percentage"},
-        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electrical_bill"},
+        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
-        {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings"},
     ]
 
     const tabPanes = [
         {
             tab_name: "Overview", 
             children: 
-                <Overview
+                <AdvancedOverview
+                    {...props}
                     highlightsHeaders={highlightsHeaders}
                     loadingHighlights={loadingHighlights}
-                    values={concession}
-                    metricCharts={concessionMetricCharts}
-                    loadingMetricCharts={loadingConcessionMetricChart}
+                    highlightValues={concession}
+                    loadingWeather={loadingWeather}
+                    city={city}
+                    weatherDate={weatherDate}
+                    weatherTime={weatherTime}
+                    temperature={temperature}
+                    weatherId={weatherId}
+                    weatherDesc={weatherDesc}
+                    loadingWeatherForecast={loadingWeatherForecast}
+                    weatherForecasts={weatherForecasts}
+                    realTimePowerUsageChartData={realTimePowerUsageChartData}
+                    dailyPowerUsageChartData={dailyPowerUsageChartData}
+                    monthlyPowerUsageChartData={monthlyPowerUsageChartData}
+                    realTimeElectricityBillChartData={realTimeElectricityBillChartData}
+                    dailyElectricityBillChartData={dailyElectricityBillChartData}
+                    monthlyElectricityBillChartData={monthlyElectricityBillChartData}
                 />
         },
         {
@@ -179,16 +293,33 @@ const mapStateToProps = state => {
         loadingHighlights: state.ConcessionDetails.loadingHighlights,
         sectionsTableData: state.ConcessionDetails.sectionsTableData,
         loadingSectionsTable: state.ConcessionDetails.loadingSectionsTable,
-        concessionMetricCharts: state.ConcessionDetails.concessionMetricCharts,
-        loadingConcessionMetricChart: state.ConcessionDetails.loadingConcessionMetricChart
+        loadingWeather: state.ConcessionDetails.loadingWeather,
+        city: state.ConcessionDetails.city,
+        weatherDate: state.ConcessionDetails.weatherDate,
+        weatherTime: state.ConcessionDetails.weatherTime,
+        temperature: state.ConcessionDetails.temperature,
+        weatherId: state.ConcessionDetails.weatherId,
+        weatherDesc: state.ConcessionDetails.weatherDesc,
+        loadingWeatherForecast: state.ConcessionDetails.loadingWeatherForecast,
+        weatherForecasts: state.ConcessionDetails.weatherForecasts,
+        realTimePowerUsageChartData: state.ConcessionDetails.realTimePowerUsageChartData,
+        dailyPowerUsageChartData: state.ConcessionDetails.dailyPowerUsageChartData,
+        monthlyPowerUsageChartData: state.ConcessionDetails.monthlyPowerUsageChartData,
+        realTimeElectricityBillChartData: state.ConcessionDetails.realTimeElectricityBillChartData,
+        dailyElectricityBillChartData: state.ConcessionDetails.dailyElectricityBillChartData,
+        monthlyElectricityBillChartData: state.ConcessionDetails.monthlyElectricityBillChartData,
+        
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onFetchConcessionDetails: (concessionId) => dispatch(actions.fetchConcessionDetails(concessionId)),
-        onFetchSectionsByConcession: () => dispatch(actions.fetchSectionsByConcession()),
-        onFetchConcessionMetricCharts: () => dispatch(actions.fetchConcessionMetricCharts()),
+        onFetchSectionsByConcession: (params) => dispatch(actions.fetchSectionsByConcession(params)),
+        onFetchConcessionRealTimeChart: (params) => dispatch(actions.fetchConcessionRealTimeChart(params)),
+        onFetchConcessionRealTimeElectricityBillChart: (params) => dispatch(actions.fetchConcessionRealTimeElectricityBillChart(params)),
+        onFetchWeather: () => dispatch(actions.fetchWeather()),
+        onFetchWeatherForecast: () => dispatch(actions.fetchWeatherForecast()),
     }
 }
 

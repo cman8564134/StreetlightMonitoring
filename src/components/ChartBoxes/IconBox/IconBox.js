@@ -14,7 +14,11 @@ const IconBox = ( props ) => {
     let widgetValue = <Loader/>
 
     if(!loading) {
-        widgetValue = value;
+        widgetValue = (
+            <div className="widget-numbers">
+                {value}
+            </div>
+        );
         
     }
 
@@ -29,9 +33,7 @@ const IconBox = ( props ) => {
                     <div className="widget-subheading">
                         {header}
                     </div>
-                    <div className="widget-numbers">
-                        {widgetValue}
-                    </div>
+                    {widgetValue}
                 </div>
             </div>
             <div className="divider m-0 d-md-none d-sm-block"/>

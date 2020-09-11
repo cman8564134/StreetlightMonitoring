@@ -7,20 +7,18 @@ import {
  } from '../../shared/utility';
 
 const initialState = {
-    concessionName: "",
-    sectionName: "",
-    subsectionName: "",
     feederPillar: {},
+    pillarId: '',
     loadingHighlights: false,
     loadingFeederPillarMetricChart: false,
     feederPillarMetricCharts:[
         {
-            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "electricalBill": {title: "Electrical Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries()}
+            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "electricityBill": {title: "Electricity Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"}
         }
     ] 
         
@@ -34,11 +32,9 @@ const fetchFeederPillarDetailsStart = ( state, action ) => {
 
 const fetchFeederPillarDetailsSuccess = ( state, action ) => {
     return updateObject(state, {
+        loadingHighlights: action.loading,
         feederPillar: action.feederPillar,
-        concessionName: action.concessionName,
-        sectionName: action.sectionName,
-        subsectionName: action.subsectionName,
-        loadingHighlights: action.loading
+        pillarId: action.pillarId
     });
 }
 

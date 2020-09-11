@@ -13,6 +13,7 @@ import {
 
 import { connect } from 'react-redux';
 
+import { getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime, updateObject } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 // import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -36,12 +37,45 @@ const SectionDetails = ( props ) => {
     } = props;
 
     useEffect(() => {
-        const concessionId = props.match.params.concessionId;
         const sectionId = props.match.params.sectionId;
+        let isRefresh = false; 
+        let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        const baseMetricChartParams = {
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo,     
+            dataKey: [], 
+            chartType: 'realtime', 
+            chartId: '',
+            sections: [sectionId],
+            formulaType: null
+        }
+        onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
+        onFetchSubsectionsBySection({sectionId: sectionId});
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         
-        onFetchSectionDetails({concession_id: concessionId, section_id: sectionId});
-        onFetchSubsectionsBySection({section_id: sectionId});
-        onFetchSectionMetricCharts();
+        const interval = setInterval(() => {
+            dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+            isRefresh = true;
+            const baseRefreshMetricChartParams = updateObject(baseMetricChartParams, {isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo});
+
+            onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
+        }, 5000);
+
+        return () => clearInterval(interval);
 
     }, [
         props.match.params.concessionId, 
@@ -101,12 +135,8 @@ const SectionDetails = ( props ) => {
                     accessor: 'uptime_percentage'
                 },
                 {
-                    Header: 'Downtime %',
-                    accessor: 'downtime_percentage'
-                },
-                {
-                    Header: 'Electrical Bill (Monthly)',
-                    accessor: 'electrical_bill'
+                    Header: 'Electricity Bill',
+                    accessor: 'electricity_bill'
                 },
                 {
                     Header: 'Carbon Footprint',
@@ -122,7 +152,7 @@ const SectionDetails = ( props ) => {
             columns: [
                 {
                     Header: 'Actions',
-                    accessor: 'id',
+                    accessor: 'subsection_id',
                     Cell: row => (
                         <div className="d-block w-100 text-center">
                             <Button size="sm" color="primary" onClick={()=>{onClickViewDetailsHandler(row.value)}}>
@@ -137,9 +167,9 @@ const SectionDetails = ( props ) => {
 
     const highlightsHeaders = [
         {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage"},
-        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_percentage"},
-        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electrical_bill"},
+        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_text"},
+        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_text"},
+        {header: "Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings"},
     ]
@@ -193,6 +223,7 @@ const SectionDetails = ( props ) => {
 const mapStateToProps = state => {
     return {
         section: state.SectionDetails.section,
+        loadingHighlights: state.SectionDetails.loadingHighlights,
         subsectionsTableData: state.SectionDetails.subsectionsTableData,
         loadingSubsectionsTable: state.SectionDetails.loadingSubsectionsTable,
         sectionMetricCharts: state.SectionDetails.sectionMetricCharts,
@@ -204,7 +235,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchSectionDetails: (params) => dispatch(actions.fetchSectionDetails(params)),
         onFetchSubsectionsBySection: (params) => dispatch(actions.fetchSubsectionsBySection(params)),
-        onFetchSectionMetricCharts: () => dispatch(actions.fetchSectionMetricCharts()),
+        onFetchSectionMetricCharts: (params) => dispatch(actions.fetchSectionMetricCharts(params)),
         
     }
 }

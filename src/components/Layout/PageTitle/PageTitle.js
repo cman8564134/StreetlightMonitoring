@@ -15,7 +15,9 @@ const PageTitle = ( props ) => {
     
     if(enableBreadcrumb){
         breadcrumb = (
-            <MainBreadcrumb breadcrumbItems={breadcrumbItems}/>
+            <MainBreadcrumb 
+                breadcrumbItems={breadcrumbItems}
+            />
         );
     }
     

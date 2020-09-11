@@ -32,12 +32,12 @@ const Header = ( props ) => {
                 transitionEnter={false}
                 transitionLeave={false}>
 
-                <AppLogo
+                {/* <AppLogo
                     enableClosedSidebar = {enableClosedSidebar}
                     toggleEnableClosedSidebar = {toggleEnableClosedSidebar}
                     toggleMobileSidebar = {toggleMobileSidebar}
                     toggleMobileSmall = {toggleMobileSmall}
-                />
+                /> */}
 
                 <div className={cx(
                     "app-header__content",

@@ -20,7 +20,16 @@ $widget-spacer: $spacer;
     padding: 5px 0 0;
   }
 
-  .progress-circle-wrapper {
+  .left-progress-circle-wrapper {
+    min-width: 68px;
+    margin-right: $widget-spacer;
+
+    .react-sweet-progress-symbol {
+      font-size: $font-size-xs;
+    }
+  }
+
+  .center-progress-circle-wrapper {
     min-width: 68px;
     width: 45%;
     margin: 0 auto;
@@ -373,4 +382,42 @@ $widget-spacer: $spacer;
 
 .widget-numbers-sm {
   font-size: 1.5rem;
+}
+
+.weather-icon-wrapper {
+  width: 35px;
+  height: 35px;
+  margin-left: 170px;
+  // @extend %center-elem;
+  position: relative;
+  overflow: hidden;
+
+  &[class*="border-"] {
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .weather-icon-wrapper-bg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    opacity: .2;
+
+    &.bg-light {
+      opacity: .08;
+    }
+
+  }
+
+  i {
+    margin: 0 auto;
+    font-size: 1.7rem;
+    position: relative;
+    z-index: 5;
+
+    &:before {
+      margin-top: -3px;
+    }
+  }
 }

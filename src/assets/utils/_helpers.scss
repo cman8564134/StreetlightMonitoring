@@ -1,6 +1,15 @@
 // Helpers imports
 @import "helpers/opacity";
 
+// Gradient Icons
+
+.icon-gradient {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
 // Font sizes
 
 .font-size-xlg {
@@ -17,6 +26,10 @@
 
 .font-size-sm {
   font-size: .6rem !important;
+}
+
+.font-size-xxs {
+  font-size: $font-size-xs / 1.3;
 }
 
 // No Shadow

@@ -46,6 +46,8 @@ $widget-spacer: $spacer;
 
   .widget-progress-wrapper {
     margin-top: $widget-spacer;
+    margin: 0px auto;
+    width: 500px;
 
     .progress-sub-label {
       margin-top: ($widget-spacer / 3);

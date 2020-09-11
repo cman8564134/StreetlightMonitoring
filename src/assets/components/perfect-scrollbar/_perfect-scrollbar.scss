@@ -130,6 +130,11 @@
   overflow-x: hidden;
 }
 
+.scroll-area-sm-md {
+  height: 220px;
+  overflow-x: hidden;
+}
+
 .scroll-area-md {
   height: 300px;
   overflow-x: hidden;
@@ -144,6 +149,11 @@
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
+}
+
+.scroll-area-xl {
+  height: 600px;
+  overflow-x: hidden;
 }
 
 .shadow-overflow {

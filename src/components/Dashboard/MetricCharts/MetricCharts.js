@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import {Card, Row, Col} from 'reactstrap';
+import {Card, Row, Col, CardBody} from 'reactstrap';
 
 import {
     ResponsiveContainer
@@ -29,20 +29,29 @@ const MetricCharts = ( props ) => {
             return (
                 <Row key={metricChartKey}>
                     {chartArray.map((chart, key) => {
-                        let chartComponent = <Loader/>;
+                        let chartComponent = (
+                                <Card>
+                                    <CardBody>
+                                        <Loader />
+                                    </CardBody>
+                                </Card>
+                                
+                            )
 
                         if(!loading) {
                             chartComponent = (
-                                <Chart options={chart.chartData.chart_options} series={chart.chartData.chart_series} type="line" width="100%"/>
+                                <ResponsiveContainer height={300}>
+                                    <Chart options={chart.chartData.chart_options} series={chart.chartData.chart_series} type="line" width="100%"/>
+                                </ResponsiveContainer>
+                                
                             )
                         }
 
                         return (
                             <Col key={key} sm="12" md="6" xl="6">
                                 <Card className="mb-3">
-                                    <ResponsiveContainer height={300}>
-                                        {chartComponent}
-                                    </ResponsiveContainer>
+                                    {chartComponent}
+                                    
                                 </Card>
                             </Col>
                         )

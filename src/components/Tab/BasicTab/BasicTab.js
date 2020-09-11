@@ -7,7 +7,6 @@ import Tabs, {TabPane} from 'rc-tabs';
 import TabContent from 'rc-tabs/lib/SwipeableTabContent';
 
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
-import { Card, CardBody } from 'reactstrap';
 
 const BasicTab = ( props ) => {
     const {

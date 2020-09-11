@@ -4,7 +4,7 @@ import Loader from 'react-loaders'
 
 const BallClipRotateMultiple = ( props ) => {
     return (
-        <div className="font-icon-wrapper float-left mr-3 mb-3">
+        <div className="font-icon-wrapper mr-3 mb-3">
             <div
                 className="loader-wrapper d-flex justify-content-center align-items-center">
                 <Loader type="ball-clip-rotate-multiple"/>

@@ -37,6 +37,7 @@
 @import "elements/cards";
 @import "elements/tabs";
 @import "elements/loaders";
+@import "elements/progressbar";
 @import "elements/timeline";
 @import "elements/forms";
 
@@ -72,9 +73,15 @@
 // Icons
 @import "components/icons/linearicons";
 @import "components/icons/p7icons";
+@import "components/icons/weathericons/sass/weather-icons.scss";
 
 @import "components/forms/datepicker";
+
+// Dashboard
+
+@import "dashboard/dashboard";
 
 // Responsive
 
 @import "layout/responsive/responsive-base";
+

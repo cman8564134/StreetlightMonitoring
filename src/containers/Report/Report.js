@@ -15,7 +15,7 @@ import Layout from '../../hoc/Layout/Layout';
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
 import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import HighlightsBox from '../../components/Dashboard/HighlightsBox/HighlightsBox';
-import ProgressCircle from '../../components/ProgressBars/ProgressCircle/ProgressCircle';
+import CenterProgressCircle from '../../components/Progress/ProgressCircles/CenterProgressCircle/CenterProgressCircle';
 import GraphCardTabs from '../../components/Tab/GraphCardTabs/GraphCardTabs';
 
 const Report = ( props ) => {
@@ -207,7 +207,7 @@ const Report = ( props ) => {
                         <Col md="12" lg="3" xl="3">
                             <Row>
                                 <Col md="12" lg="12" xl="12">
-                                    <ProgressCircle 
+                                    <CenterProgressCircle 
                                         percent={100}
                                         trailColor="#cceff5"
                                         color="#0bb3cd"
@@ -217,7 +217,7 @@ const Report = ( props ) => {
                                     />
                                 </Col>
                                 <Col md="12" lg="12" xl="12">
-                                    <ProgressCircle 
+                                    <CenterProgressCircle 
                                         percent={0}
                                         trailColor="#cceff5"
                                         color="#0bb3cd"

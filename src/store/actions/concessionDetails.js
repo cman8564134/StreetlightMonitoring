@@ -1,4 +1,7 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../axios-backend';
+import axiosweather from '../../axios-weather';
+import { getConcessionsChartDataStart, getConcessionsChartDataSuccess, getConcessionsChartDataFail } from '../actions/concessions';
 
 export const fetchConcessionDetailsStart = () => {
     return {
@@ -7,11 +10,11 @@ export const fetchConcessionDetailsStart = () => {
     }
 }
 
-export const fetchConcessionDetailsSuccess = (concession_id) => {
+export const fetchConcessionDetailsSuccess = (concession) => {
     return {
         type: actionTypes.FETCH_CONCESSION_DETAILS_SUCCESS,
         loading: false,
-        concession_id: concession_id,
+        concession: concession,
     }
 }
 
@@ -25,9 +28,17 @@ export const fetchConcessionDetailsFail = (error) => {
 
 export const fetchConcessionDetails =  (params) => {
     return dispatch => {
-        dispatch(fetchConcessionDetailsStart());
+        if(!params.isRefresh)
+            dispatch(fetchConcessionDetailsStart());
 
-        dispatch(fetchConcessionDetailsSuccess(params.concession_id));
+        axios.post('/getConcessionByConcessionId', params)
+        .then(response => {
+            dispatch(fetchConcessionDetailsSuccess(response.data.concession));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(fetchConcessionDetailsFail(error));
+        });
     }
 }
 
@@ -54,86 +65,151 @@ export const fetchSectionsByConcessionFail = (error) => {
     }
 }
 
-export const fetchSectionsByConcession =  () => {
+export const fetchSectionsByConcession =  (params) => {
     return dispatch => {
         dispatch(fetchSectionsByConcessionStart());
 
-        const sections = [
-            {id: 1, section_name: "Section 1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-            {id: 2, section_name: "Section 2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-            {id: 3, section_name: "Section 3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-            {id: 4, section_name: "Section 4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-        ]
-        dispatch(fetchSectionsByConcessionSuccess(sections));
+        axios.post('/getSectionsMetricsByConcessionId', params)
+        .then(response => {
+            dispatch(fetchSectionsByConcessionSuccess(response.data.sections));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(fetchSectionsByConcessionFail(error));
+        });        
     }
 }
 
+export const fetchConcessionRealTimeChart =  (params) => {
+    return dispatch => {
 
-export const fetchConcessionMetricChartsStart = () => {
+        getConcessionsChartData(dispatch, params);
+    }
+}
+
+export const getConcessionsChartData = (dispatch, params) => {
+    if(!params.isRefresh)
+        dispatch(getConcessionsChartDataStart(params.startType));
+    
+    axios.post('/getConcessionsChartData', params)
+        .then(response => {
+            dispatch(getConcessionsChartDataSuccess(response.data.chartData[params.chartId], params.successType));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(getConcessionsChartDataFail(error, params.failType));
+        });
+}
+
+export const fetchConcessionRealTimeElectricityBillChart =  (params) => {
+    return dispatch => {
+
+        getConcessionsElectricityBillChartData(dispatch, params);
+    }
+}
+
+export const getConcessionsElectricityBillChartData = (dispatch, params) => {
+    if(!params.isRefresh)
+        dispatch(getConcessionsChartDataStart(params.startType));
+    
+    axios.post('/getConcessionsElectricityBillChartData', params)
+        .then(response => {
+            dispatch(getConcessionsChartDataSuccess(response.data.chartData[0][params.chartId], params.successType));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(getConcessionsChartDataFail(error, params.failType));
+        });
+}
+
+export const fetchWeatherStart = () => {
     return {
-        type: actionTypes.FETCH_CONCESSION_METRIC_CHARTS_START,
+        type: actionTypes.FETCH_WEATHER_START,
         loading: true
     }
 }
 
-export const fetchConcessionMetricChartsSuccess = (chartsData) => {
+export const fetchWeatherSuccess = (city, timestamp, temperature, weatherId, weatherDesc) => {
     return {
-        type: actionTypes.FETCH_CONCESSION_METRIC_CHARTS_SUCCESS,
-        loading: false,
-        chartsData: chartsData
+        type: actionTypes.FETCH_WEATHER_SUCCESS,
+        city: city,
+        unixTimestamp: timestamp,
+        temperature: temperature,
+        weatherId: weatherId,
+        weatherDesc: weatherDesc,
+        loading: false
     }
 }
 
-export const fetchConcessionMetricChartsFail = (error) => {
+export const fetchWeatherFail = (error) => {
     return {
-        type: actionTypes.FETCH_CONCESSION_METRIC_CHARTS_FAIL,
-        loading: false,
-        error: error
+        type: actionTypes.FETCH_WEATHER_FAIL,
+        loading: false
     }
 }
 
-export const fetchConcessionMetricCharts =  () => {
+export const fetchWeather = () => {
     return dispatch => {
-        dispatch(fetchConcessionMetricChartsStart());
+        dispatch(fetchWeatherStart());
 
-        const chartsData = [
-            {
-                powerUsage: {
-                    data: [[2000, 2100,2050,1800,2200,2100,2000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Power Usage"]
-                },
-                electricalBill: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Electrical Bill"]
-                },
-                carbonFootprint: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Carbon Footprint"]
-                },
-                energySavings: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Energy Savings"]
-                },
-                amperage: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Amperage P1", "Amperage P2", "Amperage P3"]
-                },
-                voltage: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Voltage P1", "Voltage P2", "Voltage P3"]
-                }
-            }
-        ]
+        axiosweather.get('/weather')
+            .then(response => {
+                const data = response.data;
+                const city = data.name;
+                const unixTimestamp = data.dt;
+                const temperature = data.main.temp;
+                const weather = data.weather[0];
+                const weatherId = weather.id;
+                const weatherDesc = weather.description;
 
-        if(chartsData && chartsData.length > 0) {
-            dispatch(fetchConcessionMetricChartsSuccess(chartsData[0]));
-        }
-        
+                dispatch(fetchWeatherSuccess(city, unixTimestamp, temperature, weatherId, weatherDesc));
+                
+            })
+            .catch(error => {
+                dispatch(fetchWeatherFail(error));
+            });
+    }
+    
+}
+
+
+export const fetchWeatherForecastStart = () => {
+    return {
+        type: actionTypes.FETCH_WEATHER_FORECAST_START,
+        loading: true
     }
 }
+
+export const fetchWeatherForecastSuccess = (weatherForecasts) => {
+    return {
+        type: actionTypes.FETCH_WEATHER_FORECAST_SUCCESS,
+        weatherForecasts: weatherForecasts,
+        loading: false
+    }
+}
+
+export const fetchWeatherForecastFail = (error) => {
+    return {
+        type: actionTypes.FETCH_WEATHER_FORECAST_FAIL,
+        loading: false
+    }
+}
+
+export const fetchWeatherForecast = () => {
+    return dispatch => {
+        dispatch(fetchWeatherForecastStart());
+
+        axiosweather.get('/forecast')
+            .then(response => {
+                const weatherForecasts = response.data.list;
+
+                dispatch(fetchWeatherForecastSuccess(weatherForecasts));
+                
+            })
+            .catch(error => {
+                dispatch(fetchWeatherForecastFail(error));
+            });
+    }
+    
+}
+

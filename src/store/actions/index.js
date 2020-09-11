@@ -5,9 +5,19 @@ export {
 } from './themeOptions';
 
 export {
+    fetchConcessions,
+    fetchConcessionsSummary,
+    fetchConcessionsPowerQualitySummaryChart,
+    fetchConcessionsWeeklyElectricityBillChart
+} from './concessions'
+
+export {
     fetchConcessionDetails,
     fetchSectionsByConcession,
-    fetchConcessionMetricCharts
+    fetchConcessionRealTimeChart,
+    fetchConcessionRealTimeElectricityBillChart,
+    fetchWeather,
+    fetchWeatherForecast
 } from './concessionDetails'
 
 export {

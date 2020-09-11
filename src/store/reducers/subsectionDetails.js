@@ -14,12 +14,12 @@ const initialState = {
     loadingSubsectionMetricChart: false,
     subsectionMetricCharts:[
         {
-            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "electricalBill": {title: "Electrical Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries()}
+            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "electricityBill": {title: "Electricity Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"}
         }
     ] 
         

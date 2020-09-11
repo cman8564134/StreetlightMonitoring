@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../axios-backend';
 
 export const fetchSubsectionDetailsStart = () => {
     return {
@@ -25,116 +26,19 @@ export const fetchSubsectionDetailsFail = (error) => {
 
 export const fetchSubsectionDetails =  (params) => {
     return dispatch => {
-        dispatch(fetchSubsectionDetailsStart());
+        if(!params.isRefresh)
+            dispatch(fetchSubsectionDetailsStart());
 
-        const subsections = {
-            1: {
-                1: {
-                    1: {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                2: {
-                    1: {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                3: {
-                    1: {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                4: {
-                    1: {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-            },
-            2: {
-                1: {
-                    1: {id: 1, concession_name: "DEF Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "DEF Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "DEF Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "DEF Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                2: {
-                    1: {id: 1, concession_name: "DEF Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "DEF Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "DEF Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "DEF Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                3: {
-                    1: {id: 1, concession_name: "DEF Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "DEF Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "DEF Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "DEF Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                4: {
-                    1: {id: 1, concession_name: "DEF Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "DEF Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "DEF Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "DEF Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-            },
-            3: {
-                1: {
-                    1: {id: 1, concession_name: "GHI Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "GHI Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "GHI Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "GHI Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                2: {
-                    1: {id: 1, concession_name: "GHI Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "GHI Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "GHI Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "GHI Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                3: {
-                    1: {id: 1, concession_name: "GHI Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "GHI Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "GHI Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "GHI Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                4: {
-                    1: {id: 1, concession_name: "GHI Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "GHI Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "GHI Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "GHI Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-            },
-            4: {
-                1: {
-                    1: {id: 1, concession_name: "JKL Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "JKL Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "JKL Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "JKL Sdn Bhd", section_name: "Section 1", subsection_name: "Section 1/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                2: {
-                    1: {id: 1, concession_name: "JKL Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "JKL Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "JKL Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "JKL Sdn Bhd", section_name: "Section 2", subsection_name: "Section 2/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                3: {
-                    1: {id: 1, concession_name: "JKL Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "JKL Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "JKL Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "JKL Sdn Bhd", section_name: "Section 3", subsection_name: "Section 3/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-                4: {
-                    1: {id: 1, concession_name: "JKL Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    2: {id: 2, concession_name: "JKL Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    3: {id: 3, concession_name: "JKL Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-                    4: {id: 4, concession_name: "JKL Sdn Bhd", section_name: "Section 4", subsection_name: "Section 4/4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-                },
-            },
-            
-        }
-        dispatch(fetchSubsectionDetailsSuccess(subsections[params.concession_id][params.section_id][params.subsection_id]));
+        axios.post('/getSubsectionBySubsectionId', params)
+            .then(response => {
+                dispatch(fetchSubsectionDetailsSuccess(response.data.subsection));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchSubsectionDetailsFail(error));
+            });   
+        
+        
     }
 }
 
@@ -165,14 +69,14 @@ export const fetchFeederPillarsBySubsection =  (params) => {
     return dispatch => {
         dispatch(fetchFeederPillarsBySubsectionStart());
 
-        const feederPillars = 
-            [
-                {id: 1, subsection_name: "1", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500", door_status: "CLOSED"},
-                {id: 2, subsection_name: "2", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500", door_status: "CLOSED"},
-                {id: 3, subsection_name: "3", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500", door_status: "CLOSED"},
-                {id: 4, subsection_name: "4", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500", door_status: "CLOSED"}
-            ];
-        dispatch(fetchFeederPillarsBySubsectionSuccess(feederPillars));
+        axios.post('/getFeederPillarsMetricsBySubsectionId', params)
+        .then(response => {
+            dispatch(fetchFeederPillarsBySubsectionSuccess(response.data.feederPillars));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(fetchFeederPillarsBySubsectionFail(error));
+        });  
     }
 }
 
@@ -200,48 +104,19 @@ export const fetchSubsectionMetricChartsFail = (error) => {
     }
 }
 
-export const fetchSubsectionMetricCharts =  () => {
+export const fetchSubsectionMetricCharts =  (params) => {
     return dispatch => {
-        dispatch(fetchSubsectionMetricChartsStart());
+        if(!params.isRefresh)
+            dispatch(fetchSubsectionMetricChartsStart());
 
-        const chartsData = [
-            {
-                powerUsage: {
-                    data: [[2000, 2100,2050,1800,2200,2100,2000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Power Usage"]
-                },
-                electricalBill: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Electrical Bill"]
-                },
-                carbonFootprint: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Carbon Footprint"]
-                },
-                energySavings: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Energy Savings"]
-                },
-                amperage: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Amperage P1", "Amperage P2", "Amperage P3"]
-                },
-                voltage: {
-                    data: [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]],
-                    labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-                    series: ["Voltage P1", "Voltage P2", "Voltage P3"]
-                }
-            }
-        ]
-
-        if(chartsData && chartsData.length > 0) {
-            dispatch(fetchSubsectionMetricChartsSuccess(chartsData[0]));
-        }
+        axios.post('/getSectionsChartData', params)
+        .then(response => {
+            dispatch(fetchSubsectionMetricChartsSuccess(response.data.chartData));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(fetchSubsectionMetricChartsFail(error));
+        });   
         
     }
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import {
     faHome
@@ -13,6 +13,7 @@ import {
 
 import { connect } from 'react-redux';
 
+import { updateObject, getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 // import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -21,6 +22,8 @@ import PageTitle from '../../../components/Layout/PageTitle/PageTitle';
 import BasicTab from '../../../components/Tab/BasicTab/BasicTab';
 import DataTable from '../../../components/Tables/DataTable/DataTable';
 import Overview from '../../../components/Dashboard/Overview/Overview';
+import BasicModal from '../../../components/Modal/BasicModal/BasicModal';
+import FeederPillarDetails from '../../../components/Dashboard/FeederPillarDetails/FeederPillarDetails';
 
 const SubsectionDetails = ( props ) => {
     const {
@@ -29,28 +32,118 @@ const SubsectionDetails = ( props ) => {
         subsectionMetricCharts,
         loadingSubsectionMetricChart,
         feederPillarsTableData,
-        loadingFeederPillarsTable,
+        loadingFeederPillarTable,
         onFetchSubsectionDetails,
         onFetchFeederPillarsBySubsection,
-        onFetchSubsectionMetricCharts
+        onFetchSubsectionMetricCharts,
+        onFetchFeederPillarDetails,
+        feederPillar,
+        loadingFeederPillarDetails,
+        pillarId,
+        feederPillarMetricCharts,
+        loadingFeederPillarMetricChart,
+        onFetchFeederPillarMetricCharts
     } = props;
 
-    useEffect(() => {
-        const concessionId = props.match.params.concessionId;
-        const sectionId = props.match.params.sectionId;
-        const subsectionId = props.match.params.subsectionId;
-        
-        onFetchSubsectionDetails({concession_id: concessionId, section_id: sectionId, subsection_id: subsectionId});
-        onFetchFeederPillarsBySubsection({section_id: sectionId});
-        onFetchSubsectionMetricCharts();
+    const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
 
+    const showOrHidePillarDetailsModal = (pillarId) => {
+        const subsectionId = props.match.params.subsectionId
+        let isRefresh = false; 
+        let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        const baseMetricChartParams = {
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo,     
+            dataKey: [], 
+            chartType: 'realtime', 
+            chartId: '',
+            feederPillarId: pillarId,
+            formulaType: null
+        }
+
+        onFetchFeederPillarDetails({isRefresh: isRefresh, feederPillarId: pillarId, subsectionId: subsectionId});
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+        setIsPillarDetailsModalVisible(!isPillarDetailsModalVisible);
+    }
+
+    useEffect(() => {
+        const subsectionId = props.match.params.subsectionId;
+        let isRefresh = false; 
+        let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        const baseMetricChartParams = {
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo,     
+            dataKey: [], 
+            chartType: 'realtime', 
+            chartId: '',
+            sections: [subsectionId],
+            formulaType: null
+        }
+        
+        onFetchSubsectionDetails({isRefresh: isRefresh, subsectionId: subsectionId});
+        onFetchFeederPillarsBySubsection({subsectionId: subsectionId});
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+        
+        const interval = setInterval(() => {
+            dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
+            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+            isRefresh = true;
+            const baseRefreshMetricChartParams = updateObject(baseMetricChartParams, {isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo});
+
+            if(isPillarDetailsModalVisible){
+                const baseFeederPillarMetricChartParams = {
+                    isRefresh: true, 
+                    dateTimeFrom: dateFrom, 
+                    dateTimeTo: dateTo,     
+                    dataKey: [], 
+                    chartType: 'realtime', 
+                    chartId: '',
+                    feederPillarId: pillarId,
+                    formulaType: null
+                }
+
+                onFetchFeederPillarDetails({isRefresh: isRefresh, feederPillarId: pillarId, subsectionId: subsectionId});
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+            }else {
+                onFetchSubsectionDetails({isRefresh: isRefresh, subsectionId: subsectionId});
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+                onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, [
-        props.match.params.concessionId, 
-        props.match.params.sectionId, 
+        isPillarDetailsModalVisible,
         props.match.params.subsectionId,
         onFetchSubsectionDetails,
         onFetchFeederPillarsBySubsection,
-        onFetchSubsectionMetricCharts
+        onFetchSubsectionMetricCharts,
+        pillarId,
+        onFetchFeederPillarDetails,
+        onFetchFeederPillarMetricCharts
     ])
     
     const breadcrumbItems = [
@@ -93,16 +186,12 @@ const SubsectionDetails = ( props ) => {
         }
     ]
 
-    const onClickViewDetailsHandler = ( feederPillarId ) => {
-        props.history.push(props.match.url + "/" + feederPillarId);
-    }
-
     const feederPillarsTableColumns = [
         {
             columns: [
                 {
                     Header: 'Feeder Pillar ID',
-                    accessor: 'id'
+                    accessor: 'pillar_id'
                 },
                 {
                     Header: 'Power Usage',
@@ -113,12 +202,8 @@ const SubsectionDetails = ( props ) => {
                     accessor: 'uptime_percentage'
                 },
                 {
-                    Header: 'Downtime %',
-                    accessor: 'downtime_percentage'
-                },
-                {
-                    Header: 'Electrical Bill (Monthly)',
-                    accessor: 'electrical_bill'
+                    Header: 'Electricity Bill',
+                    accessor: 'electricity_bill'
                 },
                 {
                     Header: 'Carbon Footprint',
@@ -138,10 +223,10 @@ const SubsectionDetails = ( props ) => {
             columns: [
                 {
                     Header: 'Actions',
-                    accessor: 'id',
+                    accessor: 'pillar_id',
                     Cell: row => (
                         <div className="d-block w-100 text-center">
-                            <Button size="sm" color="primary" onClick={()=>{onClickViewDetailsHandler(row.value)}}>
+                            <Button size="sm" color="primary" onClick={() => showOrHidePillarDetailsModal(row.value)}>
                                 Details
                             </Button>
                         </div>
@@ -153,9 +238,9 @@ const SubsectionDetails = ( props ) => {
 
     const highlightsHeaders = [
         {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage"},
-        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_percentage"},
-        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electrical_bill"},
+        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_text"},
+        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_text"},
+        {header: "Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings"},
     ]
@@ -181,7 +266,7 @@ const SubsectionDetails = ( props ) => {
                     pageSize={10}
                     header={null}
                     filterable
-                    loading={loadingFeederPillarsTable}
+                    loading={loadingFeederPillarTable}
                 />
         },
     ]
@@ -200,6 +285,20 @@ const SubsectionDetails = ( props ) => {
                     <BasicTab
                         tabPanes={tabPanes}
                     />
+
+                    <BasicModal 
+                        modalWidth={1000}
+                        visible={isPillarDetailsModalVisible}
+                        showOrHideModal={showOrHidePillarDetailsModal}
+                    >
+                        <FeederPillarDetails
+                            // loading={loadingFeederPillarDetails}
+                            loading={true}
+                            feederPillar={feederPillar}
+                            metricCharts={feederPillarMetricCharts}
+                            loadingMetricCharts={loadingFeederPillarMetricChart}
+                        />
+                    </BasicModal>
                 </Container>
             </Layout>
         </Fragment>
@@ -208,11 +307,17 @@ const SubsectionDetails = ( props ) => {
 
 const mapStateToProps = state => {
     return {
+        loadingHighlights: state.SubsectionDetails.loadingHighlights,
         subsection: state.SubsectionDetails.subsection,
         feederPillarsTableData: state.SubsectionDetails.feederPillarsTableData,
-        loadingFeederPillarsTable: state.SubsectionDetails.loadingFeederPillarsTable,
+        loadingFeederPillarTable: state.SubsectionDetails.loadingFeederPillarTable,
         subsectionMetricCharts: state.SubsectionDetails.subsectionMetricCharts,
         loadingSubsectionMetricChart: state.SubsectionDetails.loadingSubsectionMetricChart,
+        feederPillar: state.FeederPillarDetails.feederPillar,
+        loadingFeederPillarDetails: state.FeederPillarDetails.loadingHighlights,
+        pillarId: state.FeederPillarDetails.pillarId,
+        feederPillarMetricCharts: state.FeederPillarDetails.feederPillarMetricCharts,
+        loadingFeederPillarMetricChart: state.FeederPillarDetails.loadingFeederPillarMetricChart,
     }
 }
 
@@ -220,7 +325,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchSubsectionDetails: (params) => dispatch(actions.fetchSubsectionDetails(params)),
         onFetchFeederPillarsBySubsection: (params) => dispatch(actions.fetchFeederPillarsBySubsection(params)),
-        onFetchSubsectionMetricCharts: () => dispatch(actions.fetchSubsectionMetricCharts()),
+        onFetchSubsectionMetricCharts: (params) => dispatch(actions.fetchSubsectionMetricCharts(params)),
+        onFetchFeederPillarDetails: (params) => dispatch(actions.fetchFeederPillarDetails(params)),
+        onFetchFeederPillarMetricCharts: (params) => dispatch(actions.fetchFeederPillarMetricCharts(params)),
         
     }
 }

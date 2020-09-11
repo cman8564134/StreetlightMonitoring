@@ -32,12 +32,12 @@ const appSidebar = ( props ) => {
                 transitionAppearTimeout={1500}
                 transitionEnter={false}
                 transitionLeave={false}>
-                <AppLogo 
+                {/* <AppLogo 
                     enableClosedSidebar = {enableClosedSidebar}
                     toggleEnableClosedSidebar = {toggleEnableClosedSidebar}
                     toggleMobileSidebar = {toggleMobileSidebar}
                     toggleMobileSmall = {toggleMobileSmall}
-                />
+                /> */}
                 <PerfectScrollbar>
                     <div className="app-sidebar__inner">
                         <VerticalNavWrapper 

@@ -1,77 +1,29 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../shared/utility';
-
-const concession = {
-    1: {id: 1, concession_name: "ABC Sdn Bhd", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-    2: {id: 2, concession_name: "DEF Sdn Bhd", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-    3: {id: 3, concession_name: "GHI Sdn Bhd", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
-    4: {id: 4, concession_name: "JKL Sdn Bhd", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"}
-}
-
-const baseChartOptions = () => {
-    return {
-        chart: {
-            height: 350,
-            type: 'line',
-            stacked: false,
-        },
-        stroke: {
-            curve: 'smooth'
-        },
-        labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-        markers: {
-            size: 0
-        },
-        xaxis: {
-            // type:'datetime'
-        },
-        yaxis: {
-            title: {
-                text: 'Power Usage',
-            },
-            min: 0
-        },
-        tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-                formatter: function (y) {
-                    if(typeof y !== "undefined") {
-                        return  y.toFixed(2);
-                    }
-                    return y;
-    
-                }
-            }
-        }
-    }
-}
-
-const baseChartSeries = () => {
-    return [{
-        name: 'Power Usage',
-        type: 'line',
-        data: [2000, 2100,2050,1800,2200,2100,2000]
-    }]
-} 
+import { 
+    updateObject, updateChartObject, convertUnixTimestampToLocalTime, 
+    formatDateByDateFormat, baseChartOptions, baseChartSeries
+ } from '../../shared/utility';
 
 const initialState = {
     concession: {},
     loadingHighlights: false,
     loadingSectionsTable: false,
     sectionsTableData: [],
-    loadingConcessionMetricChart: false,
-    concessionMetricCharts:[
-        {
-            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "electricalBill": {title: "Electrical Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries()}
-        }
-    ] 
-        
+    loadingWeather: false,
+    city: "",
+    weatherDate: "",
+    weatherTime: "",
+    temperature: "",
+    weatherId: "",
+    weatherDesc: "",
+    loadingWeatherForecast: false,
+    weatherForecasts: [],
+    realTimePowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    dailyPowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    monthlyPowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    realTimeElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    dailyElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    monthlyElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()}
 };
 
 const fetchConcessionDetailsStart = ( state, action ) => {
@@ -82,7 +34,7 @@ const fetchConcessionDetailsStart = ( state, action ) => {
 
 const fetchConcessionDetailsSuccess = ( state, action ) => {
     return updateObject(state, {
-        concession: concession[action.concession_id],
+        concession: action.concession,
         loadingHighlights: action.loading
     });
 }
@@ -114,69 +66,176 @@ const fetchSectionsByConcessionFail = ( state, action ) => {
     });
 }
 
-const fetchConcessionMetricChartsStart = ( state, action ) => {
+const fetchConcessionRealTimePowerUsageChartStart = ( state, action ) => {
     return updateObject(state, {
-        loadingConcessionMetricChart: action.loading
+        realTimePowerUsageChartData: updateObject(state.realTimePowerUsageChartData, {loading: action.loading})
     });
 }
 
-const fetchConcessionMetricChartsSuccess = ( state, action ) => {
-    const updatedMetricCharts = updateCharts(state.concessionMetricCharts, action.chartsData);
+const fetchConcessionRealTimePowerUsageChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.realTimePowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
     return updateObject(state, {
-        loadingConcessionMetricChart: action.loading,
-        concessionMetricCharts: updatedMetricCharts
+        realTimePowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         
     });
 }
 
-const fetchConcessionMetricChartsFail = ( state, action ) => {
+const fetchConcessionRealTimePowerUsageChartFail = ( state, action ) => {
     return updateObject(state, {
-        loadingConcessionMetricChart: action.loading
+        realTimePowerUsageChartData: updateObject(state.realTimePowerUsageChartData, {loading: action.loading})
     });
 }
 
-const updateCharts = (metricCharts, chartsData) => {
-    let updatedMetricChartsAtIndex = metricCharts[0];
-    for(let chartKey in metricCharts[0]){
-        const chart = chartsData[chartKey];
-        const updatedChart = updateChart(metricCharts, chartKey, chart.labels, chart.data, chart.series);
-        updatedMetricChartsAtIndex = updateObject(updatedMetricChartsAtIndex, {[chartKey]: updatedChart});
-    }
-
-    const updatedMetricCharts = metricCharts.map((item, index) => {
-        if(index === 0){
-            return updatedMetricChartsAtIndex;
-        }
-
-        return item[index];
-    })
-
-    return updatedMetricCharts;
+const fetchConcessionDailyPowerUsageChartStart = ( state, action ) => {
+    return updateObject(state, {
+        dailyPowerUsageChartData: updateObject(state.dailyPowerUsageChartData, {loading: action.loading})
+    });
 }
 
-const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries) => {
-    const chartSeriesArray = [];
+const fetchConcessionDailyPowerUsageChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.dailyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
     
-    for(let key in chartData){
-        const chartSeriesObject = {
-            name: chartSeries[key],
-            type: 'line',
-            data: chartData[key]
-        }
-        chartSeriesArray.push(chartSeriesObject);
-    }
-
-    const options = baseChartOptions();
-    const updatedYAxisTitle = updateObject(options.yaxis.title, {text: metricCharts[0][chartKey].title})
-    const updatedYAxis = updateObject(options.yaxis, {title: updatedYAxisTitle})
-
-    const updatedChartOptions = updateObject(options, {labels: chartLabels, yaxis: updatedYAxis});
-    const updatedChart = updateObject(metricCharts[0][chartKey], {
-        chart_options: updatedChartOptions, 
-        chart_series: chartSeriesArray
+    return updateObject(state, {
+        dailyPowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
     });
+}
 
-    return updatedChart;
+const fetchConcessionDailyPowerUsageChartFail = ( state, action ) => {
+    return updateObject(state, {
+        dailyPowerUsageChartData: updateObject(state.dailyPowerUsageChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionMonthlyPowerUsageChartStart = ( state, action ) => {
+    return updateObject(state, {
+        monthlyPowerUsageChartData: updateObject(state.monthlyPowerUsageChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionMonthlyPowerUsageChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.monthlyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
+    return updateObject(state, {
+        monthlyPowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
+        
+    });
+}
+
+const fetchConcessionMonthlyPowerUsageChartFail = ( state, action ) => {
+    return updateObject(state, {
+        monthlyPowerUsageChartData: updateObject(state.monthlyPowerUsageChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionRealTimeElectricityBillChartStart = ( state, action ) => {
+    return updateObject(state, {
+        realTimeElectricityBillChartData: updateObject(state.realTimeElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionRealTimeElectricityBillChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.realTimeElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    return updateObject(state, {
+        realTimeElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
+        
+    });
+}
+
+const fetchConcessionRealTimeElectricityBillChartFail = ( state, action ) => {
+    return updateObject(state, {
+        realTimeElectricityBillChartData: updateObject(state.realTimeElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionDailyElectricityBillChartStart = ( state, action ) => {
+    return updateObject(state, {
+        dailyElectricityBillChartData: updateObject(state.dailyElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionDailyElectricityBillChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.dailyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    return updateObject(state, {
+        dailyElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
+        
+    });
+}
+
+const fetchConcessionDailyElectricityBillChartFail = ( state, action ) => {
+    return updateObject(state, {
+        dailyElectricityBillChartData: updateObject(state.dailyElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionMonthlyElectricityBillChartStart = ( state, action ) => {
+    return updateObject(state, {
+        monthlyElectricityBillChartData: updateObject(state.monthlyElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchConcessionMonthlyElectricityBillChartSuccess = ( state, action ) => {
+    const chart = action.chartsData;
+    const updatedMetricCharts = updateChartObject(state.monthlyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    return updateObject(state, {
+        monthlyElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
+        
+    });
+}
+
+const fetchConcessionMonthlyElectricityBillChartFail = ( state, action ) => {
+    return updateObject(state, {
+        monthlyElectricityBillChartData: updateObject(state.monthlyElectricityBillChartData, {loading: action.loading})
+    });
+}
+
+const fetchWeatherStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingWeather: action.loading
+    });
+}
+
+const fetchWeatherSuccess = ( state, action ) => {
+    const localDate = convertUnixTimestampToLocalTime(action.unixTimestamp);
+
+    return updateObject(state, {
+        loadingWeather: action.loading,
+        city: action.city,
+        weatherDate: formatDateByDateFormat(localDate, 'D, d M'),
+        weatherTime: formatDateByDateFormat(localDate, 'h:m'),
+        temperature: action.temperature,
+        weatherId: action.weatherId,
+        weatherDesc: (action.weatherDesc).charAt(0).toUpperCase() + (action.weatherDesc).slice(1)
+    });
+}
+
+const fetchWeatherFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingWeather: action.loading
+    });
+}
+
+
+const fetchWeatherForecastStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingWeatherForecast: action.loading
+    });
+}
+
+const fetchWeatherForecastSuccess = ( state, action ) => {
+    return updateObject(state, {
+        loadingWeatherForecast: action.loading,
+        weatherForecasts: action.weatherForecasts
+    });
+}
+
+const fetchWeatherForecastFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingWeatherForecast: action.loading
+    });
 }
 
 const reducer = (state = initialState, action) => {
@@ -193,12 +252,54 @@ const reducer = (state = initialState, action) => {
             return fetchSectionsByConcessionSuccess( state, action );
         case actionTypes.FETCH_SECTIONS_BY_CONCESSION_FAIL:
             return fetchSectionsByConcessionFail( state, action );
-        case actionTypes.FETCH_CONCESSION_METRIC_CHARTS_START:
-            return fetchConcessionMetricChartsStart( state, action );
-        case actionTypes.FETCH_CONCESSION_METRIC_CHARTS_SUCCESS:
-            return fetchConcessionMetricChartsSuccess( state, action );
-        case actionTypes.FETCH_CONCESSION_METRIC_CHARTS_FAIL:
-            return fetchConcessionMetricChartsFail( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_START:
+            return fetchConcessionRealTimePowerUsageChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_SUCCESS:
+            return fetchConcessionRealTimePowerUsageChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_FAIL:
+            return fetchConcessionRealTimePowerUsageChartFail( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_POWER_USAGE_CHART_START:
+            return fetchConcessionDailyPowerUsageChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_POWER_USAGE_CHART_SUCCESS:
+            return fetchConcessionDailyPowerUsageChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_POWER_USAGE_CHART_FAIL:
+            return fetchConcessionDailyPowerUsageChartFail( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_POWER_USAGE_CHART_START:
+            return fetchConcessionMonthlyPowerUsageChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_POWER_USAGE_CHART_SUCCESS:
+            return fetchConcessionMonthlyPowerUsageChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_POWER_USAGE_CHART_FAIL:
+            return fetchConcessionMonthlyPowerUsageChartFail( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_START:
+            return fetchConcessionRealTimeElectricityBillChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_SUCCESS:
+            return fetchConcessionRealTimeElectricityBillChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_FAIL:
+            return fetchConcessionRealTimeElectricityBillChartFail( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_ELECTRICITY_BILL_CHART_START:
+            return fetchConcessionDailyElectricityBillChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_ELECTRICITY_BILL_CHART_SUCCESS:
+            return fetchConcessionDailyElectricityBillChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_DAILY_ELECTRICITY_BILL_CHART_FAIL:
+            return fetchConcessionDailyElectricityBillChartFail( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_ELECTRICITY_BILL_CHART_START:
+            return fetchConcessionMonthlyElectricityBillChartStart( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_ELECTRICITY_BILL_CHART_SUCCESS:
+            return fetchConcessionMonthlyElectricityBillChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSION_MONTHLY_ELECTRICITY_BILL_CHART_FAIL:
+            return fetchConcessionMonthlyElectricityBillChartFail( state, action );
+            case actionTypes.FETCH_WEATHER_START: 
+            return fetchWeatherStart(state, action);
+        case actionTypes.FETCH_WEATHER_SUCCESS: 
+            return fetchWeatherSuccess(state, action);
+        case actionTypes.FETCH_WEATHER_FAIL: 
+            return fetchWeatherFail(state, action);
+        case actionTypes.FETCH_WEATHER_FORECAST_START: 
+            return fetchWeatherForecastStart(state, action);
+        case actionTypes.FETCH_WEATHER_FORECAST_SUCCESS: 
+            return fetchWeatherForecastSuccess(state, action);
+        case actionTypes.FETCH_WEATHER_FORECAST_FAIL: 
+            return fetchWeatherForecastFail(state, action);
         default:
             return state;
     }
