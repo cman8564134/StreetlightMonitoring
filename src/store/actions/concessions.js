@@ -114,7 +114,7 @@ export const getConcessionsChartDataFail = (error, type) => {
 export const getConcessionsChartData = (dispatch, params) => {
     if(!params.isRefresh)
         dispatch(getConcessionsChartDataStart(params.startType));
-
+        
     axios.post('/getConcessionsChartData', params)
         .then(response => {
             dispatch(getConcessionsChartDataSuccess(response.data.chartData, params.successType));

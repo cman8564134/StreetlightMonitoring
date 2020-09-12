@@ -292,8 +292,7 @@ const SubsectionDetails = ( props ) => {
                         showOrHideModal={showOrHidePillarDetailsModal}
                     >
                         <FeederPillarDetails
-                            // loading={loadingFeederPillarDetails}
-                            loading={true}
+                            loading={loadingFeederPillarDetails}
                             feederPillar={feederPillar}
                             metricCharts={feederPillarMetricCharts}
                             loadingMetricCharts={loadingFeederPillarMetricChart}

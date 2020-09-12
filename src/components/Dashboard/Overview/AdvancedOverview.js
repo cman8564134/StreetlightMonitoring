@@ -122,7 +122,7 @@ const AdvancedOverview = ( props ) => {
     }
     
     const onToggleElectricityBillChartTab = (tab) => {
-        if (powerUsageChartActiveTab !== tab) {
+        if (electricityBillChartActiveTab !== tab) {
             setElectricityBillChartActiveTab(tab);
 
             let dateTo = ""
