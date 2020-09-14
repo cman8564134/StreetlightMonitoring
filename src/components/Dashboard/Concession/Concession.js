@@ -19,10 +19,12 @@ import {
 import Chart from 'react-apexcharts'
 
 import ConcessionHighlights from './ConcessionHighlights/ConcessionHighlights';
+import Loader from '../../Loader/BallClipRotateMultiple/BallClipRotateMultiple';
 
 const Concession = ( props ) => {
     const {
         concession,
+        loadingConcessionChart,
         concessionChart,
         onClickViewDetailsHandler,
         highlightsHeaders
@@ -36,6 +38,24 @@ const Concession = ( props ) => {
         speed: 500,
         dots: true,
     };
+
+    let chartComponent = (
+        <Card>
+            <CardBody>
+                <Loader />
+            </CardBody>
+        </Card>
+        
+    )
+
+    if(!loadingConcessionChart) {
+        chartComponent = (
+            <ResponsiveContainer height={300}>
+                <Chart options={concessionChart.chart_options} series={concessionChart.chart_series} type="line" width="100%"/>
+            </ResponsiveContainer>
+            
+        )
+    }
 
     return (
         <Card className="mb-3">
@@ -56,9 +76,7 @@ const Concession = ( props ) => {
                             />
                         </div>
                         <div>
-                            <ResponsiveContainer height={300}>
-                                <Chart options={concessionChart.chart_options} series={concessionChart.chart_series} type="line" width="100%"/>
-                            </ResponsiveContainer>
+                            {chartComponent}
                         </div>
                     </Slider>
                 </div>

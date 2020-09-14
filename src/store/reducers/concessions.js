@@ -11,12 +11,7 @@ const initialState = {
     loadingConcessionsTable: false,
     concessions: [],
     loadingElectricityBillChart: false, 
-    concessionsChart:{
-        1: {chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-        2: {chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-        3: {chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-        4: {chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-    },
+    concessionsChart:{},
     loadingSummaryHighlights: false,
     concessionsSummary: {},
     loadingPowerQualityChart: false,

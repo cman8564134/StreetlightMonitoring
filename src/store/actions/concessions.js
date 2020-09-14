@@ -154,7 +154,6 @@ export const fetchConcessionsWeeklyElectricityBillChart =  (params) => {
 
         axios.post('/getConcessionsElectricityBillChartData', params)
             .then(response => {
-                console.log('response',response);
                 dispatch(fetchConcessionsWeeklyElectricityBillChartSuccess(response.data.chartData));
             })
             .catch(error => {

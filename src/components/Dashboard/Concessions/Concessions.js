@@ -11,6 +11,7 @@ import Concession from '../Concession/Concession';
 const Dashboard = ( props ) => {
     const {
         concessions,
+        loadingConcessionChart,
         concessionsChart,
         highlightsHeaders,
         onClickViewDetailsHandler
@@ -24,6 +25,7 @@ const Dashboard = ( props ) => {
                         <Concession
                             concession={concession}
                             highlightsHeaders={highlightsHeaders}
+                            loadingConcessionChart={loadingConcessionChart}
                             concessionChart={concessionsChart[concession.concession_name]}
                             onClickViewDetailsHandler={onClickViewDetailsHandler}
                         />

@@ -32,6 +32,7 @@ const Dashboard = ( props ) => {
         concessionsSummary,
         loadingPowerQualityChart,
         summaryChart,
+        loadingElectricityBillChart,
         onFetchConcessions,
         onFetchConcessionsSummary,
         onFetchConcessionsPowerQualitySummaryChart,
@@ -56,6 +57,7 @@ const Dashboard = ( props ) => {
             successType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_SUCCESS,
             failType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL,
         });
+
     onFetchConcessionsWeeklyElectricityBillChart({isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo, chartType: 'daily', dataKey: ['thdc1']});
 
         const interval = setInterval(() => {
@@ -183,6 +185,7 @@ const Dashboard = ( props ) => {
             children: 
                 <Concessions 
                     concessions={concessions}
+                    loadingConcessionChart={loadingElectricityBillChart}
                     concessionsChart={concessionsChart}
                     highlightsHeaders={concessionsHighlightsHeaders}
                     onClickViewDetailsHandler={onClickViewDetailsHandler}
@@ -221,7 +224,8 @@ const mapStateToProps = state => {
         loadingSummaryHighlights: state.Concessions.loadingSummaryHighlights,
         concessionsSummary: state.Concessions.concessionsSummary,
         loadingPowerQualityChart: state.Concessions.loadingPowerQualityChart,
-        summaryChart: state.Concessions.summaryChart
+        summaryChart: state.Concessions.summaryChart,
+        loadingElectricityBillChart: state.Concessions.loadingElectricityBillChart,
     }
 }
 
