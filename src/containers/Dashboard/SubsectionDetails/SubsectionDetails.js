@@ -132,7 +132,7 @@ const SubsectionDetails = ( props ) => {
                 onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
                 onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
             }
-        }, 5000);
+        }, 10000);
 
         return () => clearInterval(interval);
     }, [

@@ -76,7 +76,7 @@ const Dashboard = ( props ) => {
                 successType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_SUCCESS,
                 failType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL,
             });
-        }, 5000);
+        }, 10000);
 
         return () => clearInterval(interval);
     }, [
