@@ -134,7 +134,7 @@ const ConcessionDetails = ( props ) => {
                 successType: realTimeElectricityBillChartSuccessType,
                 failType: realTimeElectricityBillChartFailType,
             });
-        }, 10000);
+        }, 30000);
 
         return () => clearInterval(interval);
 
