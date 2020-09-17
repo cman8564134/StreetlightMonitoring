@@ -29,11 +29,11 @@ const FeederPillarDetails = ( props ) => {
         status,
         created_at,
         total_yield,
-        subsection_total_yield,
+        road_total_yield,
         feeder_pillar_total_yield_percentage
     } = feederPillar;
 
-    const progressBarSubLabel = feeder_pillar_total_yield_percentage + "% (" + total_yield + "/" + subsection_total_yield + ")"
+    const progressBarSubLabel = feeder_pillar_total_yield_percentage + "% (" + total_yield + "/" + road_total_yield + ")"
     
     const highlightsHeaders = [
         {header: "Active Power L1", iconBgClassName: "icon-wrapper-bg opacity-8 bg-info", iconClassName: "pe-7s-power text-dark opacity-8" , accessor: "active_power_l1", prefix: "", suffix: " W"},

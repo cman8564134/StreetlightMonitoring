@@ -178,7 +178,7 @@ const RoadDetails = ( props ) => {
         },
         {
             title: road.subsection_name,
-            href: null,
+            href: '',
             onClickHandler: (e)=>{
                 e.preventDefault();
                 props.history.push("/dashboard/" + props.match.params.concessionId + "/" + props.match.params.sectionId + "/" + props.match.params.subsectionId);
