@@ -183,7 +183,7 @@ const ConcessionDetails = ( props ) => {
                     accessor: 'section_name'
                 },
                 {
-                    Header: 'Power Usage',
+                    Header: 'Power Usage (KWh)',
                     accessor: 'power_usage'
                 },
                 {
@@ -191,15 +191,15 @@ const ConcessionDetails = ( props ) => {
                     accessor: 'uptime_percentage'
                 },
                 {
-                    Header: 'Electrical Bill (Monthly)',
+                    Header: 'Electricity Bill (RM)',
                     accessor: 'electricity_bill'
                 },
                 {
-                    Header: 'Carbon Footprint',
+                    Header: 'Carbon Footprint (KG)',
                     accessor: 'carbon_footprint'
                 },
                 {
-                    Header: 'Energy Savings',
+                    Header: 'Energy Savings (KWh)',
                     accessor: 'energy_savings'
                 },
             ]
@@ -222,9 +222,9 @@ const ConcessionDetails = ( props ) => {
     ];
 
     const highlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
-        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
+        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
+        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint", prefix: "", suffix: " KG"},
     ]
 
     const tabPanes = [

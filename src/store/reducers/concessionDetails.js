@@ -74,7 +74,7 @@ const fetchConcessionRealTimePowerUsageChartStart = ( state, action ) => {
 
 const fetchConcessionRealTimePowerUsageChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.realTimePowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
+    const updatedMetricCharts = updateChartObject(state.realTimePowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage (KWh)');
     return updateObject(state, {
         realTimePowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         
@@ -95,7 +95,7 @@ const fetchConcessionDailyPowerUsageChartStart = ( state, action ) => {
 
 const fetchConcessionDailyPowerUsageChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.dailyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
+    const updatedMetricCharts = updateChartObject(state.dailyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage (KWh)');
     
     return updateObject(state, {
         dailyPowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
@@ -116,7 +116,7 @@ const fetchConcessionMonthlyPowerUsageChartStart = ( state, action ) => {
 
 const fetchConcessionMonthlyPowerUsageChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.monthlyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage');
+    const updatedMetricCharts = updateChartObject(state.monthlyPowerUsageChartData, chart.labels, chart.data, chart.series, 'line', 'Power Usage (KWh)');
     return updateObject(state, {
         monthlyPowerUsageChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         
@@ -137,7 +137,7 @@ const fetchConcessionRealTimeElectricityBillChartStart = ( state, action ) => {
 
 const fetchConcessionRealTimeElectricityBillChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.realTimeElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    const updatedMetricCharts = updateChartObject(state.realTimeElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill (RM)');
     return updateObject(state, {
         realTimeElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         
@@ -158,7 +158,7 @@ const fetchConcessionDailyElectricityBillChartStart = ( state, action ) => {
 
 const fetchConcessionDailyElectricityBillChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.dailyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    const updatedMetricCharts = updateChartObject(state.dailyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill (RM)');
     return updateObject(state, {
         dailyElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         
@@ -179,7 +179,7 @@ const fetchConcessionMonthlyElectricityBillChartStart = ( state, action ) => {
 
 const fetchConcessionMonthlyElectricityBillChartSuccess = ( state, action ) => {
     const chart = action.chartsData;
-    const updatedMetricCharts = updateChartObject(state.monthlyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill');
+    const updatedMetricCharts = updateChartObject(state.monthlyElectricityBillChartData, chart.labels, chart.data, chart.series, 'line', 'Electricity Bill (RM)');
     return updateObject(state, {
         monthlyElectricityBillChartData: updateObject(updatedMetricCharts, {loading: action.loading})
         

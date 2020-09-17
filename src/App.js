@@ -24,6 +24,10 @@ const SubsectionDetails = React.lazy(() => {
   return import('./containers/Dashboard/SubsectionDetails/SubsectionDetails');
 });
 
+const RoadDetails = React.lazy(() => {
+  return import('./containers/Dashboard/RoadDetails/RoadDetails');
+});
+
 const FeederPillarDetails = React.lazy(() => {
   return import('./containers/Dashboard/FeederPillarDetails/FeederPillarDetails');
 });
@@ -94,7 +98,8 @@ const App = ( props ) => {
         </div>
           }>
             <Switch>
-              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:feederPillarId" render={(props) => <FeederPillarDetails {...props}/>}/>
+              {/* <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:feederPillarId" render={(props) => <FeederPillarDetails {...props}/>}/> */}
+              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:roadId" render={(props) => <RoadDetails {...props}/>}/>
               <Route path="/dashboard/:concessionId/:sectionId/:subsectionId" render={(props) => <SubsectionDetails {...props}/>}/>
               <Route path="/dashboard/:concessionId/:sectionId" render={(props) => <SectionDetails {...props}/>}/>
               <Route path="/dashboard/:concessionId" render={(props) => <ConcessionDetails {...props}/>}/>

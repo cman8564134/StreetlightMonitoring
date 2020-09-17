@@ -5,7 +5,7 @@ export const MainNav = [
         to: '/dashboard',
     },
     {
-        icon: 'lnr-chart-bars',
+        icon: 'pe-7s-calculator',
         label: 'Electricity Billing',
         to: '/billing',
     },
@@ -21,6 +21,11 @@ export const AnalyticsNav = [
         icon: 'pe-7s-graph',
         label: 'Report',
         to: '/report',
+    },
+    {
+        icon: 'lnr-chart-bars',
+        label: 'Analytics',
+        to: '#',
     }
 ];
 

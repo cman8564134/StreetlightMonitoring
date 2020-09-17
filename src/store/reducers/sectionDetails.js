@@ -14,12 +14,12 @@ const initialState = {
     loadingSectionMetricChart: false,
     sectionMetricCharts:[
         {
-            "powerUsage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "electricityBill": {title: "Electricity Bill", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "carbonFootprint": {title: "Carbon Footprint", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "energySavings": {title: "Energy Savings", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "amperage": {title: "Amperage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "voltage": {title: "Voltage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"}
+            "powerUsage": {title: "Power Usage (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "electricityBill": {title: "Electricity Bill (RM)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "carbonFootprint": {title: "Carbon Footprint (KG)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "energySavings": {title: "Energy Savings (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "amperage": {title: "Amperage (Amp)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "voltage": {title: "Voltage (V)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"}
         }
     ] 
         

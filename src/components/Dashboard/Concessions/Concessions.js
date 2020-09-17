@@ -26,7 +26,8 @@ const Dashboard = ( props ) => {
                             concession={concession}
                             highlightsHeaders={highlightsHeaders}
                             loadingConcessionChart={loadingConcessionChart}
-                            concessionChart={concessionsChart[concession.concession_name]}
+                            // concessionChart={concessionsChart[concession.concession_name]}
+                            concessionChart={concessionsChart['ABC SDN BHD']}
                             onClickViewDetailsHandler={onClickViewDetailsHandler}
                         />
                     </Col>

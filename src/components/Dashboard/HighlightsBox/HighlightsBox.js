@@ -30,6 +30,8 @@ const HighlightsBox = ( props ) => {
                                 header={header}
                                 value={values[highlight.accessor]}
                                 loading={loading}
+                                prefix={highlight.prefix}
+                                suffix={highlight.suffix}
                             />
                         </Col>
                     )

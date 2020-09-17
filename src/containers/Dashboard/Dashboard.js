@@ -50,7 +50,7 @@ const Dashboard = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo, 
-            dataKey: ['total_yield'], 
+            dataKey: ['thdc1'], 
             chartType: "daily", 
             chartId: "power_usage",
             startType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_START,
@@ -69,7 +69,7 @@ const Dashboard = ( props ) => {
                 isRefresh: isRefresh, 
                 dateTimeFrom: dateFrom, 
                 dateTimeTo: dateTo, 
-                dataKey: ['total_yield'], 
+                dataKey: ['thdc1'], 
                 chartType: "daily", 
                 chartId: "power_usage",
                 startType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_START,
@@ -97,17 +97,17 @@ const Dashboard = ( props ) => {
     ]
 
     const summaryHighlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
-        {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
+        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint" , prefix: "", suffix: " KG"},
+        {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
     ]
     
     const concessionsHighlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage_text"},
-        {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
-        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
-        {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings"},
+        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage_text", prefix: "", suffix: ""},
+        {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
+        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint", prefix: "", suffix: " KG"},
+        {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings", prefix: "", suffix: " KWh"},
     ]
 
     const summaryTabLargeTitleTabs = [
@@ -141,7 +141,7 @@ const Dashboard = ( props ) => {
                     accessor: 'concession_name'
                 },
                 {
-                    Header: 'Power Usage',
+                    Header: 'Power Usage (KWh)',
                     accessor: 'power_usage'
                 },                
                 {
@@ -149,15 +149,15 @@ const Dashboard = ( props ) => {
                     accessor: 'uptime_percentage'
                 },
                 {
-                    Header: 'Monthly Electricity Bill',
+                    Header: 'Monthly Electricity Bill (RM)',
                     accessor: 'electricity_bill'
                 },
                 {
-                    Header: 'Accumulated Carbon Footprint',
+                    Header: 'Accumulated Carbon Footprint (KG)',
                     accessor: 'carbon_footprint'
                 },
                 {
-                    Header: 'Energy Savings',
+                    Header: 'Energy Savings (KWh)',
                     accessor: 'energy_savings'
                 },
             ]

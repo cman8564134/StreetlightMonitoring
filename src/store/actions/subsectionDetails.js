@@ -42,40 +42,40 @@ export const fetchSubsectionDetails =  (params) => {
     }
 }
 
-export const fetchFeederPillarsBySubsectionStart = () => {
+export const fetchRoadsBySubsectionStart = () => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLARS_BY_SUBSECTION_START,
+        type: actionTypes.FETCH_ROADS_BY_SUBSECTION_START,
         loading: true
     }
 }
 
-export const fetchFeederPillarsBySubsectionSuccess = (feederPillars) => {
+export const fetchRoadsBySubsectionSuccess = (roads) => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLARS_BY_SUBSECTION_SUCCESS,
+        type: actionTypes.FETCH_ROADS_BY_SUBSECTION_SUCCESS,
         loading: false,
-        feederPillars: feederPillars
+        roads: roads
     }
 }
 
-export const fetchFeederPillarsBySubsectionFail = (error) => {
+export const fetchRoadsBySubsectionFail = (error) => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLARS_BY_SUBSECTION_FAIL,
+        type: actionTypes.FETCH_ROADS_BY_SUBSECTION_FAIL,
         loading: false,
         error: error
     }
 }
 
-export const fetchFeederPillarsBySubsection =  (params) => {
+export const fetchRoadsBySubsection =  (params) => {
     return dispatch => {
-        dispatch(fetchFeederPillarsBySubsectionStart());
+        dispatch(fetchRoadsBySubsectionStart());
 
-        axios.post('/getFeederPillarsMetricsBySubsectionId', params)
+        axios.post('/getRoadsMetricsBySubsectionId', params)
         .then(response => {
-            dispatch(fetchFeederPillarsBySubsectionSuccess(response.data.feederPillars));
+            dispatch(fetchRoadsBySubsectionSuccess(response.data.roads));
         })
         .catch(error => {
             console.log(error);
-            dispatch(fetchFeederPillarsBySubsectionFail(error));
+            dispatch(fetchRoadsBySubsectionFail(error));
         });  
     }
 }
@@ -109,7 +109,7 @@ export const fetchSubsectionMetricCharts =  (params) => {
         if(!params.isRefresh)
             dispatch(fetchSubsectionMetricChartsStart());
 
-        axios.post('/getSectionsChartData', params)
+        axios.post('/getSubsectionsChartData', params)
         .then(response => {
             dispatch(fetchSubsectionMetricChartsSuccess(response.data.chartData));
         })

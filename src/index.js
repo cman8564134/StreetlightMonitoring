@@ -13,6 +13,7 @@ import concessionsReducer from './store/reducers/concessions';
 import concessionDetailsReducer from './store/reducers/concessionDetails';
 import sectionDetailsReducer from './store/reducers/sectionDetails';
 import subsectionDetailsReducer from './store/reducers/subsectionDetails';
+import roadDetailsReducer from './store/reducers/roadDetails';
 import feederPillarDetailsReducer from './store/reducers/feederPillarDetails';
 import electricityBillingReducer from './store/reducers/electricityBilling';
 import alertReducer from './store/reducers/alert';
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   ConcessionDetails: concessionDetailsReducer,
   SectionDetails: sectionDetailsReducer,
   SubsectionDetails: subsectionDetailsReducer,
+  RoadDetails: roadDetailsReducer,
   FeederPillarDetails: feederPillarDetailsReducer,
   ElectricityBill: electricityBillingReducer,
   Report: reportReducer,

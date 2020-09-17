@@ -18,7 +18,7 @@ const HeaderLogo = ( props ) => {
     return (
         <Fragment>
             <div className="app-header__logo">
-                <div className="logo-src"/>
+                <div className="logo-src"  style={{backgroundRepeat: "no-repeat"}}/>
                 <div className="header__pane ml-auto">
                     <div onClick={toggleEnableClosedSidebar}>
                     <Slider 

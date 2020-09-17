@@ -8,15 +8,24 @@ const IconBox = ( props ) => {
         iconClassName,
         header,
         value,
-        loading
+        loading,
+        suffix,
+        prefix,
+        font
     } = props;
 
     let widgetValue = <Loader/>
 
+    let widgetValueClassName = "widget-numbers";
+
+    if(font === "sm") {
+        widgetValueClassName = "widget-numbers-sm"
+    }
+
     if(!loading) {
         widgetValue = (
-            <div className="widget-numbers">
-                {value}
+            <div className={widgetValueClassName}>
+                <span className="font-size-md">{prefix}</span>{value}<span className="font-size-md">{suffix}</span>
             </div>
         );
         

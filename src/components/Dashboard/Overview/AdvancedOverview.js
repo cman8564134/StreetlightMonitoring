@@ -50,7 +50,8 @@ const AdvancedOverview = ( props ) => {
         {title: "Location", className: "lnr-license icon-gradient bg-night-fade", accessor: "location"},
         {title: "No of Sections", className: "lnr-cog fa-spin icon-gradient bg-happy-itmeo", accessor: "total_sections"},
         {title: "No of Subsections", className: "lnr-cloud-upload icon-gradient bg-plum-plate", accessor: "total_subsections"},
-        {title: "No of Feeder Pillars", className: "lnr-license text-primary", accessor: "total_feeder_pillars"}
+        {title: "No of Roads", className: "lnr-cloud-upload icon-gradient bg-plum-plate", accessor: "total_roads"},
+        {title: "No of Feeder Pillars", className: "lnr-license text-primary", accessor: "total_feeder_pillar"}
     ]
 
     const liquidGaugeStartColor = '#8176c3'; 
@@ -166,7 +167,6 @@ const AdvancedOverview = ( props ) => {
                 default: 
                     
             }
-            console.log('highlightValues', highlightValues);
 
             onFetchConcessionRealTimeElectricityBillChart({
                 isRefresh: isRefresh, 
@@ -293,8 +293,8 @@ const AdvancedOverview = ( props ) => {
                                 percent={highlightValues.uptime_percentage}
                                 trailColor="#cceff5"
                                 color="#0bb3cd"
-                                subheading="Uptime %"
-                                value={`${highlightValues.active_feeder_pillars}/${highlightValues.total_feeder_pillars} Active`}
+                                subheading={'Uptime (' + highlightValues.uptime_percentage +'%)'}
+                                value={`${highlightValues.total_active_feeder_pillar}/${highlightValues.total_feeder_pillar} Active`}
                                 loading={loadingHighlights}
                             />
                         </Col>

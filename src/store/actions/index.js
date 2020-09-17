@@ -28,9 +28,15 @@ export {
 
 export {
     fetchSubsectionDetails,
-    fetchFeederPillarsBySubsection,
+    fetchRoadsBySubsection,
     fetchSubsectionMetricCharts
 } from './subsectionDetails'
+
+export {
+    fetchRoadDetails,
+    fetchFeederPillarsByRoad,
+    fetchRoadMetricCharts
+} from './roadDetails'
 
 export {
     fetchFeederPillarDetails,

@@ -40,6 +40,9 @@ const ConcessionHighlights = ( props ) => {
                                             header={header}
                                             value={concessionHighlights[highlight.accessor]}
                                             loading={false}
+                                            prefix={highlight.prefix}
+                                            suffix={highlight.suffix}
+                                            font="sm"
                                         />
                                     </Col>
                                 )
