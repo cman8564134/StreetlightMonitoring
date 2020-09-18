@@ -127,6 +127,19 @@ const Dashboard = ( props ) => {
 
     const summaryTabLargeTitleTabs = [
         {
+            subheading: "Power Usage", 
+            value: concessionsSummary.power_usage, 
+            suffix: "KWh", 
+            children: <BasicApexChart 
+                        loading={loadingPowerQualityChart}
+                        options={summaryChart[0].power_usage.chart_options} 
+                        series={summaryChart[0].power_usage.chart_series} 
+                        type="bar" 
+                        width="100%" 
+                        height="440px"
+                        />
+        },
+        {
             subheading: "Power Quality", 
             value: concessionsSummary.power_quality, 
             suffix: "", 
@@ -139,19 +152,7 @@ const Dashboard = ( props ) => {
                         height="440px"
                         />
         },
-        {
-            subheading: "Power Usage", 
-            value: concessionsSummary.power_usage, 
-            suffix: "KWh", 
-            children: <BasicApexChart 
-                        loading={loadingPowerQualityChart}
-                        options={summaryChart[0].power_usage.chart_options} 
-                        series={summaryChart[0].power_usage.chart_series} 
-                        type="bar" 
-                        width="100%" 
-                        height="440px"
-                        />
-        }
+        
     ];
 
     const liquidGaugeStartColor = '#8176c3'; 
