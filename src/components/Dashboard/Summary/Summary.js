@@ -71,6 +71,7 @@ const Summary = ( props ) => {
                                 value={values.carbon_footprint_savings}
                                 loading={loadingHighlights}
                                 radius={radius}
+                                suffix='KG'
                             />
                         </Col>
                         <Col md="12" lg="12">

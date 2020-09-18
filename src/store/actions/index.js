@@ -8,6 +8,7 @@ export {
     fetchConcessions,
     fetchConcessionsSummary,
     fetchConcessionsPowerQualitySummaryChart,
+    fetchConcessionsPowerUsageSummaryChart,
     fetchConcessionsWeeklyElectricityBillChart
 } from './concessions'
 

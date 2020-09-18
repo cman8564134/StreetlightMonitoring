@@ -29,7 +29,7 @@ const LargeTitleTab = ( props ) => {
                             <NavItem key={index}>
                                 <NavLink 
                                     href="#"
-                                    className={classnames({active: activeTab === {index}})}
+                                    className={classnames({active: activeTab === index})}
                                     onClick={() => {
                                         toggleTabHandler(index);
                                     }}

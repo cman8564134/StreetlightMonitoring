@@ -36,6 +36,7 @@ const Dashboard = ( props ) => {
         onFetchConcessions,
         onFetchConcessionsSummary,
         onFetchConcessionsPowerQualitySummaryChart,
+        onFetchConcessionsPowerUsageSummaryChart,
         onFetchConcessionsWeeklyElectricityBillChart
     } = props;
     
@@ -52,10 +53,22 @@ const Dashboard = ( props ) => {
             dateTimeTo: dateTo, 
             dataKey: ['thdc1'], 
             chartType: "daily", 
-            chartId: "power_usage",
+            chartId: "power_quality",
             startType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_START,
             successType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_SUCCESS,
             failType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL,
+            formulaType: 'powerQuality'
+        });
+        onFetchConcessionsPowerUsageSummaryChart({
+            isRefresh: isRefresh, 
+            dateTimeFrom: dateFrom, 
+            dateTimeTo: dateTo, 
+            dataKey: ['thdc1'], 
+            chartType: "daily", 
+            chartId: "power_usage",
+            startType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_START,
+            successType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_SUCCESS,
+            failType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_FAIL,
         });
 
     onFetchConcessionsWeeklyElectricityBillChart({isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo, chartType: 'daily', dataKey: ['thdc1']});
@@ -75,6 +88,7 @@ const Dashboard = ( props ) => {
                 startType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_START,
                 successType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_SUCCESS,
                 failType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL,
+                formulaType: 'powerQuality'
             });
         }, 30000);
 
@@ -83,6 +97,7 @@ const Dashboard = ( props ) => {
         onFetchConcessions,
         onFetchConcessionsSummary, 
         onFetchConcessionsPowerQualitySummaryChart,
+        onFetchConcessionsPowerUsageSummaryChart,
         onFetchConcessionsWeeklyElectricityBillChart
     ]);
 
@@ -112,7 +127,20 @@ const Dashboard = ( props ) => {
 
     const summaryTabLargeTitleTabs = [
         {
-            heading: "Power Quality", 
+            subheading: "Power Quality", 
+            value: concessionsSummary.power_quality, 
+            suffix: "", 
+            children: <BasicApexChart 
+                        loading={loadingPowerQualityChart}
+                        options={summaryChart[0].power_quality.chart_options} 
+                        series={summaryChart[0].power_quality.chart_series} 
+                        type="bar" 
+                        width="100%" 
+                        height="440px"
+                        />
+        },
+        {
+            subheading: "Power Usage", 
             value: concessionsSummary.power_usage, 
             suffix: "KWh", 
             children: <BasicApexChart 
@@ -234,6 +262,7 @@ const mapDispatchToProps = dispatch => {
         onFetchConcessions: (params) => dispatch(actions.fetchConcessions(params)),
         onFetchConcessionsSummary: (params) => dispatch(actions.fetchConcessionsSummary(params)),
         onFetchConcessionsPowerQualitySummaryChart: (params) => dispatch(actions.fetchConcessionsPowerQualitySummaryChart(params)),
+        onFetchConcessionsPowerUsageSummaryChart: (params) => dispatch(actions.fetchConcessionsPowerUsageSummaryChart(params)),
         onFetchConcessionsWeeklyElectricityBillChart: (params) => dispatch(actions.fetchConcessionsWeeklyElectricityBillChart(params)),
     }
 }

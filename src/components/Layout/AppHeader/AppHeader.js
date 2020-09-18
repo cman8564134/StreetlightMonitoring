@@ -43,6 +43,11 @@ const Header = ( props ) => {
                     "app-header__content",
                     {'header-mobile-open': enableMobileMenuSmall},
                 )}>
+                    <div className="app-header-center">
+                        <div className="icon-wrapper logo">
+                            <div className="icon-wrapper-bg"/>
+                        </div>
+                    </div>
                     <div className="app-header-right">
                         <HeaderDots {...props}/>
                         <UserBox {...props}/>

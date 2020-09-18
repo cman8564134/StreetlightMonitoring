@@ -17,7 +17,8 @@ const initialState = {
     loadingPowerQualityChart: false,
     summaryChart:[
         {
-            "power_usage": {title: "Power Usage", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"}
+            "power_usage": {title: "Power Usage (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"},
+            "power_quality": {title: "Power Quality", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"},
         }
     ] 
 };
@@ -132,6 +133,26 @@ const fetchConcessionsPowerQualitySummaryChartFail = ( state, action ) => {
     });
 }
 
+const fetchConcessionsPowerUsageSummaryChartStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingPowerUsageChart: action.loading
+    });
+}
+
+const fetchConcessionsPowerUsageSummaryChartSuccess = ( state, action ) => {
+    const updatedChart = updateCharts(state.summaryChart, action.chartsData);
+    return updateObject(state, {
+        loadingPowerUsageChart: action.loading,
+        summaryChart: updatedChart
+    });
+}
+
+const fetchConcessionsPowerUsageSummaryChartFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingPowerUsageChart: action.loading
+    });
+}
+
 const fetchConcessionsWeeklyElectricityBillChartStart = ( state, action ) => {
     return updateObject(state, {
         loadingElectricityBillChart: action.loading
@@ -174,6 +195,12 @@ const reducer = (state = initialState, action) => {
             return fetchConcessionsPowerQualitySummaryChartSuccess( state, action );
         case actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL:
             return fetchConcessionsPowerQualitySummaryChartFail( state, action );
+        case actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_START:
+            return fetchConcessionsPowerUsageSummaryChartStart( state, action );
+        case actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_SUCCESS:
+            return fetchConcessionsPowerUsageSummaryChartSuccess( state, action );
+        case actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_FAIL:
+            return fetchConcessionsPowerUsageSummaryChartFail( state, action );
         case actionTypes.FETCH_CONCESSIONS_WEEKLY_ELECTRICITY_BILL_CHART_START:
             return fetchConcessionsWeeklyElectricityBillChartStart( state, action );
         case actionTypes.FETCH_CONCESSIONS_WEEKLY_ELECTRICITY_BILL_CHART_SUCCESS:

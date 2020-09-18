@@ -14,7 +14,9 @@ const LeftLiquidGaugeCard = ( props ) => {
         subheading,
         value,
         loading,
-        radius
+        radius,
+        prefix,
+        suffix
     } = props;
 
     let liquidGauge = <Loader/>;
@@ -38,7 +40,7 @@ const LeftLiquidGaugeCard = ( props ) => {
                         {subheading}
                     </div>
                     <div className="widget-numbers-sm">
-                        {value}
+                        {(prefix ? prefix  + ' ': '')  + value + (suffix ? ' ' + suffix : '')}
                     </div>
                 </div>
             </Fragment>

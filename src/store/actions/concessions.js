@@ -88,6 +88,14 @@ export const fetchConcessionsPowerQualitySummaryChart =  (params) => {
     }
 }
 
+export const fetchConcessionsPowerUsageSummaryChart =  (params) => {
+    return dispatch => {
+
+        getConcessionsChartData(dispatch, params);
+        
+    }
+}
+
 export const getConcessionsChartDataStart = (type) => {
     return {
         type: type,
