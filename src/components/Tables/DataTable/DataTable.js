@@ -21,7 +21,6 @@ const DataTable = ( props ) => {
     } = props;
     
     let cardTitle = null;
-
     
 
     if (header !== null) {

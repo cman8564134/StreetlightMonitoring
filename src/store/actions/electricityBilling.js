@@ -135,10 +135,10 @@ export const fetchCostBreakdownBySectionData = () => {
         dispatch(fetchCostBreakdownBySectionDataStart());    
 
         const electricityBills = [
-            {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 1", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
-            {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 2", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
-            {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 3", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
-            {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 4", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}    
+            {id: 1, concession_name: "ABC Sdn Bhd", name: "Section 1", level: 0, bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 2, concession_name: "ABC Sdn Bhd", name: "Section 2", level: 0, bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 3, concession_name: "ABC Sdn Bhd", name: "Section 3", level: 0, bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 4, concession_name: "ABC Sdn Bhd", name: "Section 4", level: 0, bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}    
         ]
         
         dispatch(fetchCostBreakdownBySectionDataSuccess(electricityBills));
@@ -148,18 +148,53 @@ export const fetchCostBreakdownBySectionData = () => {
     }
 }
 
-
-export const toggleAccordionSuccess = (index, id) => {
+export const fetchCostBreakdownByLevelStart = () => {
     return {
-        type: actionTypes.TOGGLE_ACCORDION_SUCCESS,
-        index: index,
-        id: id
+        type: actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_START,
+        loading: false
     }
 }
 
-export const toggleAccordion = (index, id) => {
-    
+export const fetchCostBreakdownByLevelSuccess = (costBreakdownByLevelData, level) => {
+    return {
+        type: actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_SUCCESS,
+        loading: false,
+        costBreakdownByLevelData: costBreakdownByLevelData,
+        level: level
+    }
+}
+
+export const fetchCostBreakdownByLevelFail = (error) => {
+    return {
+        type: actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchElectricityCostBreakdownByLevel = (params) => {
     return dispatch => {
-        dispatch(toggleAccordionSuccess(index, id));        
+        dispatch(fetchCostBreakdownByLevelStart());    
+
+        const {id, level} = params;
+
+        // 0 : Section
+        // 1 : Subsection
+        // 2 : Road
+        // 3 : Feeder Pillar
+        const costBreakdown = {
+            0: {1: [{id: 1, level: 1, name: "Section 1/1",  bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}]},
+            1: {1: [{id: 1, level: 2, name: "Jalan Singa",  bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}]},
+            2: {1: [{id: 1, level: 3, name: "DPM",  bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}]},
+        }
+
+        const electricityBills = [
+            {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 1", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 2, concession_name: "ABC Sdn Bhd", section_name: "Section 2", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 3, concession_name: "ABC Sdn Bhd", section_name: "Section 3", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"},
+            {id: 4, concession_name: "ABC Sdn Bhd", section_name: "Section 4", bill_date: "30/06/2020", bill_amount: "106.17", consumption: "557.36", cost: "107.01", icpt: "8.47", current_month_usage: "98.54", gst: "5.91", feed_in_tariff: "1.71", total_cost_per_night: "25.46", total_cost_per_year: "101.71", total_energy_per_night: "133.65", total_energy_per_year: "533.96"}    
+        ]
+        
+        dispatch(fetchCostBreakdownByLevelSuccess(costBreakdown[level][id], level));
     }
 }

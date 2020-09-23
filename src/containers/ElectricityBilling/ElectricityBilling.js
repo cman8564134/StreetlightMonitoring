@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 
 import {
-    Container
+    Container,
+    Button
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -15,6 +16,11 @@ import PageTitle from '../../components/Layout/PageTitle/PageTitle';
 import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import CostBreakdown from '../../components/ElectricityBilling/CostBreakdown/CostBreakdown';
 import Accordion from "../../components/Accordion/Accordion";
+import DataTable from '../../components/Tables/DataTable/DataTable';
+import BasicModal from '../../components/Modal/BasicModal/BasicModal';
+import BreakdownModal from '../../components/ElectricityBilling/BreakdownModal/BreakdownModal';
+import { updateObject } from "../../shared/utility";
+
 
 const ElectricityBilling = ( props ) => {
     const {
@@ -23,20 +29,133 @@ const ElectricityBilling = ( props ) => {
         excelSheets,
         costVariables,
         totalBillAmount,
-        accordions,
         onFetchConcessionNameMap,
         onHandleInputChanged,
         onFetchElectricityBillCSVData,
         onFetchCostBreakdownBySectionData,
-        onToggleAccordion
+        costBySectionTableData,
+        loadingCostByLevelTableData,
+        costByLevelTableData,
+        onFetchElectricityCostBreakdownByLevel,
+        costByLevelTableHeader,
     } = props;
     
     const csvLinkRef = useRef();
     const excelLinkRef = useRef();
 
+    const costBySectionTableColumns = [
+        {
+            columns: [
+                {
+                    Header: 'Name',
+                    accessor: 'name'
+                },
+                {
+                    Header: 'Bill Date',
+                    accessor: 'bill_date'
+                },
+                {
+                    Header: 'Bill Amount',
+                    accessor: 'bill_amount'
+                },
+                {
+                    Header: 'Consumption (kWh)',
+                    accessor: 'consumption'
+                },
+                {
+                    Header: 'Cost (RM)',
+                    accessor: 'cost'
+                },
+                {
+                    Header: 'Imbalance Cost Pass-Through (RM)',
+                    accessor: 'icpt'
+                },
+                {
+                    Header: 'Current Month Usage (RM)',
+                    accessor: 'current_month_usage'
+                },
+                {
+                    Header: 'GST',
+                    accessor: 'gst'
+                },
+                {
+                    Header: 'Feed-In Tariff',
+                    accessor: 'feed_in_tariff'
+                },
+            ]
+        },
+        {
+            columns: [
+                {
+                    Header: 'Actions',
+                    accessor: 'id',
+                    Cell: row => (
+                        <div className="d-block w-100 text-center">
+                            <Button size="sm" color="primary" disabled={row.original.level === 3} onClick={()=>{showOrHideBreakdownModal(row.value, row.original.name, row.original.level)}}>
+                                Details
+                            </Button>
+                        </div>
+                    )
+                }
+            ]
+        },
+    ];
+
+    const [accordions, setAccordions] = useState([
+        {
+            bySection: {
+                heading: "Breakdown By Section", 
+                isOpen: false, 
+                children: <DataTable 
+                            data={costBySectionTableData}
+                            columns={costBySectionTableColumns}
+                            pageSize={10}
+                            header={null}
+                            filterable
+                            loading={loadingCostByLevelTableData}
+                        />
+            }
+        }
+    ]);
+
+    const toggleAccordion = (index, id) => {
+        const prevState = accordions;
+        const updatedAccordions = prevState.map((objects, key) => {
+            let updatedAccordionObjects = objects;
+            if(key === index){
+                const accordionArray = [];
+                for(let id in objects){
+                    accordionArray.push({
+                        id: id,
+                        config: objects[id]
+                    })
+                }
+
+                accordionArray.map((accordion) => {
+                    let isOpen = false;
+
+                    if(accordion.id === id){
+                        isOpen = !accordion.config.isOpen;
+                    }
+                    const updatedIsOpen = updateObject(objects[accordion.id], {isOpen: isOpen});
+                    updatedAccordionObjects = updateObject(updatedAccordionObjects, {[accordion.id]: updatedIsOpen});
+
+                    const updatedAccordion = updateObject(accordion.config, {isOpen: isOpen})
+                    const updatedConfig = updateObject(accordion, {config: updatedAccordion});
+                    return updatedConfig;
+                })
+            }
+
+            return updatedAccordionObjects;
+            
+        });
+        setAccordions(updatedAccordions);
+    }
+
     useEffect(() => {
         onFetchConcessionNameMap();
         onFetchCostBreakdownBySectionData();
+        
     }, [
         onFetchConcessionNameMap, 
         csvLinkRef, 
@@ -78,6 +197,58 @@ const ElectricityBilling = ( props ) => {
                 }
             });
     }
+
+    const [showBreakdownModal, setShowBreakdownModal] = useState(false);
+
+    const createModalBreadcrumbItem = (id, name, level) => {
+        const item = {
+            title: name,
+            href: null,
+            onClickHandler: (e)=>{
+                                e.preventDefault();
+                                showOrHideBreakdownModal(id, name, level);
+                                
+                            },
+            children: name,
+            isActive: true
+        }
+    
+        return item;
+    }
+
+    const [modalBreadcrumbItems, setModalBreadcrumbItems] = useState([]);
+
+    const showOrHideBreakdownModal = (id, name, breakdownLevel) => {
+        if(breakdownLevel >= 0){
+            onFetchElectricityCostBreakdownByLevel({id: id, name: name, level: breakdownLevel});
+
+            const updatedBreadcrumbItems = [];
+
+            modalBreadcrumbItems.forEach((element, index) => {
+                if(index === breakdownLevel) {
+                    const updatedItem = updateObject(element, {href: null, isActive: true});
+                    updatedBreadcrumbItems[index] = updatedItem;
+                } else if (index < breakdownLevel) {
+                    const updatedItem = updateObject(element, {href: '', isActive: false});
+                    updatedBreadcrumbItems[index] = updatedItem;
+                }
+            });
+
+            const currentLevelItem = updatedBreadcrumbItems[breakdownLevel];
+
+            if(!currentLevelItem) {
+                const item = createModalBreadcrumbItem(id, name, breakdownLevel);
+                updatedBreadcrumbItems[breakdownLevel] = item;
+            }
+
+            setModalBreadcrumbItems(updatedBreadcrumbItems);
+            if(breakdownLevel === 0)
+                setShowBreakdownModal(true);
+        }else {
+            setShowBreakdownModal(false);
+        }
+        
+    }
     
     return (
         <Fragment>
@@ -110,8 +281,25 @@ const ElectricityBilling = ( props ) => {
 
                     <Accordion 
                         accordions={accordions}
-                        toggleAccordion={onToggleAccordion}
+                        toggleAccordion={toggleAccordion}
+                        tableData={costBySectionTableData}
+                        tableColumns={costBySectionTableColumns}
+                        loadingTable={loadingCostByLevelTableData}
                     />
+
+                    <BasicModal 
+                        modalWidth={1000}
+                        visible={showBreakdownModal}
+                        showOrHideModal={showOrHideBreakdownModal}
+                    >
+                        <BreakdownModal
+                            breadcrumbItems={modalBreadcrumbItems}
+                            data={costByLevelTableData}
+                            tableColumns={costBySectionTableColumns}
+                            loading={loadingCostByLevelTableData}
+                            header={costByLevelTableHeader}
+                        />
+                    </BasicModal>
 
                 </Container>
             </Layout>
@@ -128,7 +316,9 @@ const mapStateToProps = state => {
         totalBillAmount: state.ElectricityBill.totalBillAmount,
         costBySectionTableData: state.ElectricityBill.costBySectionTableData,
         loadingCostBySectionTableData: state.ElectricityBill.loadingCostBySectionTableData,
-        accordions: state.ElectricityBill.accordions,
+        loadingCostByLevelTableData: state.ElectricityBill.loadingCostByLevelTableData,
+        costByLevelTableData: state.ElectricityBill.costByLevelTableData,
+        costByLevelTableHeader: state.ElectricityBill.costByLevelTableHeader,
     }
 }
 
@@ -138,7 +328,7 @@ const mapDispatchToProps = dispatch => {
         onHandleInputChanged: (type, value, elementRowIndex, elementId, validationRules) => dispatch(actions.handleInputChanged(type, value, elementRowIndex, elementId, validationRules)),
         onFetchElectricityBillCSVData: (params) => dispatch(actions.fetchElectricityBillCSVData(params)),
         onFetchCostBreakdownBySectionData: () => dispatch(actions.fetchCostBreakdownBySectionData()),
-        onToggleAccordion: (index, id) => dispatch(actions.toggleAccordion(index, id)),
+        onFetchElectricityCostBreakdownByLevel: (params) => dispatch(actions.fetchElectricityCostBreakdownByLevel(params)),
     }
 }
 

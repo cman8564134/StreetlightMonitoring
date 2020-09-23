@@ -1,4 +1,3 @@
-import React from 'react';
 import * as actionTypes from '../actions/actionTypes';
 import { 
     updateObject, 
@@ -6,8 +5,6 @@ import {
     updateElementArray, 
     updateElementOptionArray 
 } from '../../shared/utility';
-
-import DataTable from '../../components/Tables/DataTable/DataTable';
 
 const initialState = {
     searchFilters: [
@@ -214,59 +211,12 @@ const initialState = {
     totalBillAmount: "106.17",
     costBySectionTableData: [],
     loadingCostBySectionTableData: false,
-    accordions: [
-        {
-            bySection: {
-                heading: "Breakdown By Section", 
-                isOpen: false, 
-                children: null
-            }
-        }
-    ]
+    modalBreadcrumbItems: [],
+    loadingCostByLevelTableData: false,
+    costByLevelTableData: [],
+    costByLevelTableHeader: ""
+    
 };
-
-const costBySectionTableColumns = [
-    {
-        columns: [
-            {
-                Header: 'Section',
-                accessor: 'section_name'
-            },
-            {
-                Header: 'Bill Date',
-                accessor: 'bill_date'
-            },
-            {
-                Header: 'Bill Amount',
-                accessor: 'bill_amount'
-            },
-            {
-                Header: 'Consumption (kWh)',
-                accessor: 'consumption'
-            },
-            {
-                Header: 'Cost (RM)',
-                accessor: 'cost'
-            },
-            {
-                Header: 'Imbalance Cost Pass-Through (RM)',
-                accessor: 'icpt'
-            },
-            {
-                Header: 'Current Month Usage (RM)',
-                accessor: 'current_month_usage'
-            },
-            {
-                Header: 'GST',
-                accessor: 'gst'
-            },
-            {
-                Header: 'Feed-In Tariff',
-                accessor: 'feed_in_tariff'
-            },
-        ]
-    }
-];
 
 const fetchConcessionNameMapStart = ( state, action ) => {
     // return updateObject(state, {
@@ -315,7 +265,6 @@ const handleElectricityBillingInputChanged = ( state, action ) => {
         updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, updatedObject);
     }
 
-    console.log("updatedArray", updatedArray);
     const updatedObjectArray= Object.values(updatedArray);
 
     return updateObject(state, {
@@ -360,32 +309,9 @@ const fetchCostBreakdownBySectionDataStart = ( state, action ) => {
 }
 
 const fetchCostBreakdownBySectionDataSuccess = ( state, action ) => {
-    const udpatedChildren = {children: 
-        <DataTable 
-            data={action.costBreakdownBySection}
-            columns={costBySectionTableColumns}
-            pageSize={10}
-            header={null}
-            filterable
-            loading={action.loading}
-        />
-    }
-
-    const updatedAccordionsItem = updateObject(state.accordions[0].bySection, udpatedChildren);
-    const updatedAccordionAtArrayIndex = updateObject(state.accordions[0], {bySection: updatedAccordionsItem});
-    
-    const updatedArray = state["accordions"].map((item, index) => {
-        if(index === 0){
-            return updatedAccordionAtArrayIndex;
-        }
-
-        return item[index];
-    })
-
     return updateObject(state, {
         loadingCostBySectionTableData: action.loading,
-        costBySectionTableData: action.costBreakdownBySection,
-        accordions: updatedArray
+        costBySectionTableData: action.costBreakdownBySection
     });
 }
 
@@ -394,40 +320,31 @@ const fetchCostBreakdownBySectionDataFail = ( state, action ) => {
         loadingCostBySectionTableData: action.loading,
     });
 }
-
-const toggleAccordionSuccess = ( state, action ) => {
-    const prevState = state.accordions;
-        const updatedAccordions = prevState.map((objects, key) => {
-            let updatedAccordionObjects = objects;
-            if(key === action.index){
-                const accordionArray = [];
-                for(let id in objects){
-                    accordionArray.push({
-                        id: id,
-                        config: objects[id]
-                    })
-                }
-
-                accordionArray.map((accordion) => {
-                    let isOpen = false;
-
-                    if(accordion.id === action.id){
-                        isOpen = !accordion.config.isOpen;
-                    }
-                    const updatedIsOpen = updateObject(objects[accordion.id], {isOpen: isOpen});
-                    updatedAccordionObjects = updateObject(updatedAccordionObjects, {[accordion.id]: updatedIsOpen});
-
-                    const updatedAccordion = updateObject(accordion.config, {isOpen: isOpen})
-                    const updatedConfig = updateObject(accordion, {config: updatedAccordion});
-                    return updatedConfig;
-                })
-            }
-
-            return updatedAccordionObjects;
-            
-        });
+const fetchElectricityCostBreakdownByLevelStart = ( state, action ) => {
     return updateObject(state, {
-        accordions: updatedAccordions
+        loadingCostByLevelTableData: action.loading, 
+    });
+}
+
+const costBreakdownByLevelHeaders = {
+    0: "Breakdown By Subsection",
+    1: "Breakdown By Road",
+    2: "Breakdown By Feeder Pillar",
+} 
+
+const fetchElectricityCostBreakdownByLevelSuccess = ( state, action ) => {
+    let header = costBreakdownByLevelHeaders[action.level];
+
+    return updateObject(state, {
+        loadingCostByLevelTableData: action.loading,
+        costByLevelTableData: action.costBreakdownByLevelData,
+        costByLevelTableHeader: header
+    });
+}
+
+const fetchElectricityCostBreakdownByLevelFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingCostByLevelTableData: action.loading,
     });
 }
 
@@ -445,8 +362,12 @@ const reducer = (state = initialState, action) => {
             return fetchCostBreakdownBySectionDataSuccess(state, action);
         case actionTypes.FETCH_COST_BREAKDOWN_BY_SECTION_DATA_FAIL: 
             return fetchCostBreakdownBySectionDataFail(state, action);
-        case actionTypes.TOGGLE_ACCORDION_SUCCESS: 
-            return toggleAccordionSuccess(state, action);
+        case actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_START: 
+            return fetchElectricityCostBreakdownByLevelStart(state, action);
+        case actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_SUCCESS: 
+            return fetchElectricityCostBreakdownByLevelSuccess(state, action);
+        case actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_FAIL: 
+            return fetchElectricityCostBreakdownByLevelFail(state, action);
         default:
             return state;
     }

@@ -48,7 +48,7 @@ export {
     fetchConcessionNameMap,
     fetchElectricityBillCSVData,
     fetchCostBreakdownBySectionData,
-    toggleAccordion
+    fetchElectricityCostBreakdownByLevel
 } from './electricityBilling'
 
 export {
