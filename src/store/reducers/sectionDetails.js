@@ -21,24 +21,25 @@ const initialState = {
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"},
             "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"}
         }
-    ] 
+    ],
+    loadingSectionDetails: false 
         
 };
 
-const fetchSectionDetailsStart = ( state, action ) => {
+const fetchSectionBySectionIdStart = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
 }
 
-const fetchSectionDetailsSuccess = ( state, action ) => {
+const fetchSectionBySectionIdSuccess = ( state, action ) => {
     return updateObject(state, {
         section: action.section,
         loadingHighlights: action.loading
     });
 }
 
-const fetchSectionDetailsFail = ( state, action ) => {
+const fetchSectionBySectionIdFail = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
@@ -86,8 +87,35 @@ const fetchSectionMetricChartsFail = ( state, action ) => {
     });
 }
 
+const fetchSectionDetailsStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingSectionDetails: action.loading
+    });
+}
+
+const fetchSectionDetailsSuccess = ( state, action ) => {
+    const updatedMetricCharts = updateCharts(state.sectionMetricCharts, action.chartsData);
+    return updateObject(state, {
+        section: action.section,
+        sectionMetricCharts: updatedMetricCharts,
+        loadingSectionDetails: action.loading
+    });
+}
+
+const fetchSectionDetailsFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingSectionDetails: action.loading
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCH_SECTION_BY_SECTION_ID_START:
+            return fetchSectionBySectionIdStart( state, action );
+        case actionTypes.FETCH_SECTION_BY_SECTION_ID_SUCCESS:
+            return fetchSectionBySectionIdSuccess( state, action );
+        case actionTypes.FETCH_SECTION_BY_SECTION_ID_FAIL:
+            return fetchSectionBySectionIdFail( state, action );
         case actionTypes.FETCH_SECTION_DETAILS_START:
             return fetchSectionDetailsStart( state, action );
         case actionTypes.FETCH_SECTION_DETAILS_SUCCESS:

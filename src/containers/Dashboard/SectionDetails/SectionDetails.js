@@ -33,7 +33,8 @@ const SectionDetails = ( props ) => {
         loadingSubsectionsTable,
         onFetchSectionDetails,
         onFetchSubsectionsBySection,
-        onFetchSectionMetricCharts
+        onFetchSectionMetricCharts,
+        loadingSectionDetails
     } = props;
 
     useEffect(() => {
@@ -45,20 +46,24 @@ const SectionDetails = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo,     
-            dataKey: [], 
+            // dataKey: [], 
             chartType: 'realtime', 
-            chartId: '',
-            sections: [sectionId],
-            formulaType: null
+            // chartId: '',
+            // sections: [sectionId],
+            sectionId: sectionId,
+            // formulaType: null
         }
-        onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
-        onFetchSubsectionsBySection({sectionId: sectionId});
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-        onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+
+        onFetchSectionDetails(baseMetricChartParams);
+
+        // onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
+        // onFetchSubsectionsBySection({sectionId: sectionId});
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        // onFetchSectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         
         const interval = setInterval(() => {
             dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
@@ -66,23 +71,22 @@ const SectionDetails = ( props ) => {
             isRefresh = true;
             const baseRefreshMetricChartParams = updateObject(baseMetricChartParams, {isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo});
 
-            onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-            onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
+            onFetchSectionDetails(baseRefreshMetricChartParams);
+            // onFetchSectionDetails({isRefresh: isRefresh, sectionId: sectionId});
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+            // onFetchSectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
         }, 30000);
 
         return () => clearInterval(interval);
 
     }, [
-        props.match.params.concessionId, 
         props.match.params.sectionId, 
         onFetchSectionDetails,
-        onFetchSubsectionsBySection,
-        onFetchSectionMetricCharts
+        // onFetchSectionMetricCharts
     ])
     
     const breadcrumbItems = [
@@ -180,10 +184,10 @@ const SectionDetails = ( props ) => {
             children: 
                 <Overview
                     highlightsHeaders={highlightsHeaders}
-                    loadingHighlights={loadingHighlights}
+                    loadingHighlights={loadingSectionDetails}
                     values={section}
                     metricCharts={sectionMetricCharts}
-                    loadingMetricCharts={loadingSectionMetricChart}
+                    loadingMetricCharts={loadingSectionDetails}
                 />
         },
         {
@@ -199,6 +203,14 @@ const SectionDetails = ( props ) => {
                 />
         },
     ]
+
+    const onTabChangeHandler = (key) => {
+        const sectionId = props.match.params.sectionId;
+        
+        if(key === '1' ) {
+            onFetchSubsectionsBySection({sectionId: sectionId});
+        }
+    }
     
     return (
         <Fragment>
@@ -213,6 +225,7 @@ const SectionDetails = ( props ) => {
                 <Container fluid>
                     <BasicTab
                         tabPanes={tabPanes}
+                        onChangeHandler={onTabChangeHandler}
                     />
                 </Container>
             </Layout>
@@ -228,6 +241,7 @@ const mapStateToProps = state => {
         loadingSubsectionsTable: state.SectionDetails.loadingSubsectionsTable,
         sectionMetricCharts: state.SectionDetails.sectionMetricCharts,
         loadingSectionMetricChart: state.SectionDetails.loadingSectionMetricChart,
+        loadingSectionDetails: state.SectionDetails.loadingSectionDetails,
     }
 }
 
@@ -236,7 +250,6 @@ const mapDispatchToProps = dispatch => {
         onFetchSectionDetails: (params) => dispatch(actions.fetchSectionDetails(params)),
         onFetchSubsectionsBySection: (params) => dispatch(actions.fetchSubsectionsBySection(params)),
         onFetchSectionMetricCharts: (params) => dispatch(actions.fetchSectionMetricCharts(params)),
-        
     }
 }
 

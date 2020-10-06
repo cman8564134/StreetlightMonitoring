@@ -20,17 +20,18 @@ const initialState = {
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"},
             "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"}
         }
-    ] 
+    ],
+    loadingFeederPillarDetails: false 
         
 };
 
-const fetchFeederPillarDetailsStart = ( state, action ) => {
+const fetchFeederPillarByFeederPillarIdStart = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
 }
 
-const fetchFeederPillarDetailsSuccess = ( state, action ) => {
+const fetchFeederPillarByFeederPillarIdSuccess = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading,
         feederPillar: action.feederPillar,
@@ -38,7 +39,7 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
     });
 }
 
-const fetchFeederPillarDetailsFail = ( state, action ) => {
+const fetchFeederPillarByFeederPillarIdFail = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
@@ -65,8 +66,37 @@ const feederPillarMetricChartsFail = ( state, action ) => {
     });
 }
 
+const fetchFeederPillarDetailsStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingFeederPillarDetails: action.loading
+    });
+}
+
+const fetchFeederPillarDetailsSuccess = ( state, action ) => {
+    const updatedMetricCharts = updateCharts(state.feederPillarMetricCharts, action.chartsData);
+    return updateObject(state, {
+        loadingFeederPillarDetails: action.loading,
+        feederPillar: action.feederPillar,
+        feederPillarMetricCharts: updatedMetricCharts,
+        pillarId: action.pillarId,
+
+    });
+}
+
+const fetchFeederPillarDetailsFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingFeederPillarDetails: action.loading
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_START:
+            return fetchFeederPillarByFeederPillarIdStart( state, action );
+        case actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_SUCCESS:
+            return fetchFeederPillarByFeederPillarIdSuccess( state, action );
+        case actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_FAIL:
+            return fetchFeederPillarByFeederPillarIdFail( state, action );
         case actionTypes.FETCH_FEEDER_PILLAR_DETAILS_START:
             return fetchFeederPillarDetailsStart( state, action );
         case actionTypes.FETCH_FEEDER_PILLAR_DETAILS_SUCCESS:

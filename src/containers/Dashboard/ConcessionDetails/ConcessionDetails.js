@@ -67,7 +67,7 @@ const ConcessionDetails = ( props ) => {
         const realTimeElectricityBillChartFailType = actionTypes.FETCH_CONCESSION_REAL_TIME_ELECTRICITY_BILL_CHART_FAIL;
 
         onFetchConcessionDetails({isRefresh: isRefresh, concessionId: concessionId});
-        onFetchSectionsByConcession({concessionId: concessionId});
+        // onFetchSectionsByConcession({concessionId: concessionId});
         onFetchConcessionRealTimeChart({
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
@@ -142,7 +142,7 @@ const ConcessionDetails = ( props ) => {
         props.match.params.concessionId, 
         concession.concession_name,
         onFetchConcessionDetails, 
-        onFetchSectionsByConcession, 
+        // onFetchSectionsByConcession, 
         onFetchConcessionRealTimeChart,
         onFetchConcessionRealTimeElectricityBillChart,
         onFetchWeather,
@@ -267,6 +267,14 @@ const ConcessionDetails = ( props ) => {
         },
     ]
     
+    const onTabChangeHandler = (key) => {
+        const concessionId = props.match.params.concessionId;
+        
+        if(key === '1' ) {
+            onFetchSectionsByConcession({concessionId: concessionId});
+        }
+    }
+
     return (
         <Fragment>
             <Layout {...props}>
@@ -280,6 +288,7 @@ const ConcessionDetails = ( props ) => {
                 <Container fluid>
                     <BasicTab
                         tabPanes={tabPanes}
+                        onChangeHandler={onTabChangeHandler}
                     />
                 </Container>
             </Layout>

@@ -431,10 +431,11 @@ export const baseChartSeries = () => {
 export const updateCharts = (metricCharts, chartsData) => {
     let updatedMetricChartsAtIndex = metricCharts[0];
     const chartDataKeys = Object.keys(chartsData);
+    
     for(let key in chartDataKeys) {
         const chartKey = chartDataKeys[key];
         const chart = chartsData[chartKey];
-        const updatedChart = updateChart(metricCharts, chartKey, chart.labels, chart.data, chart.series, metricCharts[0][chartKey].chart_type, metricCharts[0][chartKey].title);
+        const updatedChart = updateChart(metricCharts, chartKey, chart.labels, chart.data, chart.series, metricCharts[0][chartKey].chart_type, metricCharts[0][chartKey].title, metricCharts[0][chartKey].chart_options);
         updatedMetricChartsAtIndex = updateObject(updatedMetricChartsAtIndex, {[chartKey]: updatedChart});
     }
 
@@ -449,10 +450,10 @@ export const updateCharts = (metricCharts, chartsData) => {
     return updatedMetricCharts;
 }
 
-export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle) => {
+export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle, chartOptions) => {
     const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType);
 
-    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels);
+    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions);
     const updatedChart = updateObject(metricCharts[0][chartKey], {
         chart_options: updatedChartOptions, 
         chart_series: chartSeriesArray
@@ -464,7 +465,7 @@ export const updateChart = (metricCharts, chartKey, chartLabels, chartData, char
 export const updateChartObject = (metricChart, chartLabels, chartData, chartSeries, chartType, chartTitle) => {
     const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType);
 
-    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels);
+    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, metricChart.chart_options);
     const updatedChart = updateObject(metricChart, {
         chart_options: updatedChartOptions, 
         chart_series: chartSeriesArray
@@ -494,8 +495,8 @@ export const generateChartSeriesObject = (name, type, data) => {
     return chartSeriesObject;
 }
 
-export const generateChartOptions = (chartTitle, chartLabels)  => {
-    const options = baseChartOptions();
+export const generateChartOptions = (chartTitle, chartLabels, chartOptions)  => {
+    const options = chartOptions;
     const updatedYAxisTitle = updateObject(options.yaxis.title, {text: chartTitle})
     const updatedYAxis = updateObject(options.yaxis, {title: updatedYAxisTitle})
 
@@ -506,13 +507,14 @@ export const generateChartOptions = (chartTitle, chartLabels)  => {
 
 export const generateChartObject = (chartsData, chartTitle, chartType) => {
     let charts = {};
+    const baseOptions = baseChartOptions();
     
     for(let key in chartsData){
         const chartData = chartsData[key];
         const chartKey = Object.keys(chartData)[0];
         const chart = chartData[chartKey];
         const chartSeriesArray = generateChartSeriesArray(chart.data, chart.series, chartType);
-        const updatedChartOptions = generateChartOptions(chartTitle, chart.labels);
+        const updatedChartOptions = generateChartOptions(chartTitle, chart.labels, baseOptions);
         charts = updateObject(charts, {[chartKey]: {chart_options: updatedChartOptions, chart_series: chartSeriesArray}})
     }
     

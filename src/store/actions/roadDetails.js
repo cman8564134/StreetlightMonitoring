@@ -1,41 +1,41 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
 
-export const fetchRoadDetailsStart = () => {
+export const fetchRoadByRoadIdStart = () => {
     return {
-        type: actionTypes.FETCH_ROAD_DETAILS_START,
+        type: actionTypes.FETCH_ROAD_BY_ROAD_ID_START,
         loading: true
     }
 }
 
-export const fetchRoadDetailsSuccess = (road) => {
+export const fetchRoadByRoadIdSuccess = (road) => {
     return {
-        type: actionTypes.FETCH_ROAD_DETAILS_SUCCESS,
+        type: actionTypes.FETCH_ROAD_BY_ROAD_ID_SUCCESS,
         loading: false,
         road: road
     }
 }
 
-export const fetchRoadDetailsFail = (error) => {
+export const fetchRoadByRoadIdFail = (error) => {
     return {
-        type: actionTypes.FETCH_ROAD_DETAILS_FAIL,
+        type: actionTypes.FETCH_ROAD_BY_ROAD_ID_FAIL,
         loading: false,
         error: error
     }
 }
 
-export const fetchRoadDetails =  (params) => {
+export const fetchRoadByRoadId =  (params) => {
     return dispatch => {
         if(!params.isRefresh)
-            dispatch(fetchRoadDetailsStart());
+            dispatch(fetchRoadByRoadIdStart());
 
         axios.post('/getRoadByRoadId', params)
             .then(response => {
-                dispatch(fetchRoadDetailsSuccess(response.data.road));
+                dispatch(fetchRoadByRoadIdSuccess(response.data.road));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchRoadDetailsFail(error));
+                dispatch(fetchRoadByRoadIdFail(error));
             });   
         
         
@@ -116,6 +116,49 @@ export const fetchRoadMetricCharts =  (params) => {
             console.log(error);
             dispatch(fetchRoadMetricChartsFail(error));
         });   
+        
+    }
+}
+
+export const fetchRoadDetailsStart = () => {
+    return {
+        type: actionTypes.FETCH_ROAD_DETAILS_START,
+        loading: true
+    }
+}
+
+export const fetchRoadDetailsSuccess = (road, chartsData) => {
+    return {
+        type: actionTypes.FETCH_ROAD_DETAILS_SUCCESS,
+        loading: false,
+        road: road,
+        chartsData: chartsData
+    }
+}
+
+export const fetchRoadDetailsFail = (error) => {
+    return {
+        type: actionTypes.FETCH_ROAD_DETAILS_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchRoadDetails =  (params) => {
+    return dispatch => {
+        if(!params.isRefresh)
+            dispatch(fetchRoadDetailsStart());
+
+        axios.post('/getRoadDetails', params)
+            .then(response => {
+                const data = response.data;
+                dispatch(fetchRoadDetailsSuccess(data.road, data.chartsData));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchRoadDetailsFail(error));
+            });   
+        
         
     }
 }

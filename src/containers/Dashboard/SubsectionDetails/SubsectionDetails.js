@@ -29,13 +29,11 @@ const SubsectionDetails = ( props ) => {
         subsectionMetricCharts,
         loadingSubsectionMetricChart,
         roadsTableData,
-        loadingFeederPillarTable,
+        loadingRoadTable,
         onFetchSubsectionDetails,
         onFetchRoadsBySubsection,
         onFetchSubsectionMetricCharts,
-        onFetchFeederPillarDetails,
-        pillarId,
-        onFetchFeederPillarMetricCharts
+        loadingSubsectionDetails
     } = props;
 
     useEffect(() => {
@@ -47,21 +45,22 @@ const SubsectionDetails = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo,     
-            dataKey: [], 
+            // dataKey: [], 
             chartType: 'realtime', 
-            chartId: '',
-            sections: [subsectionId],
-            formulaType: null
+            // chartId: '',
+            // sections: [subsectionId],
+            // formulaType: null,
+            subsectionId: subsectionId,
         }
         
-        onFetchSubsectionDetails({isRefresh: isRefresh, subsectionId: subsectionId});
-        onFetchRoadsBySubsection({subsectionId: subsectionId});
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-        onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+        onFetchSubsectionDetails(baseMetricChartParams);
+        // onFetchRoadsBySubsection({subsectionId: subsectionId});
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        // onFetchSubsectionMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         
         const interval = setInterval(() => {
             dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
@@ -69,25 +68,20 @@ const SubsectionDetails = ( props ) => {
             isRefresh = true;
             const baseRefreshMetricChartParams = updateObject(baseMetricChartParams, {isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo});
             
-            onFetchSubsectionDetails({isRefresh: isRefresh, subsectionId: subsectionId});
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-            onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
+            onFetchSubsectionDetails(baseRefreshMetricChartParams);
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+            // onFetchSubsectionMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
             
         }, 30000);
 
         return () => clearInterval(interval);
     }, [
         props.match.params.subsectionId,
-        onFetchSubsectionDetails,
-        onFetchRoadsBySubsection,
-        onFetchSubsectionMetricCharts,
-        pillarId,
-        onFetchFeederPillarDetails,
-        onFetchFeederPillarMetricCharts
+        onFetchSubsectionDetails
     ])
     
     const breadcrumbItems = [
@@ -195,10 +189,10 @@ const SubsectionDetails = ( props ) => {
             children: 
                 <Overview
                     highlightsHeaders={highlightsHeaders}
-                    loadingHighlights={loadingHighlights}
+                    loadingHighlights={loadingSubsectionDetails}
                     values={subsection}
                     metricCharts={subsectionMetricCharts}
-                    loadingMetricCharts={loadingSubsectionMetricChart}
+                    loadingMetricCharts={loadingSubsectionDetails}
                 />
         },
         {
@@ -210,11 +204,19 @@ const SubsectionDetails = ( props ) => {
                     pageSize={10}
                     header={null}
                     filterable
-                    loading={loadingFeederPillarTable}
+                    loading={loadingRoadTable}
                 />
         },
     ]
     
+    const onTabChangeHandler = (key) => {
+        const subsectionId = props.match.params.subsectionId;
+        
+        if(key === '1' ) {
+            onFetchRoadsBySubsection({subsectionId: subsectionId});
+        }
+    }
+
     return (
         <Fragment>
             <Layout {...props}>
@@ -228,6 +230,7 @@ const SubsectionDetails = ( props ) => {
                 <Container fluid>
                     <BasicTab
                         tabPanes={tabPanes}
+                        onChangeHandler={onTabChangeHandler}
                     />
                 </Container>
             </Layout>
@@ -240,14 +243,10 @@ const mapStateToProps = state => {
         loadingHighlights: state.SubsectionDetails.loadingHighlights,
         subsection: state.SubsectionDetails.subsection,
         roadsTableData: state.SubsectionDetails.roadsTableData,
-        loadingFeederPillarTable: state.SubsectionDetails.loadingFeederPillarTable,
+        loadingRoadTable: state.SubsectionDetails.loadingRoadTable,
         subsectionMetricCharts: state.SubsectionDetails.subsectionMetricCharts,
         loadingSubsectionMetricChart: state.SubsectionDetails.loadingSubsectionMetricChart,
-        feederPillar: state.FeederPillarDetails.feederPillar,
-        loadingFeederPillarDetails: state.FeederPillarDetails.loadingHighlights,
-        pillarId: state.FeederPillarDetails.pillarId,
-        feederPillarMetricCharts: state.FeederPillarDetails.feederPillarMetricCharts,
-        loadingFeederPillarMetricChart: state.FeederPillarDetails.loadingFeederPillarMetricChart,
+        loadingSubsectionDetails: state.SubsectionDetails.loadingSubsectionDetails,
     }
 }
 

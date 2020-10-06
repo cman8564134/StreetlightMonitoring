@@ -1,41 +1,41 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
 
-export const fetchSubsectionDetailsStart = () => {
+export const fetchSubsectionBySubsectionIdStart = () => {
     return {
-        type: actionTypes.FETCH_SUBSECTION_DETAILS_START,
+        type: actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_START,
         loading: true
     }
 }
 
-export const fetchSubsectionDetailsSuccess = (subsection) => {
+export const fetchSubsectionBySubsectionIdSuccess = (subsection) => {
     return {
-        type: actionTypes.FETCH_SUBSECTION_DETAILS_SUCCESS,
+        type: actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_SUCCESS,
         loading: false,
         subsection: subsection
     }
 }
 
-export const fetchSubsectionDetailsFail = (error) => {
+export const fetchSubsectionBySubsectionIdFail = (error) => {
     return {
-        type: actionTypes.FETCH_SUBSECTION_DETAILS_FAIL,
+        type: actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_FAIL,
         loading: false,
         error: error
     }
 }
 
-export const fetchSubsectionDetails =  (params) => {
+export const fetchSubsectionBySubsectionId =  (params) => {
     return dispatch => {
         if(!params.isRefresh)
-            dispatch(fetchSubsectionDetailsStart());
+            dispatch(fetchSubsectionBySubsectionIdStart());
 
         axios.post('/getSubsectionBySubsectionId', params)
             .then(response => {
-                dispatch(fetchSubsectionDetailsSuccess(response.data.subsection));
+                dispatch(fetchSubsectionBySubsectionIdSuccess(response.data.subsection));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchSubsectionDetailsFail(error));
+                dispatch(fetchSubsectionBySubsectionIdFail(error));
             });   
         
         
@@ -117,6 +117,49 @@ export const fetchSubsectionMetricCharts =  (params) => {
             console.log(error);
             dispatch(fetchSubsectionMetricChartsFail(error));
         });   
+        
+    }
+}
+
+export const fetchSubsectionDetailsStart = () => {
+    return {
+        type: actionTypes.FETCH_SUBSECTION_DETAILS_START,
+        loading: true
+    }
+}
+
+export const fetchSubsectionDetailsSuccess = (subsection, chartsData) => {
+    return {
+        type: actionTypes.FETCH_SUBSECTION_DETAILS_SUCCESS,
+        loading: false,
+        subsection: subsection,
+        chartsData: chartsData
+    }
+}
+
+export const fetchSubsectionDetailsFail = (error) => {
+    return {
+        type: actionTypes.FETCH_SUBSECTION_DETAILS_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchSubsectionDetails =  (params) => {
+    return dispatch => {
+        if(!params.isRefresh)
+            dispatch(fetchSubsectionDetailsStart());
+
+        axios.post('/getSubsectionDetails', params)
+            .then(response => {
+                const data = response.data;
+                dispatch(fetchSubsectionDetailsSuccess(data.subsection, data.chartsData));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchSubsectionDetailsFail(error));
+            });   
+        
         
     }
 }

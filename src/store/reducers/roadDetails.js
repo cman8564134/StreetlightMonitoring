@@ -21,24 +21,25 @@ const initialState = {
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"},
             "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"}
         }
-    ] 
+    ],
+    loadingRoadDetails: false   
         
 };
 
-const fetchRoadDetailsStart = ( state, action ) => {
+const fetchRoadByRoadIdStart = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
 }
 
-const fetchRoadDetailsSuccess = ( state, action ) => {
+const fetchRoadByRoadIdSuccess = ( state, action ) => {
     return updateObject(state, {
         road: action.road,
         loadingHighlights: action.loading
     });
 }
 
-const fetchRoadDetailsFail = ( state, action ) => {
+const fetchRoadByRoadIdFail = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
@@ -86,8 +87,35 @@ const roadMetricChartsFail = ( state, action ) => {
     });
 }
 
+const fetchRoadDetailsStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingRoadDetails: action.loading
+    });
+}
+
+const fetchRoadDetailsSuccess = ( state, action ) => {
+    const updatedMetricCharts = updateCharts(state.roadMetricCharts, action.chartsData);
+    return updateObject(state, {
+        road: action.road,
+        roadMetricCharts: updatedMetricCharts,
+        loadingRoadDetails: action.loading
+    });
+}
+
+const fetchRoadDetailsFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingRoadDetails: action.loading
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCH_ROAD_BY_ROAD_ID_START:
+            return fetchRoadByRoadIdStart( state, action );
+        case actionTypes.FETCH_ROAD_BY_ROAD_ID_SUCCESS:
+            return fetchRoadByRoadIdSuccess( state, action );
+        case actionTypes.FETCH_ROAD_BY_ROAD_ID_FAIL:
+            return fetchRoadByRoadIdFail( state, action );
         case actionTypes.FETCH_ROAD_DETAILS_START:
             return fetchRoadDetailsStart( state, action );
         case actionTypes.FETCH_ROAD_DETAILS_SUCCESS:

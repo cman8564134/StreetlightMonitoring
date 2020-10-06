@@ -10,7 +10,8 @@ import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
 
 const BasicTab = ( props ) => {
     const {
-        tabPanes
+        tabPanes,
+        onChangeHandler
     } = props;
 
     return (
@@ -25,6 +26,7 @@ const BasicTab = ( props ) => {
                 defaultActiveKey="0"
                 renderTabBar={() => <ScrollableInkTabBar/>}
                 renderTabContent={() => <TabContent/>}
+                onChange={onChangeHandler ? (key) => onChangeHandler(key) :  (key) => {}}
             >
                 {tabPanes.map((pane, key) => {
                     return (

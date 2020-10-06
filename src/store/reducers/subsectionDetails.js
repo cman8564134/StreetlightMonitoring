@@ -9,7 +9,7 @@ import {
 const initialState = {
     subsection: {},
     loadingHighlights: false,
-    loadingFeederPillarTable: false,
+    loadingRoadTable: false,
     roadsTableData: [],
     loadingSubsectionMetricChart: false,
     subsectionMetricCharts:[
@@ -21,24 +21,25 @@ const initialState = {
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"},
             "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"}
         }
-    ] 
+    ],
+    loadingSubsectionDetails: false  
         
 };
 
-const fetchSubsectionDetailsStart = ( state, action ) => {
+const fetchSubsectionBySubsectionIdStart = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
 }
 
-const fetchSubsectionDetailsSuccess = ( state, action ) => {
+const fetchSubsectionBySubsectionIdSuccess = ( state, action ) => {
     return updateObject(state, {
         subsection: action.subsection,
         loadingHighlights: action.loading
     });
 }
 
-const fetchSubsectionDetailsFail = ( state, action ) => {
+const fetchSubsectionBySubsectionIdFail = ( state, action ) => {
     return updateObject(state, {
         loadingHighlights: action.loading
     });
@@ -47,13 +48,13 @@ const fetchSubsectionDetailsFail = ( state, action ) => {
 
 const fetchRoadsBySubsectionStart = ( state, action ) => {
     return updateObject(state, {
-        loadingFeederPillarTable: action.loading
+        loadingRoadTable: action.loading
     });
 }
 
 const fetchRoadsBySubsectionSuccess = ( state, action ) => {
     return updateObject(state, {
-        loadingFeederPillarTable: action.loading,
+        loadingRoadTable: action.loading,
         roadsTableData: action.roads
         
     });
@@ -61,7 +62,7 @@ const fetchRoadsBySubsectionSuccess = ( state, action ) => {
 
 const fetchRoadsBySubsectionFail = ( state, action ) => {
     return updateObject(state, {
-        loadingFeederPillarTable: action.loading
+        loadingRoadTable: action.loading
     });
 }
 
@@ -86,8 +87,35 @@ const fetchSubsectionMetricChartsFail = ( state, action ) => {
     });
 }
 
+const fetchSubsectionDetailsStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingSubsectionDetails: action.loading
+    });
+}
+
+const fetchSubsectionDetailsSuccess = ( state, action ) => {
+    const updatedMetricCharts = updateCharts(state.subsectionMetricCharts, action.chartsData);
+    return updateObject(state, {
+        subsection: action.subsection,
+        subsectionMetricCharts: updatedMetricCharts,
+        loadingSubsectionDetails: action.loading
+    });
+}
+
+const fetchSubsectionDetailsFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingSubsectionDetails: action.loading
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_START:
+            return fetchSubsectionBySubsectionIdStart( state, action );
+        case actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_SUCCESS:
+            return fetchSubsectionBySubsectionIdSuccess( state, action );
+        case actionTypes.FETCH_SUBSECTION_BY_SUBSECTION_ID_FAIL:
+            return fetchSubsectionBySubsectionIdFail( state, action );
         case actionTypes.FETCH_SUBSECTION_DETAILS_START:
             return fetchSubsectionDetailsStart( state, action );
         case actionTypes.FETCH_SUBSECTION_DETAILS_SUCCESS:

@@ -1,42 +1,42 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
 
-export const fetchFeederPillarDetailsStart = () => {
+export const fetchFeederPillarByFeederPillarIdStart = () => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_START,
+        type: actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_START,
         loading: true
     }
 }
 
-export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId) => {
+export const fetchFeederPillarByFeederPillarIdSuccess = (feederPillar, pillarId) => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_SUCCESS,
+        type: actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_SUCCESS,
         loading: false,
         feederPillar: feederPillar,
         pillarId: pillarId
     }
 }
 
-export const fetchFeederPillarDetailsFail = (error) => {
+export const fetchFeederPillarByFeederPillarIdFail = (error) => {
     return {
-        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_FAIL,
+        type: actionTypes.FETCH_FEEDER_PILLAR_BY_FEEDER_PILLAR_ID_FAIL,
         loading: false,
         error: error
     }
 }
 
-export const fetchFeederPillarDetails =  (params) => {
+export const fetchFeederPillarByFeederPillarId =  (params) => {
     return dispatch => {
         if(!params.isRefresh)
-            dispatch(fetchFeederPillarDetailsStart());
+            dispatch(fetchFeederPillarByFeederPillarIdStart());
 
         axios.post('/getFeederPillarMetricsByFeederPillarId', params)
         .then(response => {
-            dispatch(fetchFeederPillarDetailsSuccess(response.data.feederPillar, params.feederPillarId));
+            dispatch(fetchFeederPillarByFeederPillarIdSuccess(response.data.feederPillar, params.feederPillarId));
         })
         .catch(error => {
             console.log(error);
-            dispatch(fetchFeederPillarDetailsFail(error));
+            dispatch(fetchFeederPillarByFeederPillarIdFail(error));
         });  
     }
 }
@@ -79,5 +79,47 @@ export const fetchFeederPillarMetricCharts =  (params) => {
             dispatch(fetchFeederPillarMetricChartsFail(error));
         });   
         
+    }
+}
+
+export const fetchFeederPillarDetailsStart = () => {
+    return {
+        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_START,
+        loading: true
+    }
+}
+
+export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsData) => {
+    return {
+        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_SUCCESS,
+        loading: false,
+        feederPillar: feederPillar,
+        pillarId: pillarId,
+        chartsData: chartsData
+    }
+}
+
+export const fetchFeederPillarDetailsFail = (error) => {
+    return {
+        type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchFeederPillarDetails =  (params) => {
+    return dispatch => {
+        if(!params.isRefresh)
+            dispatch(fetchFeederPillarDetailsStart());
+
+        axios.post('/getFeederPillarDetails', params)
+        .then(response => {
+            const data = response.data;
+            dispatch(fetchFeederPillarDetailsSuccess(data.feederPillar, params.feederPillarId, data.chartsData));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(fetchFeederPillarDetailsFail(error));
+        });  
     }
 }

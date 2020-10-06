@@ -22,24 +22,28 @@ export {
 } from './concessionDetails'
 
 export {
+    fetchSectionBySectionId,
     fetchSectionDetails,
     fetchSubsectionsBySection,
     fetchSectionMetricCharts
 } from './sectionDetails'
 
 export {
+    fetchSubsectionBySubsectionId,
     fetchSubsectionDetails,
     fetchRoadsBySubsection,
     fetchSubsectionMetricCharts
 } from './subsectionDetails'
 
 export {
+    fetchRoadByRoadId,
     fetchRoadDetails,
     fetchFeederPillarsByRoad,
     fetchRoadMetricCharts
 } from './roadDetails'
 
 export {
+    fetchFeederPillarByFeederPillarId,
     fetchFeederPillarDetails,
     fetchFeederPillarMetricCharts
 } from './feederPillarDetails'

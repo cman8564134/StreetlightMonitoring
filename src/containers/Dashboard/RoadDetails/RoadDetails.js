@@ -41,7 +41,8 @@ const RoadDetails = ( props ) => {
         pillarId,
         feederPillarMetricCharts,
         loadingFeederPillarMetricChart,
-        onFetchFeederPillarMetricCharts
+        onFetchFeederPillarMetricCharts,
+        loadingRoadDetails
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
@@ -51,24 +52,25 @@ const RoadDetails = ( props ) => {
         let isRefresh = false; 
         let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
         let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
-        const baseMetricChartParams = {
-            isRefresh: isRefresh, 
-            dateTimeFrom: dateFrom, 
-            dateTimeTo: dateTo,     
-            dataKey: [], 
-            chartType: 'realtime', 
-            chartId: '',
-            feederPillarId: pillarId,
-            formulaType: null
-        }
+        // const baseMetricChartParams = {
+        //     isRefresh: isRefresh, 
+        //     dateTimeFrom: dateFrom, 
+        //     dateTimeTo: dateTo,     
+        //     // dataKey: [], 
+        //     chartType: 'realtime', 
+        //     // chartId: '',
+        //     feederPillarId: pillarId,
+        //     // formulaType: null,
+        //     roadId: roadId
+        // }
 
-        onFetchFeederPillarDetails({isRefresh: isRefresh, feederPillarId: pillarId, roadId: roadId});
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-        onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+        onFetchFeederPillarDetails({isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo, chartType: 'realtime', feederPillarId: pillarId, roadId: roadId});
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         setIsPillarDetailsModalVisible(!isPillarDetailsModalVisible);
     }
 
@@ -81,21 +83,22 @@ const RoadDetails = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo,     
-            dataKey: [], 
+            // dataKey: [], 
             chartType: 'realtime', 
-            chartId: '',
-            sections: [roadId],
-            formulaType: null
+            // chartId: '',
+            // roads: [roadId],
+            roadId: roadId,
+            // formulaType: null
         }
         
-        onFetchRoadDetails({isRefresh: isRefresh, roadId: roadId});
-        onFetchFeederPillarsByRoad({roadId: roadId});
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-        onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+        onFetchRoadDetails(baseMetricChartParams);
+        // onFetchFeederPillarsByRoad({roadId: roadId});
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+        // onFetchRoadMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         
         const interval = setInterval(() => {
             dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
@@ -108,28 +111,29 @@ const RoadDetails = ( props ) => {
                     isRefresh: true, 
                     dateTimeFrom: dateFrom, 
                     dateTimeTo: dateTo,     
-                    dataKey: [], 
+                    // dataKey: [], 
                     chartType: 'realtime', 
-                    chartId: '',
+                    // chartId: '',
                     feederPillarId: pillarId,
-                    formulaType: null
+                    // formulaType: null,
+                    roadId: roadId
                 }
 
-                onFetchFeederPillarDetails({isRefresh: isRefresh, feederPillarId: pillarId, roadId: roadId});
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-                onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
+                onFetchFeederPillarDetails(baseFeederPillarMetricChartParams);
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+                // onFetchFeederPillarMetricCharts(updateObject(baseFeederPillarMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
             }else {
-                onFetchRoadDetails({isRefresh: isRefresh, roadId: roadId});
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
-                onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
+                onFetchRoadDetails(baseRefreshMetricChartParams);
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'powerUsage'}));
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'electricityBill', formulaType: 'electricityBill'}));
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'carbonFootprint', formulaType: 'carbonFootprint'}));
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['thdc1'], chartId: 'energySavings', formulaType: 'energySavings'}));
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
+                // onFetchRoadMetricCharts(updateObject(baseRefreshMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));        
             }
         }, 30000);
 
@@ -138,7 +142,7 @@ const RoadDetails = ( props ) => {
         isPillarDetailsModalVisible,
         props.match.params.roadId,
         onFetchRoadDetails,
-        onFetchFeederPillarsByRoad,
+        // onFetchFeederPillarsByRoad,
         onFetchRoadMetricCharts,
         pillarId,
         onFetchFeederPillarDetails,
@@ -260,10 +264,10 @@ const RoadDetails = ( props ) => {
             children: 
                 <Overview
                     highlightsHeaders={highlightsHeaders}
-                    loadingHighlights={loadingHighlights}
+                    loadingHighlights={loadingRoadDetails}
                     values={road}
                     metricCharts={roadMetricCharts}
-                    loadingMetricCharts={loadingRoadMetricChart}
+                    loadingMetricCharts={loadingRoadDetails}
                 />
         },
         {
@@ -279,6 +283,14 @@ const RoadDetails = ( props ) => {
                 />
         },
     ]
+
+    const onTabChangeHandler = (key) => {
+        const roadId = props.match.params.roadId
+        
+        if(key === '1' ) {
+            onFetchFeederPillarsByRoad({roadId: roadId});
+        }
+    }
     
     return (
         <Fragment>
@@ -293,6 +305,7 @@ const RoadDetails = ( props ) => {
                 <Container fluid>
                     <BasicTab
                         tabPanes={tabPanes}
+                        onChangeHandler={onTabChangeHandler}
                     />
 
                     <BasicModal 
@@ -304,7 +317,7 @@ const RoadDetails = ( props ) => {
                             loading={loadingFeederPillarDetails}
                             feederPillar={feederPillar}
                             metricCharts={feederPillarMetricCharts}
-                            loadingMetricCharts={loadingFeederPillarMetricChart}
+                            loadingMetricCharts={loadingFeederPillarDetails}
                         />
                     </BasicModal>
                 </Container>
@@ -322,10 +335,11 @@ const mapStateToProps = state => {
         roadMetricCharts: state.RoadDetails.roadMetricCharts,
         loadingRoadMetricChart: state.RoadDetails.loadingRoadMetricChart,
         feederPillar: state.FeederPillarDetails.feederPillar,
-        loadingFeederPillarDetails: state.FeederPillarDetails.loadingHighlights,
+        loadingFeederPillarDetails: state.FeederPillarDetails.loadingFeederPillarDetails,
         pillarId: state.FeederPillarDetails.pillarId,
         feederPillarMetricCharts: state.FeederPillarDetails.feederPillarMetricCharts,
         loadingFeederPillarMetricChart: state.FeederPillarDetails.loadingFeederPillarMetricChart,
+        loadingRoadDetails: state.RoadDetails.loadingRoadDetails,
     }
 }
 
