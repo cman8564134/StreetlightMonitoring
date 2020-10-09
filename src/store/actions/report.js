@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../axios-backend';
 
 export const fetchReportConcessionNameMapStart = () => {
     return {
@@ -27,14 +28,14 @@ export const fetchReportConcessionNameMap =  () => {
     return dispatch => {
         dispatch(fetchReportConcessionNameMapStart());
 
-        const concessionNameMap = {
-                1: "ABC Sdn Bhd",
-                2: "DEF Sdn Bhd",
-                3: "GHI Sdn Bhd",
-                4: "JKL Sdn Bhd",
-            };
-        
-        dispatch(fetchReportConcessionNameMapSuccess(concessionNameMap));
+        axios.get('/getAllConcessionIdAndNameMap')
+            .then(response => {
+                dispatch(fetchReportConcessionNameMapSuccess(response.data.concessions[0]));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchReportConcessionNameMapFail(error));
+            });  
     }
 }
 
@@ -62,18 +63,18 @@ export const fetchReportSectionNameMapByConcessionIdFail = (error) => {
     }
 }
 
-export const fetchReportSectionNameMapByConcessionId =  () => {
+export const fetchReportSectionNameMapByConcessionId =  (params) => {
     return dispatch => {
         dispatch(fetchReportSectionNameMapByConcessionIdStart());
-        
-        const sectionNameMap = {
-            1: "Section 1",
-            2: "Section 2",
-            3: "Section 3",
-            4: "Section 4"
-        };
 
-        return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(sectionNameMap)));
+        return axios.post('/getSectionsIdAndNameMapByConcessionId', params)
+            .then(response => {
+                return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(response.data.sections[0])));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchReportSectionNameMapByConcessionIdFail(error));
+            }); 
     }
 }
 
@@ -104,45 +105,63 @@ export const fetchSubsectionNameMapBySectionId =  (params) => {
     return dispatch => {
         dispatch(fetchSubsectionNameMapBySectionIdStart());
         
-        const subsectionNameMap = {
-            1: {
-                1: "Subsection 1/1",
-                2: "Subsection 1/2",
-                3: "Subsection 1/3",
-                4: "Subsection 1/4",
-            },
-            2: {
-                5: "Subsection 2/1",
-                6: "Subsection 2/2",
-                7: "Subsection 2/3",
-                8: "Subsection 2/4",
-            },
-            3: {
-                9: "Subsection 3/1",
-                10: "Subsection 3/2",
-                11: "Subsection 3/3",
-                12: "Subsection 3/4",
-            },
-            4: {
-                13: "Subsection 4/1",
-                14: "Subsection 4/2",
-                15: "Subsection 4/3",
-                16: "Subsection 4/4",
-            }
-        }
-
-        return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(subsectionNameMap[params.section_id])));
+        return axios.post('/getSubsectionsIdAndNameMapBySectionId', params)
+            .then(response => {
+                return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(response.data.subsections[0])));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchSubsectionNameMapBySectionIdFail(error));
+            }); 
     }
 }
 
-export const fetchFeederPillarNameMapBySubsectionIdStart = () => {
+export const fetchRoadNameMapBySubsectionIdStart = () => {
+    return {
+        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_START,
+        loading: true
+    }
+}
+
+export const fetchRoadNameMapBySubsectionIdSuccess = (roadNameMap) => {
+    return {
+        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_SUCCESS,
+        loading: false,
+        roadNameMap: roadNameMap,
+    }
+}
+
+export const fetchRoadNameMapBySubsectionIdFail = (error) => {
+    return {
+        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchRoadNameMapBySubsectionId =  (params) => {
+    return dispatch => {
+        dispatch(fetchRoadNameMapBySubsectionIdStart());
+        
+        return axios.post('/getRoadsIdAndNameMapBySubsectionId', params)
+            .then(response => {
+                return Promise.resolve(dispatch(fetchRoadNameMapBySubsectionIdSuccess(response.data.roads[0])));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchRoadNameMapBySubsectionIdFail(error));
+            }); 
+    }
+}
+
+export const fetchFeederPillarNameMapByRoadIdStart = () => {
     return {
         type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_START,
         loading: true
     }
 }
 
-export const fetchFeederPillarNameMapBySubsectionIdSuccess = (feederPillarNameMap) => {
+export const fetchFeederPillarNameMapByRoadIdSuccess = (feederPillarNameMap) => {
     return {
         type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_SUCCESS,
         loading: false,
@@ -150,7 +169,7 @@ export const fetchFeederPillarNameMapBySubsectionIdSuccess = (feederPillarNameMa
     }
 }
 
-export const fetchFeederPillarNameMapBySubsectionIdFail = (error) => {
+export const fetchFeederPillarNameMapByRoadIdFail = (error) => {
     return {
         type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_FAIL,
         loading: false,
@@ -158,17 +177,18 @@ export const fetchFeederPillarNameMapBySubsectionIdFail = (error) => {
     }
 }
 
-export const fetchFeederPillarNameMapBySubsectionId =  () => {
+export const fetchFeederPillarNameMapByRoadId =  (params) => {
     return dispatch => {
-        dispatch(fetchFeederPillarNameMapBySubsectionIdStart());
+        dispatch(fetchFeederPillarNameMapByRoadIdStart());
         
-        const feederPillarNameMap = {
-            1: "Feeder Pillar 1",
-            2: "Feeder Pillar 2",
-            3: "Feeder Pillar 3",
-            4: "Feeder Pillar 4"
-        };
-        return Promise.resolve(dispatch(fetchFeederPillarNameMapBySubsectionIdSuccess(feederPillarNameMap)));
+        return axios.post('/getFeederPillarsIdAndNameMapByRoadId', params)
+            .then(response => {
+                return Promise.resolve(dispatch(fetchFeederPillarNameMapByRoadIdSuccess(response.data.feederPillars[0])));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchFeederPillarNameMapByRoadIdFail(error));
+            }); 
     }
 }
 
@@ -179,10 +199,11 @@ export const fetchReportDataStart = () => {
     }
 }
 
-export const fetchReportDataSuccess = (reportData, activeTab) => {
+export const fetchReportDataSuccess = (feederPillar, reportData, activeTab) => {
     return {
         type: actionTypes.FETCH_REPORT_DATA_SUCCESS,
         loading: false,
+        feederPillar: feederPillar,
         reportData: reportData,
         activeTab: activeTab
     }
@@ -201,39 +222,100 @@ export const fetchReportData = ( params ) => {
     return dispatch => {
         dispatch(fetchReportDataStart());    
 
-        let graphSeries = [];
-        let graphData = [[2000, 2100,2050,1800,2200,2100,2000]];
-        
-        switch(params.activeTabId) {
-            case 'powerUsageTab': 
-                graphSeries = ["Power Usage"];
-                break;
-            case 'electricityBillTab': 
-                graphSeries = ["Electricity Bill"];
-                break;
-            case 'carbonFootprintTab': 
-                graphSeries = ["Carbon Footprint"];
-                break;
-            case 'energySavingsTab': 
-                graphSeries = ["Energy Savings"];
-                break;
-            case 'amperageTab': 
-                graphSeries = ["Amperage P1", "Amperage P2", "Amperage P3"];
-                graphData = [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]];
-                break;
-            case 'voltageTab': 
-                graphSeries = ["Voltage P1", "Voltage P2", "Voltage P3"];
-                graphData = [[10000, 11000,12050,8000,7200,7100,12000],[9080, 10000,12000,9000,7000,6900,11000],[9000, 9800,11800,8900,7010,5900,11090]];
-                break;
-            default: 
-                break;
-        }
+        return axios.post('/getReportMetricsAndChartDataByFeederPillarIdAndDateRange', params)
+            .then(response => {
+                dispatch(fetchReportDataSuccess(response.data.feederPillar, response.data.chartData, params.activeTabId));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchReportDataFail(error));
+            });  
+    }
+}
 
-        const data = {
-            graphLabels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
-            graphData: graphData,
-            graphSeries: graphSeries
-        };
-        dispatch(fetchReportDataSuccess(data, params.activeTabId));
+export const fetchReportChartDataByActiveTabStart = () => {
+    return {
+        type: actionTypes.FETCH_REPORT_CHART_DATA_BY_ACTIVE_TAB_START,
+        loading: true
+    }
+}
+
+export const fetchReportChartDataByActiveTabSuccess = (reportData, activeTab) => {
+    return {
+        type: actionTypes.FETCH_REPORT_CHART_DATA_BY_ACTIVE_TAB_SUCCESS,
+        loading: false,
+        reportData: reportData,
+        activeTab: activeTab
+    }
+}
+
+export const fetchReportChartDataByActiveTabFail = (error) => {
+    return {
+        type: actionTypes.FETCH_REPORT_CHART_DATA_BY_ACTIVE_TAB_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchReportChartDataByActiveTab = ( params ) => {
+    
+    return dispatch => {
+        dispatch(fetchReportChartDataByActiveTabStart());    
+
+
+        return axios.post('/getReportChartDataByActiveTabId', params)
+            .then(response => {
+                dispatch(fetchReportChartDataByActiveTabSuccess(response.data.chartData, params.activeTabId));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchReportConcessionNameMapFail(error));
+            });  
+
+        
+    }
+}
+
+export const fetchExportableReportDataStart = () => {
+    return {
+        type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_START,
+        loading: true
+    }
+}
+
+export const fetchExportableReportDataSuccess = (reportData) => {
+    return {
+        type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_SUCCESS,
+        loading: false,
+        reportData: reportData
+    }
+}
+
+export const fetchExportableReportDataFail = (error) => {
+    return {
+        type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_FAIL,
+        loading: false,
+        error: error
+    }
+}
+
+export const fetchExportableReportData = ( params ) => {
+    
+    return dispatch => {
+        dispatch(fetchExportableReportDataStart());    
+
+
+        return axios.post('/getExportableReportData', params)
+            .then(response => {
+                dispatch(fetchExportableReportDataSuccess(response.data.metrics));
+
+                return Promise.resolve({isSuccessful: true});
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchExportableReportDataFail(error));
+            });  
+
+        
     }
 }

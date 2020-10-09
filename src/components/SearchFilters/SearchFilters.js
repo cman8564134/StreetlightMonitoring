@@ -4,6 +4,8 @@ import LaddaButton, {
     ZOOM_IN,
 } from 'react-ladda';
 
+import { Alert } from 'reactstrap';
+
 import LabelInputFormGroup from '../Form/LabelInputFormGroup/LabelInputFormGroup';
 import ExportDropdown from '../Form/ExportDropdown/ExportDropdown';
 
@@ -21,7 +23,8 @@ const SearchFilters = ( props ) => {
         excelLinkRef,
         onExportExcelHandler,
         isExportable,
-        excelSheets
+        excelSheets,
+        isSearchFilterValid
     } = props;
 
     let exportDropdownMenu = null;
@@ -37,6 +40,40 @@ const SearchFilters = ( props ) => {
                 excelSheets={excelSheets}
             />
         )
+    }
+
+    let alert = null;
+
+    if(!isSearchFilterValid) {
+        alert = 
+            filterElementArray.map(((filterElements, index) => {
+                const elementObjects = [];
+                for(let filterElementKey in filterElements){
+                    elementObjects.push({
+                        id: filterElementKey,
+                        config: filterElements[filterElementKey]
+                    });
+                }
+
+                return (
+                    elementObjects.map((element, elementKey) => {
+                        const {
+                            id,
+                            config
+                        } = element;
+
+                        if(!config.valid){
+                            return (
+                                <Alert color="danger" key={id}>
+                                    {config.errorMessage}
+                                </Alert>
+                            )
+                        }  
+                    })
+                )
+            }))
+            
+        
     }
 
     return (
@@ -91,6 +128,8 @@ const SearchFilters = ( props ) => {
             </div>
 
             {exportDropdownMenu}
+
+            {alert}
         </Fragment>
     )
 }

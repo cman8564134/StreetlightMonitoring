@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 
 import {
     Container,
@@ -7,6 +7,11 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
+
+import {
+    toast,
+    ToastContainer
+} from 'react-toastify';
 
 import * as actions from '../../store/actions/index';
 import { HANDLE_REPORT_INPUT_CHANGED_SUCCESS } from '../../store/actions/actionTypes';
@@ -17,6 +22,7 @@ import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import HighlightsBox from '../../components/Dashboard/HighlightsBox/HighlightsBox';
 import CenterProgressCircle from '../../components/Progress/ProgressCircles/CenterProgressCircle/CenterProgressCircle';
 import GraphCardTabs from '../../components/Tab/GraphCardTabs/GraphCardTabs';
+import { checkFormValidity, formatDateByDateFormat, calculateDifferenceBetweenDates } from "../../shared/utility";
 
 const Report = ( props ) => {
     const {
@@ -26,15 +32,17 @@ const Report = ( props ) => {
         report,
         loadingHighlights,
         activeTab,
-        loading,
+        loadingChart,
         graphCardTabsNavItemsArray,
         onFetchReportConcessionNameMap,
         onFetchReportSectionNameMapByConcessionId,
         onFetchSubsectionNameMapBySectionId,
-        onFetchFeederPillarNameMapBySubsectionId,
+        onFetchRoadNameMapBySubsectionId,
+        onFetchFeederPillarNameMapByRoadId,
         onHandleInputChanged,
-        onFetchElectricityBillCSVData,
-        onFetchReportData
+        onFetchReportData,
+        onFetchReportChartDataByActiveTab,
+        onFetchExportableReportData
     } = props;
     
     const csvLinkRef = useRef();
@@ -42,7 +50,6 @@ const Report = ( props ) => {
 
     useEffect(() => {
         onFetchReportConcessionNameMap();
-        onFetchReportData({activeTabId: activeTab});
     }, [
         onFetchReportConcessionNameMap, 
         onFetchReportData,
@@ -64,7 +71,7 @@ const Report = ( props ) => {
 
         switch(elementId) {
             case "concession": 
-                onFetchReportSectionNameMapByConcessionId()
+                onFetchReportSectionNameMapByConcessionId({concession_id: value})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });
@@ -77,7 +84,13 @@ const Report = ( props ) => {
             break;
             
             case "subsection": 
-                onFetchFeederPillarNameMapBySubsectionId()
+                onFetchRoadNameMapBySubsectionId({subsection_id: value})
+                    .then(response => {
+                        onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
+                    });
+            break;
+            case "road": 
+                onFetchFeederPillarNameMapByRoadId({road_id: value})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });
@@ -92,36 +105,79 @@ const Report = ( props ) => {
 
     const onExportCSVHandler = (event) => {
         event.preventDefault();
-        
-        const concession_id = searchFilters[0].concession.value;
-        onFetchElectricityBillCSVData({concession_id: concession_id})
-            .then((response) => {
-                if(response.isSuccessful){
-                    csvLinkRef.current.link.click();
-                }
-            });
+    
+        const isFormValid = checkFormValidity(searchFilters);
+
+        setIsSearchFilterValid(isFormValid);
+
+        if(isFormValid){
+            const filters = searchFilters[0];
+            const feederPillarId = filters.feeder_pillar.value;
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
+            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+
+            if(diffDays > 10) {
+                showToast('Date range should not exceed 10 days when exporting');
+            }else {
+                onFetchExportableReportData({
+                    feederPillarId: feederPillarId,
+                    dateTimeFrom: dateTimeFromStr,
+                    dateTimeTo: dateTimeToStr
+                })
+                .then((response) => {
+                    if(response.isSuccessful){
+                        csvLinkRef.current.link.click();
+                    }
+                });
+            }   
+        }
     }
 
     const onExportExcelHandler = (event) => {
         event.preventDefault();
 
-        const concession_id = searchFilters[0].concession.value;
-        onFetchElectricityBillCSVData({concession_id: concession_id})
-            .then((response) => {
-                if(response.isSuccessful){
-                    excelLinkRef.current.click();
-                }
-            });
+        const isFormValid = checkFormValidity(searchFilters);
+
+        setIsSearchFilterValid(isFormValid);
+
+        if(isFormValid){
+            const filters = searchFilters[0];
+            const feederPillarId = filters.feeder_pillar.value;
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
+            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+
+            if(diffDays > 10) {
+                showToast('Date range should not exceed 10 days when exporting');
+            }else {
+                onFetchExportableReportData({
+                    feederPillarId: feederPillarId,
+                    dateTimeFrom: dateTimeFromStr,
+                    dateTimeTo: dateTimeToStr
+                })
+                .then((response) => {
+                    if(response.isSuccessful){
+                        excelLinkRef.current.click();
+                    }
+                });;
+            }   
+        }
     }
 
     const highlightsHeaders = [
         {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage"},
-        {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_percentage"},
-        {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electrical_bill"},
+        {header: "Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
-        {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings"},
     ]
+
+    const [isSearchFilterValid, setIsSearchFilterValid] = useState(true);
+
+    const showToast = (message) => toast.error(message,{position: toast.POSITION.BOTTOM_RIGHT});
     
     const onApplyFilterHandler = (site, tab) => {
         // const viewType = filterElementArray[0].viewBy.value;
@@ -148,13 +204,64 @@ const Report = ( props ) => {
         // sites = site != null ? site : sites;
 
         // const params = {viewType: viewType, dateFrom: dateFrom, dateTo: dateTo, sites: sites, activeTabId: tab != null ? tab : activeTab};
-        
-        onFetchReportData({activeTabId: tab != null ? tab : activeTab});
+
+        const isFormValid = checkFormValidity(searchFilters);
+
+        setIsSearchFilterValid(isFormValid);
+
+        if(isFormValid){
+            const filters = searchFilters[0];
+            const feederPillarId = filters.feeder_pillar.value;
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
+            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+
+            if(diffDays > 31) {
+                showToast('Date range should not exceed 31 days');
+            }else {
+                onFetchReportData({
+                    feederPillarId: feederPillarId,
+                    dateTimeFrom: dateTimeFromStr,
+                    dateTimeTo: dateTimeToStr,
+                    activeTabId: tab != null ? tab : activeTab,
+                    chartType: 'daily'
+                });
+            }
+
+            
+        }
+            
     };
 
     const toggleGraphCardTabsHandler = (tab) => {
 
-        onApplyFilterHandler(null, tab)
+        const isFormValid = checkFormValidity(searchFilters);
+
+        setIsSearchFilterValid(isFormValid);
+
+        if(isFormValid){
+            const filters = searchFilters[0];
+            const feederPillarId = filters.feeder_pillar.value;
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
+
+            if(diffDays > 31) {
+                showToast('Date range should not exceed 31 days');
+            }else {
+                onFetchReportChartDataByActiveTab({
+                    feederPillarId: feederPillarId,
+                    dateTimeFrom: dateTimeFromStr,
+                    dateTimeTo: dateTimeToStr,
+                    activeTabId: tab,
+                    chartType: 'daily'
+                });
+            }
+        }
     }
 
 
@@ -173,7 +280,7 @@ const Report = ( props ) => {
                                 filterElementArray={searchFilters}
                                 inputChangedHandler={inputChangedHandler}
                                 loading={false}
-                                onApplyFilterHandler={()=>null}
+                                onApplyFilterHandler={onApplyFilterHandler}
                                 onExportCSVHandler={onExportCSVHandler}
                                 csvLinkRef={csvLinkRef}
                                 csvData={csvData}
@@ -181,6 +288,7 @@ const Report = ( props ) => {
                                 onExportExcelHandler={onExportExcelHandler}
                                 excelSheets={excelSheets}
                                 isExportable
+                                isSearchFilterValid={isSearchFilterValid}
                             />
                         
                         </Col>
@@ -201,7 +309,7 @@ const Report = ( props ) => {
                                 activeTab={activeTab}
                                 toggleTabHandler={toggleGraphCardTabsHandler}
                                 navItemsArray={graphCardTabsNavItemsArray}
-                                loading={loading}
+                                loading={loadingChart}
                             />
                         </Col>
                         <Col md="12" lg="3" xl="3">
@@ -230,6 +338,7 @@ const Report = ( props ) => {
                             </Row>
                         </Col>
                     </Row>
+                    <ToastContainer autoClose={false}/>
                 </Container>
             </Layout>
         </Fragment>
@@ -241,10 +350,10 @@ const mapStateToProps = state => {
         searchFilters: state.Report.searchFilters,
         report: state.Report.report,
         loadingHighlights: state.Report.loadingHighlights,
-        csvData: state.ElectricityBill.csvData,
-        excelSheets: state.ElectricityBill.excelSheets,
+        csvData: state.Report.csvData,
+        excelSheets: state.Report.excelSheets,
         activeTab: state.Report.activeTab,
-        loading: state.Report.loading,
+        loadingChart: state.Report.loadingChart,
         graphCardTabsNavItemsArray: state.Report.graphCardTabsNavItemsArray
     }
 }
@@ -252,12 +361,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onFetchReportConcessionNameMap: () => dispatch(actions.fetchReportConcessionNameMap()),
-        onFetchReportSectionNameMapByConcessionId: () => dispatch(actions.fetchReportSectionNameMapByConcessionId()),
+        onFetchReportSectionNameMapByConcessionId: (params) => dispatch(actions.fetchReportSectionNameMapByConcessionId(params)),
         onFetchSubsectionNameMapBySectionId: (params) => dispatch(actions.fetchSubsectionNameMapBySectionId(params)),
-        onFetchFeederPillarNameMapBySubsectionId: () => dispatch(actions.fetchFeederPillarNameMapBySubsectionId()),
+        onFetchRoadNameMapBySubsectionId: (params) => dispatch(actions.fetchRoadNameMapBySubsectionId(params)),
+        onFetchFeederPillarNameMapByRoadId: (params) => dispatch(actions.fetchFeederPillarNameMapByRoadId(params)),
         onHandleInputChanged: (type, value, elementRowIndex, elementId, validationRules) => dispatch(actions.handleInputChanged(type, value, elementRowIndex, elementId, validationRules)),
-        onFetchElectricityBillCSVData: (params) => dispatch(actions.fetchElectricityBillCSVData(params)),
-        onFetchReportData: (params) => dispatch(actions.fetchReportData(params))
+        onFetchReportData: (params) => dispatch(actions.fetchReportData(params)),
+        onFetchReportChartDataByActiveTab: (params) => dispatch(actions.fetchReportChartDataByActiveTab(params)),
+        onFetchExportableReportData: (params) => dispatch(actions.fetchExportableReportData(params)),
     }
 }
 

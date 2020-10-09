@@ -54,29 +54,34 @@ const formatDateToParts = (date) => {
 }
 
 export const formatDateByDateFormat = (date, dateFormat) => {
-    const {day, month, year, hour, minute, second} = formatDateToParts(date);
-    const weekday = date.toString().substring(0,3);
-    const monthName = date.toLocaleString('default', { month: 'short' })
-    
-    switch (dateFormat) {
-        case 'h:m':
-            return `${hour}:${minute}`;
-        case 'y-m-d':
-            return `${year}-${month}-${day}`;
-        case 'd/m/y':
-            return `${day}/${month}/${year}`;
-        case 'D, d M':
-            return `${weekday}, ${day} ${monthName}`;
-        case 'm/y':
-            return `${month}/${year}`;
-        case 'm-y':
-            return `${month}-${year}`;
-        case 'y':
-            return `${year}`;
-        case 'y-m-d h:m:i':
-        default: 
-            return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    if(date){
+        const {day, month, year, hour, minute, second} = formatDateToParts(date);
+        const weekday = date.toString().substring(0,3);
+        const monthName = date.toLocaleString('default', { month: 'short' })
+        
+        switch (dateFormat) {
+            case 'h:m':
+                return `${hour}:${minute}`;
+            case 'y-m-d':
+                return `${year}-${month}-${day}`;
+            case 'd/m/y':
+                return `${day}/${month}/${year}`;
+            case 'D, d M':
+                return `${weekday}, ${day} ${monthName}`;
+            case 'm/y':
+                return `${month}/${year}`;
+            case 'm-y':
+                return `${month}-${year}`;
+            case 'y':
+                return `${year}`;
+            case 'y-m-d h:m:i':
+            default: 
+                return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+        }
+    }else {
+        return '';
     }
+    
 }
 
 export const getCurrentDateTimeInDBFormat = (dateFormat) => {
@@ -521,3 +526,9 @@ export const generateChartObject = (chartsData, chartTitle, chartType) => {
     return charts;
 }
 
+export const calculateDifferenceBetweenDates = (date1, date2) => {
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+    return diffDays;
+}

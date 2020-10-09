@@ -151,9 +151,12 @@ export {
     fetchReportConcessionNameMap,
     fetchReportSectionNameMapByConcessionId,
     fetchSubsectionNameMapBySectionId,
-    fetchFeederPillarNameMapBySubsectionId,
+    fetchRoadNameMapBySubsectionId,
+    fetchFeederPillarNameMapByRoadId,
     fetchReportData,
     // fetchReportCSVData
+    fetchReportChartDataByActiveTab,
+    fetchExportableReportData
 } from './report';
 
 export {
