@@ -30,7 +30,8 @@ const FeederPillarDetails = ( props ) => {
         created_at,
         total_yield,
         road_total_yield,
-        feeder_pillar_total_yield_percentage
+        feeder_pillar_total_yield_percentage,
+        door_status
     } = feederPillar;
 
     const progressBarSubLabel = feeder_pillar_total_yield_percentage + "% (" + total_yield + "/" + road_total_yield + ")"
@@ -61,9 +62,14 @@ const FeederPillarDetails = ( props ) => {
     ]
 
     let siteStatusClassNames = "badge badge-success";
+    let doorStatusClassNames = "badge badge-success";
 
     if(status === "INACTIVE"){
         siteStatusClassNames = "badge badge-danger";
+    }
+    
+    if(door_status === "OPEN"){
+        doorStatusClassNames = "badge badge-danger";
     }
 
     const radius = 107;
@@ -87,6 +93,7 @@ const FeederPillarDetails = ( props ) => {
                             <div>
                                 <h5 className="menu-header-title">{pillar_id}</h5>
                                 <h6 className="menu-header-subtitle"><span className={siteStatusClassNames}>{status}</span></h6>
+                                <h6 className="menu-header-subtitle"><span className={doorStatusClassNames}>Door Status: {door_status}</span></h6>
                             </div>
                         </div>
                     </div>
