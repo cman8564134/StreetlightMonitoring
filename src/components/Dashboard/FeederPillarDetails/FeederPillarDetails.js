@@ -31,7 +31,9 @@ const FeederPillarDetails = ( props ) => {
         total_yield,
         road_total_yield,
         feeder_pillar_total_yield_percentage,
-        door_status
+        door_status,
+        total_active_streetlights,
+        total_streetlights
     } = feederPillar;
 
     const progressBarSubLabel = feeder_pillar_total_yield_percentage + "% (" + total_yield + "/" + road_total_yield + ")"
@@ -94,6 +96,7 @@ const FeederPillarDetails = ( props ) => {
                                 <h5 className="menu-header-title">{pillar_id}</h5>
                                 <h6 className="menu-header-subtitle"><span className={siteStatusClassNames}>{status}</span></h6>
                                 <h6 className="menu-header-subtitle"><span className={doorStatusClassNames}>Door Status: {door_status}</span></h6>
+                                <h6 className="menu-header-subtitle">{total_active_streetlights}/{total_streetlights} ACTIVE STREETLIGHTS</h6>
                             </div>
                         </div>
                     </div>

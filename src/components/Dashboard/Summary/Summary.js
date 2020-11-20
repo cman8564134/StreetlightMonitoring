@@ -58,7 +58,7 @@ const Summary = ( props ) => {
                                 trailColor="#cceff5"
                                 color="#0bb3cd"
                                 subheading={"Uptime (" + values.uptime_percentage +"%)"}
-                                value={`${values.active_feeder_pillars}/${values.total_feeder_pillars} Active`}
+                                value={`${values.total_active_streetlights}/${values.total_streetlights} Active`}
                                 loading={loadingHighlights}
                             />
                         </Col>

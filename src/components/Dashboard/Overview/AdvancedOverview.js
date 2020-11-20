@@ -294,7 +294,7 @@ const AdvancedOverview = ( props ) => {
                                 trailColor="#cceff5"
                                 color="#0bb3cd"
                                 subheading={'Uptime (' + highlightValues.uptime_percentage +'%)'}
-                                value={`${highlightValues.total_active_feeder_pillar}/${highlightValues.total_feeder_pillar} Active`}
+                                value={`${highlightValues.total_active_streetlights}/${highlightValues.total_streetlights} Active`}
                                 loading={loadingHighlights}
                             />
                         </Col>

@@ -215,6 +215,10 @@ const RoadDetails = ( props ) => {
                     accessor: 'status'
                 },
                 {
+                    Header: 'Uptime %',
+                    accessor: 'uptime_percentage'
+                },
+                {
                     Header: 'Electricity Bill (RM)',
                     accessor: 'electricity_bill'
                 },
