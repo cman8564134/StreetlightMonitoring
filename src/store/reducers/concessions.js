@@ -78,8 +78,8 @@ const fetchConcessionsSuccess = ( state, action ) => {
 
     const updatedSummary = action.concessions.concat(dummyConcessions);
     return updateObject(state, {
-        // concessions: action.concessions,
-        concessions: updatedSummary,
+        concessions: action.concessions,
+        // concessions: updatedSummary,
         loadingConcessionsTable: action.loading
     });
 }

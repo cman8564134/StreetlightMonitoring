@@ -47,6 +47,9 @@ const Header = ( props ) => {
                         <div className="icon-wrapper logo">
                             <div className="icon-wrapper-bg"/>
                         </div>
+                        <div>
+                            iDynamix Streetlight Monitoring
+                        </div>
                     </div>
                     <div className="app-header-right">
                         <HeaderDots {...props}/>
