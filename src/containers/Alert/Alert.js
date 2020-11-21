@@ -42,15 +42,18 @@ const Alert = ( props ) => {
         onSaveAlert,
         savingAlert,
         selectedAlertId,
-        onMarkAlertAsRead
+        onMarkAlertAsRead,
+        alertStatusMasterCode
     } = props;
 
     useEffect(() => {
         onFetchAlertOrderByDesc();
+        onFetchAlertStatusMasterCode({masterCode: 'ALERTSTATUS'});
         // onMarkAlertAsRead();
     }, [
         onFetchAlertOrderByDesc,
-        onMarkAlertAsRead
+        onMarkAlertAsRead,
+        onFetchAlertStatusMasterCode
     ])
 
     const [ visible, setVisible ] = useState(false);
@@ -76,23 +79,26 @@ const Alert = ( props ) => {
         {
             columns: [
                 {
-                    Header: 'Concession',
-                    accessor: 'concession_name'
-                },
-                {
-                    Header: 'Section',
-                    accessor: 'section_name'
-                },
-                {
-                    Header: 'Subsection',
-                    accessor: 'subsection_name'
+                    Header: 'Address',
+                    width: 300,
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                <div>
+                                    {row.original.concession_name + ", " + row.original.section_name + ", " + row.original.subsection_name + ", " + row.original.road_name}
+                                </div>     
+                            </div>
+                            
+                        )
+                    }
                 },
                 {
                     Header: 'Feeder Pillar',
-                    accessor: 'feeder_pillar_id'
+                    accessor: 'pillar_id'
                 },
                 {
                     Header: 'Event',
+                    width: 400,
                     accessor: 'event'
                 },
                 {
@@ -101,23 +107,28 @@ const Alert = ( props ) => {
                 },
                 {
                     Header: 'Status',
-                    accessor: 'alert_status_description',
+                    accessor: 'status',
                     width: 200,
                     Cell: row => {
                         let statusClassName = "";
+                        const value = alertStatusMasterCode[row.value];
 
                         switch(row.value){
-                            case 'PENDING INVESTIGATION': 
+                            case 'PI': 
                                 statusClassName = "badge badge-danger"
                             break;
-                            case 'INVESTIGATION IN PROGRESS': 
+                            case 'IIP': 
                                 statusClassName = "badge badge-warning"
                             break;
-                            case 'RESOLVING ISSUE': 
+                            case 'RI': 
                                 statusClassName = "badge badge-primary"
                             break;
+                            
+                            case 'C': 
+                                statusClassName = "badge badge-secondary"
+                            break;
 
-                            case 'RESOLVED': 
+                            case 'R': 
                             default: 
                                 statusClassName = "badge badge-success"
                         }
@@ -125,7 +136,7 @@ const Alert = ( props ) => {
                         return (
                             <div className="d-block w-100 text-center">
                                 <div className={statusClassName}>
-                                    {row.value}
+                                    {/* {row.value} */} {value}
                                 </div>     
                             </div>
                             
@@ -133,23 +144,23 @@ const Alert = ( props ) => {
                     }
                         
                 },
-                {
-                    Header: 'Attended By',
-                    accessor: 'attended_by'
-                },
-                {
-                    Header: 'Actions',
-                    accessor: 'id',
-                    Cell: row => (
-                        <div className="d-block w-100 text-center">
-                            <Button className="mb-2 mr-2 btn-icon btn-icon-only btn-pill" outline
-                                    color="success" onClick={() => showOrHideModal(row.value)}>
-                                <i className="pe-7s-pen btn-icon-wrapper"> </i>
-                            </Button>
-                        </div>
+                // {
+                //     Header: 'Attended By',
+                //     accessor: 'attended_by'
+                // },
+                // {
+                //     Header: 'Actions',
+                //     accessor: 'id',
+                //     Cell: row => (
+                //         <div className="d-block w-100 text-center">
+                //             <Button className="mb-2 mr-2 btn-icon btn-icon-only btn-pill" outline
+                //                     color="success" onClick={() => showOrHideModal(row.value)}>
+                //                 <i className="pe-7s-pen btn-icon-wrapper"> </i>
+                //             </Button>
+                //         </div>
                         
-                    )
-                }
+                //     )
+                // }
             ]
         }
     ];
@@ -206,7 +217,7 @@ const Alert = ( props ) => {
                     pageSize={10}
                     header={null}
                     filterable
-                    subComponentCallback={subComponent}
+                    // subComponentCallback={subComponent}
                     loading={loadingAlertTable}
                 />
 
@@ -236,7 +247,8 @@ const mapStateToProps = state => {
         loadingModal: state.Alert.loadingModal,
         formIsValid: state.Alert.formIsValid,
         savingAlert: state.Alert.savingAlert,
-        selectedAlertId: state.Alert.selectedAlertId
+        selectedAlertId: state.Alert.selectedAlertId,
+        alertStatusMasterCode: state.Alert.alertStatusMasterCode
     }
 }
 

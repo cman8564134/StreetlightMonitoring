@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-// import axios from '../../axios-backend';
+import axios from '../../axios-backend';
 
 export const fetchAlertOrderByDescStart = () => {
     return {
@@ -33,21 +33,14 @@ export const fetchAlertOrderByDesc = () => {
 
 const getAllAlertDataOrderByDescRequest  = (dispatch) => {
     dispatch(fetchAlertOrderByDescStart());
-    const response = {
-        data: {
-            alerts: [
-                {id: 1, concession_name: "ABC Sdn Bhd", section_name: "Section 1", subsection: "Section 1/1", feeder_pillar_id: "1", event: "Door is opened", created_at: "2020-07-01 00:00:00", status: "PI", alert_status_description: "PENDING INVESTIGATION", attended_by: "", remarks: ""}
-            ]
-        }
-    }
-    dispatch(fetchAlertOrderByDescSuccess(response.data.alerts));
-    // axios.get('/getAllAlertDataOrderByDesc')
-    //     .then(response => {
-    //         dispatch(fetchAlertOrderByDescSuccess(response.data.alerts));
-    //     })
-    //     .catch(error => {
-    //         dispatch(fetchAlertOrderByDescFail(error));
-    //     });
+    
+    axios.get('/getAllAlertOrderByCreatedAtDesc')
+        .then(response => {
+            dispatch(fetchAlertOrderByDescSuccess(response.data.alerts));
+        })
+        .catch(error => {
+            dispatch(fetchAlertOrderByDescFail(error));
+        });
 }
 
 export const fetchAlertByIdStart = () => {
@@ -110,7 +103,8 @@ export const fetchAlertStatusMasterCode = ( data ) => {
                     "IIP": "INVESTIGATION IN PROGRESS",
                     "PI": "PENDING INVESTIGATION",
                     "R": "RESOLVED",
-                    "RI": "RESOLVING ISSUE"
+                    "RI": "RESOLVING ISSUE",
+                    "C": "CLOSED",
                 }
             }
         }

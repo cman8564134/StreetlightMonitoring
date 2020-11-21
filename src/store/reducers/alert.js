@@ -16,6 +16,7 @@ const initialState = {
     formIsValid: false,
     savingAlert: false,
     selectedAlertId: 0,
+    alertStatusMasterCode: {},
     alertElementArray: [
             {
                 concession: {
@@ -273,7 +274,8 @@ const fetchAlertStatusMasterCodeSuccess = ( state, action ) => {
     const updatedArray = updateElementOptionArray(state.alertElementArray, 3, "status", "elementConfig", updatedOption);
     
     return updateObject(state, {
-        alertElementArray: Object.values(updatedArray)
+        alertElementArray: Object.values(updatedArray),
+        alertStatusMasterCode: action.alertStatus
     });
 }
 
