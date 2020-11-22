@@ -3,8 +3,12 @@ import {
     updateObject,
     baseChartOptions,
     baseChartSeries,
-    updateCharts
+    updateCharts,
+    baseRadialBarChartOptions
  } from '../../shared/utility';
+
+ import {darkRYB} from '../../shared/colors';
+
 
 const initialState = {
     feederPillar: {},
@@ -16,13 +20,20 @@ const initialState = {
             "powerUsage": {title: "Power Usage (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
             "electricityBill": {title: "Electricity Bill (RM)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
             "carbonFootprint": {title: "Carbon Footprint (KG)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "energySavings": {title: "Energy Savings (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
-            "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"},
-            "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors:['#fb0021', '#feb019', '#008ffb']}), chart_series: baseChartSeries(), chart_type: "line"}
+            "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "activePower": {title: "Active Power (W)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "powerFactor": {title: "Power Factor", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "thdv": {title: "THDV", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "thdc": {title: "THDC", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "thdp": {title: "THDP", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "frequency": {title: "Frequency", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
         }
     ],
-    loadingFeederPillarDetails: false 
-        
+    loadingFeederPillarDetails: false,
+    streetlightStatusChartOptions: baseRadialBarChartOptions(),
+    streetlightStatusChartSeries: [], 
+    streetlightStatusByPhase: []
 };
 
 const fetchFeederPillarByFeederPillarIdStart = ( state, action ) => {
@@ -73,13 +84,26 @@ const fetchFeederPillarDetailsStart = ( state, action ) => {
 }
 
 const fetchFeederPillarDetailsSuccess = ( state, action ) => {
+    const feederPillar = action.feederPillar;
+    const radialBarChartData = action.radialBarChartData;
+    const radialBarFormatter = (w) => {
+        return feederPillar.total_streetlights
+    };
+    const updatedRadialTotalOption = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar.dataLabels.total, {formatter: radialBarFormatter});
+    const updatedRadialDataLabels = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar.dataLabels, {total: updatedRadialTotalOption});
+    const updatedRadialRadialBar = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar, {dataLabels: updatedRadialDataLabels});
+    const updatedRadialPlotOptions = updateObject(state.streetlightStatusChartOptions.plotOptions, {radialBar: updatedRadialRadialBar});
     const updatedMetricCharts = updateCharts(state.feederPillarMetricCharts, action.chartsData);
+    const updatedStreetlightStatusChartOptions = updateObject(state.streetlightStatusChartOptions, {labels: radialBarChartData.labels, plotOptions: updatedRadialPlotOptions, colors:['#c83953', '#f2b227', '#1d94f5']});
+
     return updateObject(state, {
         loadingFeederPillarDetails: action.loading,
-        feederPillar: action.feederPillar,
+        feederPillar: feederPillar,
         feederPillarMetricCharts: updatedMetricCharts,
         pillarId: action.pillarId,
-
+        streetlightStatusChartOptions: updatedStreetlightStatusChartOptions,
+        streetlightStatusChartSeries: radialBarChartData.series,
+        streetlightStatusByPhase: action.streetlightStatus
     });
 }
 

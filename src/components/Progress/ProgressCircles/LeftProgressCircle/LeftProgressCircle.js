@@ -13,7 +13,8 @@ const LeftProgressCircle = ( props ) => {
         color,
         subheading,
         value,
-        loading
+        loading,
+        status
     } = props;
 
     let progressCircle = (
@@ -29,6 +30,7 @@ const LeftProgressCircle = ( props ) => {
                         percent={percent}
                         width="100%"
                         strokeWidth="4"
+                        status={status}
                         theme={
                             {
                                 active: {

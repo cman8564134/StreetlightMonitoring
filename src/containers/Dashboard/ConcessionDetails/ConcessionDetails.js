@@ -72,7 +72,7 @@ const ConcessionDetails = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo, 
-            dataKey: ['thdc1'], 
+            dataKey: ['total_yield'], 
             chartType: 'realtime', 
             chartId: 'power_usage',
             concessions: [concessionId],
@@ -84,7 +84,7 @@ const ConcessionDetails = ( props ) => {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
             dateTimeTo: dateTo, 
-            dataKey: ['thdc1'], 
+            dataKey: ['total_yield'], 
             chartType: 'realtime', 
             chartId: concession.concession_name,
             concessions: [concessionId],
@@ -113,7 +113,7 @@ const ConcessionDetails = ( props ) => {
                 isRefresh: isRefresh, 
                 dateTimeFrom: dateFrom, 
                 dateTimeTo: dateTo, 
-                dataKey: ['thdc1'], 
+                dataKey: ['total_yield'], 
                 chartType: 'realtime', 
                 chartId: 'power_usage',
                 concessions: [concessionId],
@@ -126,7 +126,7 @@ const ConcessionDetails = ( props ) => {
                 isRefresh: isRefresh, 
                 dateTimeFrom: dateFrom, 
                 dateTimeTo: dateTo, 
-                dataKey: ['thdc1'], 
+                dataKey: ['total_yield'], 
                 chartType: 'realtime', 
                 chartId: concession.concession_name,
                 concessions: [concessionId],
@@ -179,7 +179,7 @@ const ConcessionDetails = ( props ) => {
         {
             columns: [
                 {
-                    Header: 'Section',
+                    Header: 'Majils',
                     accessor: 'section_name'
                 },
                 {
@@ -196,7 +196,7 @@ const ConcessionDetails = ( props ) => {
                 },
                 {
                     Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint'
+                    accessor: 'carbon_footprint_kg'
                 },
                 {
                     Header: 'Energy Savings (KWh)',
@@ -224,7 +224,7 @@ const ConcessionDetails = ( props ) => {
     const highlightsHeaders = [
         {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
         {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
-        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint", prefix: "", suffix: " KG"},
+        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
     ]
 
     const tabPanes = [
@@ -254,7 +254,7 @@ const ConcessionDetails = ( props ) => {
                 />
         },
         {
-            tab_name: "Sections", 
+            tab_name: "Majlis", 
             children: 
                 <DataTable 
                     data={sectionsTableData}

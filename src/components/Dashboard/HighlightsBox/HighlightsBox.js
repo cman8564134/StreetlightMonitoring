@@ -19,19 +19,33 @@ const HighlightsBox = ( props ) => {
                     const {
                         iconBgClassName,
                         iconClassName,
-                        header
+                        header,
+                        accessor,
+                        prefix,
+                        suffix
                     } = highlight;
 
+                    let value2 = null; 
+                    let prefix2 = null;
+                    let suffix2 = null;
+                    if(highlight.hasOwnProperty("accessor2")){
+                        value2 = values[highlight.accessor2];
+                        prefix2 = highlight.prefix2;
+                        suffix2 = highlight.suffix2;
+                    }
                     return (
                         <Col key={key} sm="6" md="4" xl="4">
                             <IconBox
                                 iconBgClassName={iconBgClassName}
                                 iconClassName={iconClassName}
                                 header={header}
-                                value={values[highlight.accessor]}
+                                value={values[accessor]}
                                 loading={loading}
-                                prefix={highlight.prefix}
-                                suffix={highlight.suffix}
+                                prefix={prefix}
+                                suffix={suffix}
+                                value2={value2}
+                                prefix2={prefix2}
+                                suffix2={suffix2}
                             />
                         </Col>
                     )

@@ -42,7 +42,10 @@ const RoadDetails = ( props ) => {
         feederPillarMetricCharts,
         loadingFeederPillarMetricChart,
         onFetchFeederPillarMetricCharts,
-        loadingRoadDetails
+        loadingRoadDetails,
+        streetlightStatusChartOptions,
+        streetlightStatusChartSeries,
+        streetlightStatusByPhase
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
@@ -203,8 +206,8 @@ const RoadDetails = ( props ) => {
         {
             columns: [
                 {
-                    Header: 'Feeder Pillar ID',
-                    accessor: 'pillar_id'
+                    Header: 'Feeder Pillar',
+                    accessor: 'pillar_name'
                 },
                 {
                     Header: 'Power Usage (KWh)',
@@ -224,7 +227,7 @@ const RoadDetails = ( props ) => {
                 },
                 {
                     Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint'
+                    accessor: 'carbon_footprint_kg'
                 },
                 {
                     Header: 'Energy Savings (KWh)',
@@ -258,7 +261,7 @@ const RoadDetails = ( props ) => {
         {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_text", prefix: "", suffix: ""},
         {header: "Downtime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_text", prefix: "", suffix: ""},
         {header: "Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
-        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint", prefix: "", suffix: " KG"},
+        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings", prefix: "", suffix: " KWh"},
     ]
 
@@ -322,6 +325,9 @@ const RoadDetails = ( props ) => {
                             feederPillar={feederPillar}
                             metricCharts={feederPillarMetricCharts}
                             loadingMetricCharts={loadingFeederPillarDetails}
+                            streetlightStatusChartOptions={streetlightStatusChartOptions}
+                            streetlightStatusChartSeries={streetlightStatusChartSeries}
+                            streetlightStatusByPhase={streetlightStatusByPhase}
                         />
                     </BasicModal>
                 </Container>
@@ -343,6 +349,9 @@ const mapStateToProps = state => {
         pillarId: state.FeederPillarDetails.pillarId,
         feederPillarMetricCharts: state.FeederPillarDetails.feederPillarMetricCharts,
         loadingFeederPillarMetricChart: state.FeederPillarDetails.loadingFeederPillarMetricChart,
+        streetlightStatusChartOptions: state.FeederPillarDetails.streetlightStatusChartOptions,
+        streetlightStatusChartSeries: state.FeederPillarDetails.streetlightStatusChartSeries,
+        streetlightStatusByPhase: state.FeederPillarDetails.streetlightStatusByPhase,
         loadingRoadDetails: state.RoadDetails.loadingRoadDetails,
     }
 }

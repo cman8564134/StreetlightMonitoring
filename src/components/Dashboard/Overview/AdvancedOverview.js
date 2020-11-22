@@ -296,6 +296,7 @@ const AdvancedOverview = ( props ) => {
                                 subheading={'Uptime (' + highlightValues.uptime_percentage +'%)'}
                                 value={`${highlightValues.total_active_streetlights}/${highlightValues.total_streetlights} Active`}
                                 loading={loadingHighlights}
+                                status="success"
                             />
                         </Col>
                         <Col md="12" lg="4" xl="4">

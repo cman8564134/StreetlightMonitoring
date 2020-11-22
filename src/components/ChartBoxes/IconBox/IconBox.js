@@ -11,10 +11,14 @@ const IconBox = ( props ) => {
         loading,
         suffix,
         prefix,
-        font
+        font,
+        value2,
+        prefix2,
+        suffix2
     } = props;
 
-    let widgetValue = <Loader/>
+    let widgetValue = <Loader/>;
+    let widgetValue2 = null;
 
     let widgetValueClassName = "widget-numbers";
 
@@ -29,6 +33,13 @@ const IconBox = ( props ) => {
             </div>
         );
         
+        if(value2) {
+            widgetValue2 = (
+                <div className={widgetValueClassName}>
+                    <span className="font-size-md">{prefix2}</span>{value2}<span className="font-size-md">{suffix2}</span>
+                </div>
+            );  
+        }
     }
 
     return (
@@ -43,6 +54,10 @@ const IconBox = ( props ) => {
                         {header}
                     </div>
                     {widgetValue}
+                    
+                    {widgetValue2}
+                    
+                    
                 </div>
             </div>
             <div className="divider m-0 d-md-none d-sm-block"/>

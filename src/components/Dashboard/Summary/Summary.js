@@ -58,11 +58,23 @@ const Summary = ( props ) => {
                                 trailColor="#cceff5"
                                 color="#0bb3cd"
                                 subheading={"Uptime (" + values.uptime_percentage +"%)"}
-                                value={`${values.total_active_streetlights}/${values.total_streetlights} Active`}
+                                value={`${values.total_active_streetlights} Active`}
                                 loading={loadingHighlights}
+                                status="success"
                             />
                         </Col>
                         <Col md="6" lg="6">
+                            <LeftProgressCircle 
+                                percent={values.downtime_percentage}
+                                trailColor="#cceff5"
+                                color="#0bb3cd"
+                                subheading={"Downtime (" + values.downtime_percentage +"%)"}
+                                value={`${values.total_inactive_streetlights} Inactive`}
+                                loading={loadingHighlights}
+                                status="error"
+                            />
+                        </Col>
+                        {/* <Col md="6" lg="6">
                             <LeftLiquidGaugeCard 
                                 gaugePercentage={50}
                                 startColor={liquidGaugeStartColor}
@@ -73,7 +85,7 @@ const Summary = ( props ) => {
                                 radius={radius}
                                 suffix='KG'
                             />
-                        </Col>
+                        </Col> */}
                         <Col md="12" lg="12">
                             <DataTable 
                                 data={concessions}

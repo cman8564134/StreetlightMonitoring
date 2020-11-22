@@ -89,13 +89,15 @@ export const fetchFeederPillarDetailsStart = () => {
     }
 }
 
-export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsData) => {
+export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsData, streetlightStatus, radialBarChartData) => {
     return {
         type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_SUCCESS,
         loading: false,
         feederPillar: feederPillar,
         pillarId: pillarId,
-        chartsData: chartsData
+        chartsData: chartsData,
+        streetlightStatus: streetlightStatus,
+        radialBarChartData: radialBarChartData
     }
 }
 
@@ -115,7 +117,7 @@ export const fetchFeederPillarDetails =  (params) => {
         axios.post('/getFeederPillarDetails', params)
         .then(response => {
             const data = response.data;
-            dispatch(fetchFeederPillarDetailsSuccess(data.feederPillar, params.feederPillarId, data.chartsData));
+            dispatch(fetchFeederPillarDetailsSuccess(data.feederPillar, params.feederPillarId, data.chartsData, data.streetlightStatusByPhase, data.radialBarChartData));
         })
         .catch(error => {
             console.log(error);
