@@ -15,7 +15,7 @@ import Layout from '../../hoc/Layout/Layout';
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
 import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import CostBreakdown from '../../components/ElectricityBilling/CostBreakdown/CostBreakdown';
-import Accordion from "../../components/Accordion/Accordion";
+import AccordionDataTable from "../../components/Accordions/AccordionDataTable/AccordionDataTable";
 import DataTable from '../../components/Tables/DataTable/DataTable';
 import BasicModal from '../../components/Modal/BasicModal/BasicModal';
 import BreakdownModal from '../../components/ElectricityBilling/BreakdownModal/BreakdownModal';
@@ -279,12 +279,19 @@ const ElectricityBilling = ( props ) => {
                         totalBillAmount={totalBillAmount}
                     />
 
-                    <Accordion 
+                    <AccordionDataTable 
                         accordions={accordions}
                         toggleAccordion={toggleAccordion}
-                        tableData={costBySectionTableData}
-                        tableColumns={costBySectionTableColumns}
-                        loadingTable={loadingCostByLevelTableData}
+                        accordionBody={
+                            <DataTable 
+                                data={costBySectionTableData}
+                                columns={costBySectionTableColumns}
+                                pageSize={10}
+                                header={null}
+                                filterable
+                                loading={loadingCostByLevelTableData}
+                            />
+                        }
                     />
 
                     <BasicModal 

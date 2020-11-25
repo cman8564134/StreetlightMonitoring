@@ -20,10 +20,10 @@ const initialState = {
     weatherForecasts: [],
     realTimePowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
     dailyPowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-    monthlyPowerUsageChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
+    monthlyPowerUsageChartData: {loading: false, chart_options: updateObject(baseChartOptions(), {xaxis: {}}), chart_series: baseChartSeries()},
     realTimeElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
     dailyElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()},
-    monthlyElectricityBillChartData: {loading: false, chart_options: baseChartOptions(), chart_series: baseChartSeries()}
+    monthlyElectricityBillChartData: {loading: false, chart_options: updateObject(baseChartOptions(), {xaxis: {}}), chart_series: baseChartSeries()}
 };
 
 const fetchConcessionDetailsStart = ( state, action ) => {

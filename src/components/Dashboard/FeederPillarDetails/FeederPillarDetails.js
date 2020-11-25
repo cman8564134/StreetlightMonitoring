@@ -16,6 +16,7 @@ import HighlightsBox from '../../Dashboard/HighlightsBox/HighlightsBox';
 import Loader from '../../Loader/BallClipRotateMultiple/BallClipRotateMultiple';
 import MetricCharts from '../../Dashboard/MetricCharts/MetricCharts';
 import StreetlightStatusChartBox from './StreetlightStatusChartBox/StreetlightStatusChartBox';
+import Accordion from '../../Accordions/Accordion/Accordion';
 
 const FeederPillarDetails = ( props ) => {
     const {
@@ -66,6 +67,7 @@ const FeederPillarDetails = ( props ) => {
         {header: "THDPY", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp2", prefix: "", suffix: ""},
         {header: "THDPB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp3", prefix: "", suffix: ""},
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
+        {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
     ]
 
     let doorStatusClassNames = "badge badge-success";
@@ -118,6 +120,7 @@ const FeederPillarDetails = ( props ) => {
                                     chartType="radialBar"
                                     chartWidth={250}
                                     chartHeight={300}
+                                    total_streetlights={total_streetlights}
                                     totalActiveStreetlights={total_active_streetlights}
                                     totalInactiveStreetlights={total_inactive_streetlights}
                                     streetlightStatusByPhase={streetlightStatusByPhase}

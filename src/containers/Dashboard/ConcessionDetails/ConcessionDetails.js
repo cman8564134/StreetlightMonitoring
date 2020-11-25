@@ -56,7 +56,7 @@ const ConcessionDetails = ( props ) => {
         const concessionId = props.match.params.concessionId;
 
         let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
-        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 1440), 'y-m-d h:m:i');
         let isRefresh = false; 
         
         const realTimePowerUsageChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_START;
@@ -97,7 +97,7 @@ const ConcessionDetails = ( props ) => {
 
         const interval = setInterval(() => {
             dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
-            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 1440), 'y-m-d h:m:i');
             isRefresh = true; 
     
             const realTimePowerUsageChartStartType = actionTypes.FETCH_CONCESSION_REAL_TIME_POWER_USAGE_CHART_START;

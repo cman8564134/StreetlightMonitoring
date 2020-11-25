@@ -40,7 +40,7 @@ const SubsectionDetails = ( props ) => {
         const subsectionId = props.match.params.subsectionId;
         let isRefresh = false; 
         let dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
-        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+        let dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 1440), 'y-m-d h:m:i');
         const baseMetricChartParams = {
             isRefresh: isRefresh, 
             dateTimeFrom: dateFrom, 
@@ -64,7 +64,7 @@ const SubsectionDetails = ( props ) => {
         
         const interval = setInterval(() => {
             dateTo = getCurrentDateTimeInDBFormat("y-m-d h:m:i");
-            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 10), 'y-m-d h:m:i');
+            dateFrom = formatDateByDateFormat(subtractMinuteFromDateTime(dateTo, 1440), 'y-m-d h:m:i');
             isRefresh = true;
             const baseRefreshMetricChartParams = updateObject(baseMetricChartParams, {isRefresh: isRefresh, dateTimeFrom: dateFrom, dateTimeTo: dateTo});
             

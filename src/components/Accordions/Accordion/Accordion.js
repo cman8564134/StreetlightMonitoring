@@ -6,15 +6,11 @@ import {
     Collapse
 } from 'reactstrap';
 
-import DataTable from '../Tables/DataTable/DataTable';
-
 const Accordion = ( props ) => {
     const {
         accordions,
         toggleAccordion,
-        tableData,
-        tableColumns,
-        loadingTable
+        accordionBody
     } = props;
 
     return (
@@ -44,14 +40,7 @@ const Accordion = ( props ) => {
                                 <Collapse isOpen={accordion.config.isOpen} data-parent="#accordion"
                                             id={"collapse" + key} aria-labelledby={"heading" + key}>
                                     <CardBody>
-                                        <DataTable 
-                                            data={tableData}
-                                            columns={tableColumns}
-                                            pageSize={10}
-                                            header={null}
-                                            filterable
-                                            loading={loadingTable}
-                                        />
+                                        {accordion.children}
                                     </CardBody>
                                 </Collapse>
                             </Card>

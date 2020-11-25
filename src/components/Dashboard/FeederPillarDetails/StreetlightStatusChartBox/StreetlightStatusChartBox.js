@@ -30,7 +30,8 @@ const StreetlightStatusChartBox = ( props ) => {
         chartWidth,
         totalActiveStreetlights,
         totalInactiveStreetlights,
-        streetlightStatusByPhase
+        streetlightStatusByPhase,
+        total_streetlights
     } = props;
 
     let details = <Loader/>
@@ -49,9 +50,23 @@ const StreetlightStatusChartBox = ( props ) => {
                                     width={chartWidth}
                                     height={chartHeight}
                                 />
+                                <div className="widget-subheading text-secondary">
+                                    *Hover the mouse over the chart above to see percentage of active streetlights.
+                                </div>
                             </div>
                         </Col>
                         <Col md="8">
+                        <div className="widget-chart">
+                                <div className="widget-chart-content">
+                                    <div className="widget-numbers mt-0 text-primary">
+                                            {total_streetlights}
+                                    </div>
+                                    <div className="widget-subheading">
+                                        TOTAL STREETLIGHTS
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="divider mt-0 mb-0 mr-2"/>
                             <div className="widget-chart">
                                 <div className="widget-chart-content">
                                     <div className="widget-numbers mt-0 text-success">

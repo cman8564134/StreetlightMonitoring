@@ -401,7 +401,7 @@ export const baseChartOptions = () => {
             size: 0
         },
         xaxis: {
-            // type:'datetime'
+            type:'datetime'
         },
         yaxis: {
             title: {
@@ -420,6 +420,9 @@ export const baseChartOptions = () => {
                     return y;
     
                 }
+            },
+            x: {
+                format: 'dd MMM yyyy HH:mm:yy'
             }
         }
     }
@@ -486,7 +489,7 @@ export const updateCharts = (metricCharts, chartsData) => {
 }
 
 export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle, chartOptions) => {
-    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType);
+    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, true);
 
     const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions);
     const updatedChart = updateObject(metricCharts[0][chartKey], {
@@ -498,7 +501,8 @@ export const updateChart = (metricCharts, chartKey, chartLabels, chartData, char
 }
 
 export const updateChartObject = (metricChart, chartLabels, chartData, chartSeries, chartType, chartTitle) => {
-    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType);
+    const isXAxisDateTime = metricChart.chart_options.xaxis.hasOwnProperty('type');
+    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, isXAxisDateTime);
 
     const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, metricChart.chart_options);
     const updatedChart = updateObject(metricChart, {
@@ -509,25 +513,46 @@ export const updateChartObject = (metricChart, chartLabels, chartData, chartSeri
     return updatedChart;
 }
 
-export const generateChartSeriesArray = (chartData, chartSeries, chartType) => {
+export const generateChartSeriesArray = (chartData, chartSeries, chartType, chartLabels, isXAxisDateTime) => {
     const chartSeriesArray = [];
     
     for(let key in chartData){
-        const chartSeriesObject = generateChartSeriesObject(chartSeries[key], chartType, chartData[key]);
+        const chartSeriesObject = generateChartSeriesObject(chartSeries[key], chartType, chartData[key], chartLabels, isXAxisDateTime);
         chartSeriesArray.push(chartSeriesObject);
     }
 
     return  chartSeriesArray;
 }
 
-export const generateChartSeriesObject = (name, type, data) => {
+export const generateChartSeriesObject = (name, type, data, labels, isXAxisDateTime) => {
+    let chartSeriesData = data; 
+
+    if(isXAxisDateTime){
+        chartSeriesData = generateChartSeriesDateTimeDataArray(labels, data);
+    }
+
     const chartSeriesObject = {
         name: name,
         type: type,
-        data: data
+        // data: data
+        data: chartSeriesData
     }
 
     return chartSeriesObject;
+}
+
+export const generateChartSeriesDateTimeDataArray = (labels, data) => {
+    const dataCount = data.length;
+    const seriesData = [];
+    let i = 0;
+    while(i < dataCount){
+        const dateTime = new Date(labels[i]);
+        dateTime.setTime(dateTime.getTime() + (/* UTC+8 */ 8) * 60 * 60 * 1000);
+        seriesData.push([dateTime.getTime(), data[i]]);
+        i++;
+    }
+
+    return seriesData;
 }
 
 export const generateChartOptions = (chartTitle, chartLabels, chartOptions)  => {
@@ -548,7 +573,7 @@ export const generateChartObject = (chartsData, chartTitle, chartType) => {
         const chartData = chartsData[key];
         const chartKey = Object.keys(chartData)[0];
         const chart = chartData[chartKey];
-        const chartSeriesArray = generateChartSeriesArray(chart.data, chart.series, chartType);
+        const chartSeriesArray = generateChartSeriesArray(chart.data, chart.series, chartType, chart.labels, true);
         const updatedChartOptions = generateChartOptions(chartTitle, chart.labels, baseOptions);
         charts = updateObject(charts, {[chartKey]: {chart_options: updatedChartOptions, chart_series: chartSeriesArray}})
     }
