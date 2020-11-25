@@ -28,8 +28,7 @@ const FeederPillarDetails = ( props ) => {
         streetlightStatusChartOptions,
         streetlightStatusChartSeries,
         streetlightStatusByPhase,
-        costBreakdownFormElementArray,
-        totalBillAmount
+        electricityBill
     } = props;
 
 
@@ -71,6 +70,15 @@ const FeederPillarDetails = ( props ) => {
         {header: "THDPB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp3", prefix: "", suffix: ""},
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
         {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
+    ]
+    
+    const electricityBillCostBreakdown = [
+        {header: "Consumption", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-power text-dark opacity-8" , accessor: "consumption", prefix: "", suffix: ""},
+        {header: "Cost", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "cost", prefix: "", suffix: ""},
+        {header: "ICPT", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "icpt", prefix: "", suffix: ""},
+        {header: "Daily Usage", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "current_month_usage", prefix: "", suffix: ""},
+        {header: "GST", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "gst", prefix: "", suffix: ""},
+        {header: "Feed-In Tariff", iconBgClassName: "icon-wrapper-bg opacity-6 bg-info", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "feed_in_tariff", prefix: "", suffix: ""},
     ]
 
     let doorStatusClassNames = "badge badge-success";
@@ -206,8 +214,8 @@ const FeederPillarDetails = ( props ) => {
                                     <ElectricityCostBreakdownAccordion
                                         accordions={accordions}
                                         toggleAccordion={toggleAccordion}
-                                        costBreakdownFormElementArray={costBreakdownFormElementArray}
-                                        totalBillAmount={totalBillAmount}
+                                        electricityBillCostBreakdownHeader={electricityBillCostBreakdown}
+                                        electricityBillCostBreakdown={electricityBill}
                                     />
 
                                     <MetricCharts 

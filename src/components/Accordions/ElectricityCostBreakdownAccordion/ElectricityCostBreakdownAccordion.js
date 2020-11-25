@@ -3,8 +3,10 @@ import React from 'react';
 import {
     Button,
     Card, CardBody, CardHeader,
+    Col,
     Collapse
 } from 'reactstrap';
+import HighlightsBox from '../../Dashboard/HighlightsBox/HighlightsBox';
 
 import ElectricityCostBreakdown from '../../ElectricityBilling/CostBreakdown/CostBreakdown';
 
@@ -12,8 +14,8 @@ const ElectricityCostBreakdownAccordion = ( props ) => {
     const {
         accordions,
         toggleAccordion,
-        costBreakdownFormElementArray,
-        totalBillAmount
+        electricityBillCostBreakdownHeader,
+        electricityBillCostBreakdown
     } = props;
 
     return (
@@ -47,10 +49,30 @@ const ElectricityCostBreakdownAccordion = ( props ) => {
                                 <Collapse isOpen={config.isOpen} data-parent="#accordion"
                                             id={"collapse" + key} aria-labelledby={"heading" + key}>
                                     <CardBody>
-                                        <ElectricityCostBreakdown
+                                        {/* <ElectricityCostBreakdown
                                             formElementArray={costBreakdownFormElementArray[id]}
                                             heading="Cost Breakdown"
                                             totalBillAmount={totalBillAmount[id]}
+                                        /> */}
+
+                                        <Col md="12">
+                                            <div className="widget-chart">
+                                                <div className="widget-chart-content">
+                                                    <div className="widget-numbers mt-0 text-primary">
+                                                            RM {electricityBillCostBreakdown.total_bill_amount}
+                                                    </div>
+                                                    <div className="widget-subheading">
+                                                        TOTAL DAILY ELECTRICITY BILL AMOUNT
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        
+
+                                        <HighlightsBox
+                                            highlightsHeaders={electricityBillCostBreakdownHeader}
+                                            values={electricityBillCostBreakdown}
+                                            loading={false}
                                         />
                                     </CardBody>
                                 </Collapse>
