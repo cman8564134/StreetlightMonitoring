@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import {
     Card,
@@ -16,7 +16,8 @@ import HighlightsBox from '../../Dashboard/HighlightsBox/HighlightsBox';
 import Loader from '../../Loader/BallClipRotateMultiple/BallClipRotateMultiple';
 import MetricCharts from '../../Dashboard/MetricCharts/MetricCharts';
 import StreetlightStatusChartBox from './StreetlightStatusChartBox/StreetlightStatusChartBox';
-import Accordion from '../../Accordions/Accordion/Accordion';
+import ElectricityCostBreakdownAccordion from '../../Accordions/ElectricityCostBreakdownAccordion/ElectricityCostBreakdownAccordion';
+import { updateObject } from '../../../shared/utility';
 
 const FeederPillarDetails = ( props ) => {
     const {
@@ -26,7 +27,9 @@ const FeederPillarDetails = ( props ) => {
         loadingMetricCharts,
         streetlightStatusChartOptions,
         streetlightStatusChartSeries,
-        streetlightStatusByPhase
+        streetlightStatusByPhase,
+        costBreakdownFormElementArray,
+        totalBillAmount
     } = props;
 
 
@@ -74,6 +77,49 @@ const FeederPillarDetails = ( props ) => {
     
     if(door_status === "OPEN"){
         doorStatusClassNames = "badge badge-danger";
+    }
+
+    const [accordions, setAccordions] = useState([
+        {
+            dailyElectricityBill: {
+                heading: "Daily Electricity Bill", 
+                isOpen: false,
+            }
+        }
+    ]);
+
+    const toggleAccordion = (index, id) => {
+        const prevState = accordions;
+        const updatedAccordions = prevState.map((objects, key) => {
+            let updatedAccordionObjects = objects;
+            if(key === index){
+                const accordionArray = [];
+                for(let id in objects){
+                    accordionArray.push({
+                        id: id,
+                        config: objects[id]
+                    })
+                }
+
+                accordionArray.map((accordion) => {
+                    let isOpen = false;
+
+                    if(accordion.id === id){
+                        isOpen = !accordion.config.isOpen;
+                    }
+                    const updatedIsOpen = updateObject(objects[accordion.id], {isOpen: isOpen});
+                    updatedAccordionObjects = updateObject(updatedAccordionObjects, {[accordion.id]: updatedIsOpen});
+
+                    const updatedAccordion = updateObject(accordion.config, {isOpen: isOpen})
+                    const updatedConfig = updateObject(accordion, {config: updatedAccordion});
+                    return updatedConfig;
+                })
+            }
+
+            return updatedAccordionObjects;
+            
+        });
+        setAccordions(updatedAccordions);
     }
 
     const radius = 107;
@@ -155,6 +201,13 @@ const FeederPillarDetails = ( props ) => {
                                         highlightsHeaders={highlightsHeaders}
                                         values={feederPillar}
                                         loading={false}
+                                    />
+
+                                    <ElectricityCostBreakdownAccordion
+                                        accordions={accordions}
+                                        toggleAccordion={toggleAccordion}
+                                        costBreakdownFormElementArray={costBreakdownFormElementArray}
+                                        totalBillAmount={totalBillAmount}
                                     />
 
                                     <MetricCharts 

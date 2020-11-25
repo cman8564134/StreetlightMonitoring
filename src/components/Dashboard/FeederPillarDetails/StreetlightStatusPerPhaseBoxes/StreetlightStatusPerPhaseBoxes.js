@@ -18,7 +18,7 @@ const StreetlightStatusPerPhaseBoxes = ( props ) => {
 
     return (
         <Card className="main-card mb-3">
-            {statusByPhase.map((statuses) => {
+            {statusByPhase.map((statuses, index) => {
                 const statusArray = [];
                 for (let phase in statuses) {
                     statusArray.push({
@@ -28,7 +28,7 @@ const StreetlightStatusPerPhaseBoxes = ( props ) => {
                 }
                 
                 return (
-                    <Row className="no-gutters">
+                    <Row key={index} className="no-gutters">
                         {statusArray.map((status, key) => {
                             const {
                                 active,

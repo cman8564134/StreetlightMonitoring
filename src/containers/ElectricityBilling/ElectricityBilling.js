@@ -15,7 +15,7 @@ import Layout from '../../hoc/Layout/Layout';
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
 import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import CostBreakdown from '../../components/ElectricityBilling/CostBreakdown/CostBreakdown';
-import AccordionDataTable from "../../components/Accordions/AccordionDataTable/AccordionDataTable";
+import AccordionDataTable from "../../components/Accordions/DataTableAccordion/DataTableAccordion";
 import DataTable from '../../components/Tables/DataTable/DataTable';
 import BasicModal from '../../components/Modal/BasicModal/BasicModal';
 import BreakdownModal from '../../components/ElectricityBilling/BreakdownModal/BreakdownModal';

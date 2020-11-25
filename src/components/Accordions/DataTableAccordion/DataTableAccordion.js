@@ -6,7 +6,7 @@ import {
     Collapse
 } from 'reactstrap';
 
-const Accordion = ( props ) => {
+const DataTableAccordion = ( props ) => {
     const {
         accordions,
         toggleAccordion,
@@ -40,7 +40,7 @@ const Accordion = ( props ) => {
                                 <Collapse isOpen={accordion.config.isOpen} data-parent="#accordion"
                                             id={"collapse" + key} aria-labelledby={"heading" + key}>
                                     <CardBody>
-                                        {accordion.children}
+                                        {accordionBody}
                                     </CardBody>
                                 </Collapse>
                             </Card>
@@ -52,4 +52,4 @@ const Accordion = ( props ) => {
     );
 }
 
-export default Accordion;
+export default DataTableAccordion;

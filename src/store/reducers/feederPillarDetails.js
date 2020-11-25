@@ -9,7 +9,6 @@ import {
 
  import {darkRYB} from '../../shared/colors';
 
-
 const initialState = {
     feederPillar: {},
     pillarId: '',
@@ -33,7 +32,112 @@ const initialState = {
     loadingFeederPillarDetails: false,
     streetlightStatusChartOptions: baseRadialBarChartOptions(),
     streetlightStatusChartSeries: [], 
-    streetlightStatusByPhase: []
+    streetlightStatusByPhase: [],
+
+    costBreakdownFormElementArray:{
+        dailyElectricityBill: [
+            {
+                consumption: {
+                    elementLabel: 'Consumption (kWh)',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                cost: {
+                    elementLabel: 'Cost = Consumption * 0.192',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
+            },
+            {
+                icpt: {
+                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost * 0.0152',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                current_month_usage: {
+                    elementLabel: 'Current Month Usage = Cost - ICPT',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
+
+            },
+            {
+                gst: {
+                    elementLabel: 'GST = Current Month Usage * 6%',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                feed_in_tariff: {
+                    elementLabel: 'Feed-In Tariff  = Cost * 1.6%',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
+            }
+        ],
+    },
+    totalBillAmount: {
+        dailyElectricityBill: 0
+    }
 };
 
 const fetchFeederPillarByFeederPillarIdStart = ( state, action ) => {
@@ -89,12 +193,35 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
     const radialBarFormatter = (w) => {
         return feederPillar.total_streetlights
     };
+    const electricityBill = action.electricityBill;
+
     const updatedRadialTotalOption = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar.dataLabels.total, {formatter: radialBarFormatter});
     const updatedRadialDataLabels = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar.dataLabels, {total: updatedRadialTotalOption});
     const updatedRadialRadialBar = updateObject(state.streetlightStatusChartOptions.plotOptions.radialBar, {dataLabels: updatedRadialDataLabels});
     const updatedRadialPlotOptions = updateObject(state.streetlightStatusChartOptions.plotOptions, {radialBar: updatedRadialRadialBar});
     const updatedMetricCharts = updateCharts(state.feederPillarMetricCharts, action.chartsData);
     const updatedStreetlightStatusChartOptions = updateObject(state.streetlightStatusChartOptions, {labels: radialBarChartData.labels, plotOptions: updatedRadialPlotOptions, colors:['#c83953', '#f2b227', '#1d94f5']});
+
+    // UPDATE costBreakdownFormElementArray state
+    let updatedCostBreakdownFormElementArray = state.costBreakdownFormElementArray;
+    let updatedTotalBillAmount = state.totalBillAmount;
+    for (const [formElementArrayId, formElementArray] of Object.entries(state.costBreakdownFormElementArray)) {
+        let updatedFormElementArray = formElementArray;
+        formElementArray.forEach((formElementObjects, index, array) => {
+            let updatedFormElementObjects = formElementObjects;
+            
+            for(const [objectId, property] of Object.entries(formElementObjects)){
+                const updatedProperty = updateObject(property, {value: electricityBill[objectId]});
+                updatedFormElementObjects = updateObject(updatedFormElementObjects, {[objectId]: updatedProperty});
+            }
+            updatedFormElementArray = updateObject(updatedFormElementArray, {[index]: updatedFormElementObjects});
+        });
+        updatedCostBreakdownFormElementArray = updateObject(updatedCostBreakdownFormElementArray, {[formElementArrayId]: Object.values(updatedFormElementArray)});
+        updatedTotalBillAmount = updateObject(updatedTotalBillAmount, {[formElementArrayId]: electricityBill.total_bill_amount});
+    };
+
+    
+
 
     return updateObject(state, {
         loadingFeederPillarDetails: action.loading,
@@ -103,7 +230,9 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
         pillarId: action.pillarId,
         streetlightStatusChartOptions: updatedStreetlightStatusChartOptions,
         streetlightStatusChartSeries: radialBarChartData.series,
-        streetlightStatusByPhase: action.streetlightStatus
+        streetlightStatusByPhase: action.streetlightStatus,
+        costBreakdownFormElementArray: updatedCostBreakdownFormElementArray,
+        totalBillAmount: updatedTotalBillAmount
     });
 }
 

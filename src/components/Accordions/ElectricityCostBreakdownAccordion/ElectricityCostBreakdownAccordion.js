@@ -6,11 +6,14 @@ import {
     Collapse
 } from 'reactstrap';
 
-const Accordion = ( props ) => {
+import ElectricityCostBreakdown from '../../ElectricityBilling/CostBreakdown/CostBreakdown';
+
+const ElectricityCostBreakdownAccordion = ( props ) => {
     const {
         accordions,
         toggleAccordion,
-        accordionBody
+        costBreakdownFormElementArray,
+        totalBillAmount
     } = props;
 
     return (
@@ -27,20 +30,28 @@ const Accordion = ( props ) => {
 
                 return (
                     accordionArray.map((accordion, key) => {
+                        const {
+                            id,
+                            config
+                        } = accordion;
                         return (
                             <Card key={key}>
                                 <CardHeader id={"heading" + key}>
                                     <Button block color="link" className="text-left m-0 p-0"
-                                            onClick={() => toggleAccordion(index, accordion.id)}
-                                            aria-expanded={accordion.config.isOpen}
+                                            onClick={() => toggleAccordion(index, id)}
+                                            aria-expanded={config.isOpen}
                                             aria-controls={"collapse" + key}>
-                                        <h5 className="m-0 p-0">{accordion.config.heading}</h5>
+                                        <h5 className="m-0 p-0">{config.heading}</h5>
                                     </Button>
                                 </CardHeader>
-                                <Collapse isOpen={accordion.config.isOpen} data-parent="#accordion"
+                                <Collapse isOpen={config.isOpen} data-parent="#accordion"
                                             id={"collapse" + key} aria-labelledby={"heading" + key}>
                                     <CardBody>
-                                        {accordionBody}
+                                        <ElectricityCostBreakdown
+                                            formElementArray={costBreakdownFormElementArray[id]}
+                                            heading="Cost Breakdown"
+                                            totalBillAmount={totalBillAmount[id]}
+                                        />
                                     </CardBody>
                                 </Collapse>
                             </Card>
@@ -52,4 +63,4 @@ const Accordion = ( props ) => {
     );
 }
 
-export default Accordion;
+export default ElectricityCostBreakdownAccordion;

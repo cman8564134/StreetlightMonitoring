@@ -45,7 +45,9 @@ const RoadDetails = ( props ) => {
         loadingRoadDetails,
         streetlightStatusChartOptions,
         streetlightStatusChartSeries,
-        streetlightStatusByPhase
+        streetlightStatusByPhase,
+        costBreakdownFormElementArray,
+        totalBillAmount
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
@@ -328,6 +330,8 @@ const RoadDetails = ( props ) => {
                             streetlightStatusChartOptions={streetlightStatusChartOptions}
                             streetlightStatusChartSeries={streetlightStatusChartSeries}
                             streetlightStatusByPhase={streetlightStatusByPhase}
+                            costBreakdownFormElementArray={costBreakdownFormElementArray}
+                            totalBillAmount={totalBillAmount}
                         />
                     </BasicModal>
                 </Container>
@@ -353,6 +357,8 @@ const mapStateToProps = state => {
         streetlightStatusChartSeries: state.FeederPillarDetails.streetlightStatusChartSeries,
         streetlightStatusByPhase: state.FeederPillarDetails.streetlightStatusByPhase,
         loadingRoadDetails: state.RoadDetails.loadingRoadDetails,
+        costBreakdownFormElementArray: state.FeederPillarDetails.costBreakdownFormElementArray,
+        totalBillAmount: state.FeederPillarDetails.totalBillAmount,
     }
 }
 

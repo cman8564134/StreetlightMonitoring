@@ -10,7 +10,7 @@ import {
 
 import FormContent from '../../Form/FormContent/FormContent';
 
-const Form = ( props ) => {
+const CostBreakdown = ( props ) => {
     const {
         formElementArray,        
         heading,
@@ -54,4 +54,4 @@ const Form = ( props ) => {
     )
 }
 
-export default Form;
+export default CostBreakdown;

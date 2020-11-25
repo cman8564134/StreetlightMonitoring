@@ -89,7 +89,7 @@ export const fetchFeederPillarDetailsStart = () => {
     }
 }
 
-export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsData, streetlightStatus, radialBarChartData) => {
+export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsData, streetlightStatus, radialBarChartData, electricityBill) => {
     return {
         type: actionTypes.FETCH_FEEDER_PILLAR_DETAILS_SUCCESS,
         loading: false,
@@ -97,7 +97,8 @@ export const fetchFeederPillarDetailsSuccess = (feederPillar, pillarId, chartsDa
         pillarId: pillarId,
         chartsData: chartsData,
         streetlightStatus: streetlightStatus,
-        radialBarChartData: radialBarChartData
+        radialBarChartData: radialBarChartData,
+        electricityBill: electricityBill
     }
 }
 
@@ -117,7 +118,17 @@ export const fetchFeederPillarDetails =  (params) => {
         axios.post('/getFeederPillarDetails', params)
         .then(response => {
             const data = response.data;
-            dispatch(fetchFeederPillarDetailsSuccess(data.feederPillar, params.feederPillarId, data.chartsData, data.streetlightStatusByPhase, data.radialBarChartData));
+            const {
+                feederPillar,
+                chartsData,
+                streetlightStatusByPhase,
+                radialBarChartData,
+                electricityBill
+            } = data;
+
+            
+
+            dispatch(fetchFeederPillarDetailsSuccess(feederPillar, params.feederPillarId, chartsData, streetlightStatusByPhase, radialBarChartData, electricityBill));
         })
         .catch(error => {
             console.log(error);
