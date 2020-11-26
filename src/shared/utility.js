@@ -394,7 +394,8 @@ export const baseChartOptions = () => {
             stacked: false,
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 1
         },
         labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
         markers: {
@@ -407,7 +408,9 @@ export const baseChartOptions = () => {
             title: {
                 text: 'Power Usage',
             },
-            min: 0
+            min: (min) => {
+                return min;
+            }
         },
         tooltip: {
             shared: true,
@@ -491,7 +494,7 @@ export const updateCharts = (metricCharts, chartsData) => {
 export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle, chartOptions) => {
     const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, true);
 
-    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions);
+    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions, chartSeries);
     const updatedChart = updateObject(metricCharts[0][chartKey], {
         chart_options: updatedChartOptions, 
         chart_series: chartSeriesArray
@@ -504,7 +507,7 @@ export const updateChartObject = (metricChart, chartLabels, chartData, chartSeri
     const isXAxisDateTime = metricChart.chart_options.xaxis.hasOwnProperty('type');
     const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, isXAxisDateTime);
 
-    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, metricChart.chart_options);
+    const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, metricChart.chart_options, chartSeries);
     const updatedChart = updateObject(metricChart, {
         chart_options: updatedChartOptions, 
         chart_series: chartSeriesArray
@@ -555,12 +558,22 @@ export const generateChartSeriesDateTimeDataArray = (labels, data) => {
     return seriesData;
 }
 
-export const generateChartOptions = (chartTitle, chartLabels, chartOptions)  => {
+export const generateChartOptions = (chartTitle, chartLabels, chartOptions, chartSeries)  => {
     const options = chartOptions;
+
+    // SET Y-AXIS TITLE
     const updatedYAxisTitle = updateObject(options.yaxis.title, {text: chartTitle})
     const updatedYAxis = updateObject(options.yaxis, {title: updatedYAxisTitle})
+    
+    let updatedOptions = {labels: chartLabels, yaxis: updatedYAxis};
 
-    const updatedChartOptions = updateObject(options, {labels: chartLabels, yaxis: updatedYAxis});
+    // // SET STROKE WIDTH FOR MULTI-LINE GRAPH
+    // if(chartSeries.length > 1){
+    //     const updatedStrokeWidth = updateObject(options.stroke, {width: 1});
+    //     updatedOptions = updateObject(updatedOptions, {stroke: updatedStrokeWidth});
+    // }
+
+    const updatedChartOptions = updateObject(options, updatedOptions);
 
     return updatedChartOptions;
 }
@@ -574,7 +587,7 @@ export const generateChartObject = (chartsData, chartTitle, chartType) => {
         const chartKey = Object.keys(chartData)[0];
         const chart = chartData[chartKey];
         const chartSeriesArray = generateChartSeriesArray(chart.data, chart.series, chartType, chart.labels, true);
-        const updatedChartOptions = generateChartOptions(chartTitle, chart.labels, baseOptions);
+        const updatedChartOptions = generateChartOptions(chartTitle, chart.labels, baseOptions, chart.series);
         charts = updateObject(charts, {[chartKey]: {chart_options: updatedChartOptions, chart_series: chartSeriesArray}})
     }
     
