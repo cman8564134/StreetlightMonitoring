@@ -33,112 +33,111 @@ const initialState = {
     streetlightStatusChartOptions: baseRadialBarChartOptions(),
     streetlightStatusChartSeries: [], 
     streetlightStatusByPhase: [],
-    electricityBill: {}
+    electricityBill: {},
+    costBreakdownFormElementArray:{
+        dailyElectricityBill: [
+            {
+                consumption: {
+                    elementLabel: 'Consumption (kWh)',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                cost: {
+                    elementLabel: 'Cost = Consumption * 0.192',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
+            },
+            {
+                icpt: {
+                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost * 0.0152',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                current_month_usage: {
+                    elementLabel: 'Daily Usage = Cost - ICPT',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
 
-    // costBreakdownFormElementArray:{
-    //     dailyElectricityBill: [
-    //         {
-    //             consumption: {
-    //                 elementLabel: 'Consumption (kWh)',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             },
-    //             cost: {
-    //                 elementLabel: 'Cost = Consumption * 0.192',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             }
-    //         },
-    //         {
-    //             icpt: {
-    //                 elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost * 0.0152',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             },
-    //             current_month_usage: {
-    //                 elementLabel: 'Daily Usage = Cost - ICPT',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             }
-
-    //         },
-    //         {
-    //             gst: {
-    //                 elementLabel: 'GST = Current Month Usage * 6%',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             },
-    //             feed_in_tariff: {
-    //                 elementLabel: 'Feed-In Tariff  = Cost * 1.6%',
-    //                 elementType: 'input',
-    //                 elementConfig: {
-    //                     type: "number",
-    //                     readonly: true
-    //                 },
-    //                 value: "",
-    //                 validation: {
-    //                     required: true
-    //                 },
-    //                 valid: true,
-    //                 touched: false,
-    //                 errorMessage: ''
-    //             }
-    //         }
-    //     ],
-    // },
-    // totalBillAmount: {
-    //     dailyElectricityBill: 0
-    // }
+            },
+            {
+                gst: {
+                    elementLabel: 'GST = Current Month Usage * 6%',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                },
+                feed_in_tariff: {
+                    elementLabel: 'Feed-In Tariff  = Cost * 1.6%',
+                    elementType: 'input',
+                    elementConfig: {
+                        type: "number",
+                        readonly: true
+                    },
+                    value: "",
+                    validation: {
+                        required: true
+                    },
+                    valid: true,
+                    touched: false,
+                    errorMessage: ''
+                }
+            }
+        ],
+    },
+    totalBillAmount: {
+        dailyElectricityBill: 0
+    }
 };
 
 const fetchFeederPillarByFeederPillarIdStart = ( state, action ) => {
@@ -204,22 +203,22 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
     const updatedStreetlightStatusChartOptions = updateObject(state.streetlightStatusChartOptions, {labels: radialBarChartData.labels, plotOptions: updatedRadialPlotOptions, colors:['#c83953', '#f2b227', '#1d94f5']});
 
     // UPDATE costBreakdownFormElementArray state
-    // let updatedCostBreakdownFormElementArray = state.costBreakdownFormElementArray;
-    // let updatedTotalBillAmount = state.totalBillAmount;
-    // for (const [formElementArrayId, formElementArray] of Object.entries(state.costBreakdownFormElementArray)) {
-    //     let updatedFormElementArray = formElementArray;
-    //     formElementArray.forEach((formElementObjects, index, array) => {
-    //         let updatedFormElementObjects = formElementObjects;
+    let updatedCostBreakdownFormElementArray = state.costBreakdownFormElementArray;
+    let updatedTotalBillAmount = state.totalBillAmount;
+    for (const [formElementArrayId, formElementArray] of Object.entries(state.costBreakdownFormElementArray)) {
+        let updatedFormElementArray = formElementArray;
+        formElementArray.forEach((formElementObjects, index, array) => {
+            let updatedFormElementObjects = formElementObjects;
             
-    //         for(const [objectId, property] of Object.entries(formElementObjects)){
-    //             const updatedProperty = updateObject(property, {value: electricityBill[objectId]});
-    //             updatedFormElementObjects = updateObject(updatedFormElementObjects, {[objectId]: updatedProperty});
-    //         }
-    //         updatedFormElementArray = updateObject(updatedFormElementArray, {[index]: updatedFormElementObjects});
-    //     });
-    //     updatedCostBreakdownFormElementArray = updateObject(updatedCostBreakdownFormElementArray, {[formElementArrayId]: Object.values(updatedFormElementArray)});
-    //     updatedTotalBillAmount = updateObject(updatedTotalBillAmount, {[formElementArrayId]: electricityBill.total_bill_amount});
-    // };
+            for(const [objectId, property] of Object.entries(formElementObjects)){
+                const updatedProperty = updateObject(property, {value: electricityBill[objectId]});
+                updatedFormElementObjects = updateObject(updatedFormElementObjects, {[objectId]: updatedProperty});
+            }
+            updatedFormElementArray = updateObject(updatedFormElementArray, {[index]: updatedFormElementObjects});
+        });
+        updatedCostBreakdownFormElementArray = updateObject(updatedCostBreakdownFormElementArray, {[formElementArrayId]: Object.values(updatedFormElementArray)});
+        updatedTotalBillAmount = updateObject(updatedTotalBillAmount, {[formElementArrayId]: electricityBill.total_bill_amount});
+    };
 
     
 
@@ -232,9 +231,9 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
         streetlightStatusChartOptions: updatedStreetlightStatusChartOptions,
         streetlightStatusChartSeries: radialBarChartData.series,
         streetlightStatusByPhase: action.streetlightStatus,
-        electricityBill: electricityBill
-        // costBreakdownFormElementArray: updatedCostBreakdownFormElementArray,
-        // totalBillAmount: updatedTotalBillAmount
+        electricityBill: electricityBill,
+        costBreakdownFormElementArray: updatedCostBreakdownFormElementArray,
+        totalBillAmount: updatedTotalBillAmount
     });
 }
 

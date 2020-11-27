@@ -14,8 +14,9 @@ const ElectricityCostBreakdownAccordion = ( props ) => {
     const {
         accordions,
         toggleAccordion,
-        electricityBillCostBreakdownHeader,
-        electricityBillCostBreakdown
+        costBreakdownFormElementArray,
+        totalBillAmount
+
     } = props;
 
     return (
@@ -49,13 +50,13 @@ const ElectricityCostBreakdownAccordion = ( props ) => {
                                 <Collapse isOpen={config.isOpen} data-parent="#accordion"
                                             id={"collapse" + key} aria-labelledby={"heading" + key}>
                                     <CardBody>
-                                        {/* <ElectricityCostBreakdown
+                                        <ElectricityCostBreakdown
                                             formElementArray={costBreakdownFormElementArray[id]}
                                             heading="Cost Breakdown"
                                             totalBillAmount={totalBillAmount[id]}
-                                        /> */}
+                                        />
 
-                                        <Col md="12">
+                                        {/* <Col md="12">
                                             <div className="widget-chart">
                                                 <div className="widget-chart-content">
                                                     <div className="widget-numbers mt-0 text-primary">
@@ -73,7 +74,7 @@ const ElectricityCostBreakdownAccordion = ( props ) => {
                                             highlightsHeaders={electricityBillCostBreakdownHeader}
                                             values={electricityBillCostBreakdown}
                                             loading={false}
-                                        />
+                                        /> */}
                                     </CardBody>
                                 </Collapse>
                             </Card>

@@ -28,7 +28,9 @@ const FeederPillarDetails = ( props ) => {
         streetlightStatusChartOptions,
         streetlightStatusChartSeries,
         streetlightStatusByPhase,
-        electricityBill
+        electricityBill,
+        costBreakdownFormElementArray,
+        totalBillAmount
     } = props;
 
 
@@ -214,8 +216,9 @@ const FeederPillarDetails = ( props ) => {
                                     <ElectricityCostBreakdownAccordion
                                         accordions={accordions}
                                         toggleAccordion={toggleAccordion}
-                                        electricityBillCostBreakdownHeader={electricityBillCostBreakdown}
-                                        electricityBillCostBreakdown={electricityBill}
+                                        // electricityBillCostBreakdownHeader={electricityBillCostBreakdown}
+                                        costBreakdownFormElementArray={costBreakdownFormElementArray}
+                                        totalBillAmount={totalBillAmount}
                                     />
 
                                     <MetricCharts 
