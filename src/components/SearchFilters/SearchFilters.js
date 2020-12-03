@@ -24,7 +24,8 @@ const SearchFilters = ( props ) => {
         onExportExcelHandler,
         isExportable,
         excelSheets,
-        isSearchFilterValid
+        isSearchFilterValid,
+        fileName
     } = props;
 
     let exportDropdownMenu = null;
@@ -38,6 +39,7 @@ const SearchFilters = ( props ) => {
                 excelLinkRef={excelLinkRef}
                 onExportExcelHandler={onExportExcelHandler}
                 excelSheets={excelSheets}
+                fileName={fileName}
             />
         )
     }

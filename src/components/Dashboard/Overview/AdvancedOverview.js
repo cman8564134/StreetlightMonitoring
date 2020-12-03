@@ -186,7 +186,7 @@ const AdvancedOverview = ( props ) => {
     const powerUsageChartTabs = [{
         hourly: {
             tabName: "Real Time", 
-            chartTitle: "Power Usage", 
+            chartTitle: "Total Power Consumption", 
             children: <BasicApexChart 
                         loading={realTimePowerUsageChartData.loading}
                         options={realTimePowerUsageChartData.chart_options} 
@@ -198,7 +198,7 @@ const AdvancedOverview = ( props ) => {
         },
         daily: {
             tabName: "Daily", 
-            chartTitle: "Power Usage", 
+            chartTitle: "Total Power Consumption", 
             children: <BasicApexChart 
                         loading={dailyPowerUsageChartData.loading}
                         options={dailyPowerUsageChartData.chart_options} 
@@ -210,7 +210,7 @@ const AdvancedOverview = ( props ) => {
         },
         monthly: {
             tabName: "Monthly", 
-            chartTitle: "Power Usage", 
+            chartTitle: "Total Power Consumption", 
             children: <BasicApexChart 
                         loading={monthlyPowerUsageChartData.loading}
                         options={monthlyPowerUsageChartData.chart_options} 
@@ -293,7 +293,7 @@ const AdvancedOverview = ( props ) => {
                                 percent={highlightValues.uptime_percentage}
                                 trailColor="#cceff5"
                                 color="#0bb3cd"
-                                subheading={'Uptime (' + highlightValues.uptime_percentage +'%)'}
+                                subheading={'Uptime (Lamp Up / Total Lamp) (' + highlightValues.uptime_percentage +'%)'}
                                 value={`${highlightValues.total_active_streetlights}/${highlightValues.total_streetlights} Active`}
                                 loading={loadingHighlights}
                                 status="success"

@@ -17,7 +17,7 @@ const initialState = {
     loadingPowerQualityChart: false,
     summaryChart:[
         {
-            "power_usage": {title: "Power Usage (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"},
+            "power_usage": {title: "Total Power Consumption (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"},
             "power_quality": {title: "Power Quality", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "bar"},
         }
     ] 

@@ -127,7 +127,7 @@ const initialState = {
                     errorMessage: ''
                 },
                 cost: {
-                    elementLabel: 'Cost = Consumption * 0.192',
+                    elementLabel: 'Cost = Consumption X 0.192 (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
@@ -144,7 +144,7 @@ const initialState = {
             },
             {
                 icpt: {
-                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost * 0.0152',
+                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost X 0.0152 (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
@@ -192,7 +192,7 @@ const initialState = {
                     errorMessage: ''
                 },
                 feed_in_tariff: {
-                    elementLabel: 'Feed-In Tariff  = Cost * 1.6%',
+                    elementLabel: 'Feed-In Tariff  = Cost X 1.6% (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",

@@ -3,7 +3,10 @@ import React, { Fragment } from 'react';
 import {
  Input,
  CustomInput,
- FormFeedback
+ FormFeedback,
+ InputGroupAddon,
+ InputGroupText,
+ InputGroup
 } from 'reactstrap';
 
 import TextareaAutosize from 'react-textarea-autosize';
@@ -11,6 +14,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import DefaultDatePicker from '../DatePicker/DefaultDatePicker/DefaultDatePicker';
 import DatePickerDropdown from '../DatePicker/DatePickerDropdown/DatePickerDropdown';
 import MultiSelect from './MultiSelect/MultiSelect';
+import { element } from 'prop-types';
 
 const FormInput = ( props ) => {
     const {
@@ -36,19 +40,37 @@ const FormInput = ( props ) => {
         case 'input':
             return (
                 <Fragment>
-                    <Input 
-                        type={elementConfig.type} 
-                        name={elementLabel} 
-                        id={elementId}
-                        value={elementValue}
-                        disabled={elementConfig.disabled ? true : false}
-                        onChange={(event)=>inputChangedHandler(event, elementRowIndex, elementId, validationRules)}
-                        invalid={!isInputValid}
-                        readOnly={elementConfig.readonly}
-                    />
-                    <FormFeedback valid={isInputValid}>
-                        {errorMessage}
-                    </FormFeedback>
+                    <InputGroup>
+                        {elementConfig.prepend 
+                            ? 
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText>{elementConfig.prepend}</InputGroupText>
+                            </InputGroupAddon> 
+                            : null
+                        }
+                        <Input 
+                            type={elementConfig.type} 
+                            name={elementLabel} 
+                            id={elementId}
+                            value={elementValue}
+                            disabled={elementConfig.disabled ? true : false}
+                            onChange={(event)=>inputChangedHandler(event, elementRowIndex, elementId, validationRules)}
+                            invalid={!isInputValid}
+                            readOnly={elementConfig.readonly}
+                        />
+                        {elementConfig.append 
+                            ? 
+                            <InputGroupAddon addonType="append">
+                                <InputGroupText>{elementConfig.append}</InputGroupText>
+                            </InputGroupAddon>
+                            : 
+                            null
+                        }
+                        <FormFeedback valid={isInputValid}>
+                            {errorMessage}
+                        </FormFeedback>
+                    </InputGroup>
+                    
                 </Fragment>
                 
             )

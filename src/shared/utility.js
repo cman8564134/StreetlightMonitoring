@@ -62,6 +62,8 @@ export const formatDateByDateFormat = (date, dateFormat) => {
         switch (dateFormat) {
             case 'h:m':
                 return `${hour}:${minute}`;
+            case 'ymd':
+                return `${year}${month}${day}`;
             case 'y-m-d':
                 return `${year}-${month}-${day}`;
             case 'd/m/y':
@@ -406,7 +408,7 @@ export const baseChartOptions = () => {
         },
         yaxis: {
             title: {
-                text: 'Power Usage',
+                text: 'Total Power Consumption',
             },
             min: (min) => {
                 return min;

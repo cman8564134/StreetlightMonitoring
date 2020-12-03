@@ -42,7 +42,8 @@ const Report = ( props ) => {
         onHandleInputChanged,
         onFetchReportData,
         onFetchReportChartDataByActiveTab,
-        onFetchExportableReportData
+        onFetchExportableReportData,
+        fileName
     } = props;
     
     const csvLinkRef = useRef();
@@ -151,6 +152,16 @@ const Report = ( props ) => {
             const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
             const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
             const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            const dateFromStr = formatDateByDateFormat(dateTimeFrom, 'ymd');
+            const dateToStr = formatDateByDateFormat(dateTimeTo, 'ymd');
+            let dateStr = "";
+
+            if(dateFromStr === dateToStr){
+                dateStr = dateFromStr;
+            }else {
+                dateStr = dateFromStr + '_to_' + dateToStr;
+            }
+                
 
             if(diffDays > 10) {
                 showToast('Date range should not exceed 10 days when exporting');
@@ -158,7 +169,8 @@ const Report = ( props ) => {
                 onFetchExportableReportData({
                     feederPillarId: feederPillarId,
                     dateTimeFrom: dateTimeFromStr,
-                    dateTimeTo: dateTimeToStr
+                    dateTimeTo: dateTimeToStr,
+                    dateStr: dateStr
                 })
                 .then((response) => {
                     if(response.isSuccessful){
@@ -170,7 +182,7 @@ const Report = ( props ) => {
     }
 
     const highlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
+        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage"},
         {header: "Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill"},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint"},
     ]
@@ -271,7 +283,7 @@ const Report = ( props ) => {
                 <PageTitle
                     heading = "Report"
                     icon = "pe-7s-home opacity-6"
-                />
+                ></PageTitle>
 
                 <Container fluid>
                     <Row>
@@ -289,53 +301,21 @@ const Report = ( props ) => {
                                 excelSheets={excelSheets}
                                 isExportable
                                 isSearchFilterValid={isSearchFilterValid}
+                                fileName={fileName}
                             />
                         
                         </Col>
                     </Row>
 
+                    
                     <Row>
                         <Col md="12" lg="12" xl="12">
-                            <HighlightsBox
-                                highlightsHeaders={highlightsHeaders}
-                                values={report}
-                                loading={loadingHighlights}
-                            />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md="12" lg="9" xl="9">
                             <GraphCardTabs 
                                 activeTab={activeTab}
                                 toggleTabHandler={toggleGraphCardTabsHandler}
                                 navItemsArray={graphCardTabsNavItemsArray}
                                 loading={loadingChart}
                             />
-                        </Col>
-                        <Col md="12" lg="3" xl="3">
-                            <Row>
-                                <Col md="12" lg="12" xl="12">
-                                    <CenterProgressCircle 
-                                        percent={100}
-                                        trailColor="#cceff5"
-                                        color="#0bb3cd"
-                                        subheading="Uptime"
-                                        value={`${50}/${50}`}
-                                        loading={false}
-                                    />
-                                </Col>
-                                <Col md="12" lg="12" xl="12">
-                                    <CenterProgressCircle 
-                                        percent={0}
-                                        trailColor="#cceff5"
-                                        color="#0bb3cd"
-                                        subheading="Failure"
-                                        value={`${0}/${50}`}
-                                        loading={false}
-                                    />
-                                </Col>
-
-                            </Row>
                         </Col>
                     </Row>
                     <ToastContainer autoClose={false}/>
@@ -354,7 +334,8 @@ const mapStateToProps = state => {
         excelSheets: state.Report.excelSheets,
         activeTab: state.Report.activeTab,
         loadingChart: state.Report.loadingChart,
-        graphCardTabsNavItemsArray: state.Report.graphCardTabsNavItemsArray
+        graphCardTabsNavItemsArray: state.Report.graphCardTabsNavItemsArray,
+        fileName: state.Report.fileName,
     }
 }
 

@@ -36,7 +36,8 @@ const LabelInputFormGroup = ( props ) => {
                 valid={valid}
                 touched={touched}
                 errorMessage={errorMessage}
-                inputChangedHandler={inputChangedHandler}/>
+                inputChangedHandler={inputChangedHandler}
+                />
         </FormGroup>
     )
 }

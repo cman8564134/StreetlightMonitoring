@@ -26,7 +26,8 @@ const ExportDropdown = (props) => {
         csvData,
         excelLinkRef,
         onExportExcelHandler,
-        excelSheets
+        excelSheets,
+        fileName
     } = props;
 
     const ExcelFile = ReactExport.ExcelFile;
@@ -51,14 +52,14 @@ const ExportDropdown = (props) => {
                                 data={csvData}
                                 hidden={true}
                                 ref={el => { csvLinkRef.current = el;}}
-                                filename='Report.csv'
+                                filename={fileName}
                             >
                                 CSV
                             </CSVLink>
                         </NavItem>
                         <NavItem>
                             <NavLink href="#" onClick={(e) => onExportExcelHandler(e)}>Excel</NavLink>
-                            <ExcelFile element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("clicked")}>Excel</button>}>
+                            <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("abc")}>Excel</button>}>
                                 {excelSheets.map((sheets, index) => {
                                     const sheetObjects = [];
 

@@ -16,7 +16,7 @@ const initialState = {
     loadingFeederPillarMetricChart: false,
     feederPillarMetricCharts:[
         {
-            "powerUsage": {title: "Power Usage (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
+            "powerUsage": {title: "Total Power Consumption (KWh)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
             "electricityBill": {title: "Electricity Bill (RM)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
             "carbonFootprint": {title: "Carbon Footprint (KG)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
@@ -42,7 +42,8 @@ const initialState = {
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        append: "kWh"
                     },
                     value: "",
                     validation: {
@@ -53,11 +54,12 @@ const initialState = {
                     errorMessage: ''
                 },
                 cost: {
-                    elementLabel: 'Cost = Consumption * 0.192',
+                    elementLabel: 'Cost = Consumption X 0.192 (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        prepend: "RM"
                     },
                     value: "",
                     validation: {
@@ -70,11 +72,12 @@ const initialState = {
             },
             {
                 icpt: {
-                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost * 0.0152',
+                    elementLabel: 'Imbalance Cost Pass-Through (ICPT) = Cost X 0.0152 (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        prepend: "RM"
                     },
                     value: "",
                     validation: {
@@ -85,11 +88,12 @@ const initialState = {
                     errorMessage: ''
                 },
                 current_month_usage: {
-                    elementLabel: 'Daily Usage = Cost - ICPT',
+                    elementLabel: 'Daily Usage = Cost - ICPT (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        prepend: "RM"
                     },
                     value: "",
                     validation: {
@@ -103,11 +107,12 @@ const initialState = {
             },
             {
                 gst: {
-                    elementLabel: 'GST = Current Month Usage * 6%',
+                    elementLabel: 'GST = Current Month Usage X 6% (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        prepend: "RM"
                     },
                     value: "",
                     validation: {
@@ -118,11 +123,12 @@ const initialState = {
                     errorMessage: ''
                 },
                 feed_in_tariff: {
-                    elementLabel: 'Feed-In Tariff  = Cost * 1.6%',
+                    elementLabel: 'Feed-In Tariff  = Cost X 1.6% (RM)',
                     elementType: 'input',
                     elementConfig: {
                         type: "number",
-                        readonly: true
+                        readonly: true,
+                        prepend: "RM"
                     },
                     value: "",
                     validation: {

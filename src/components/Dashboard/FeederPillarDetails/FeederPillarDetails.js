@@ -36,6 +36,7 @@ const FeederPillarDetails = ( props ) => {
 
     const {
         pillar_id,
+        pillar_name,
         created_at,
         total_yield,
         road_total_yield,
@@ -151,7 +152,7 @@ const FeederPillarDetails = ( props ) => {
 
                         <div className="menu-header-content btn-pane-right">
                             <div>
-                                <h5 className="menu-header-title">{pillar_id}</h5>
+                                <h5 className="menu-header-title">{pillar_name}</h5>
                                 <h6 className="menu-header-subtitle"><span className={doorStatusClassNames}>Door Status: {door_status}</span></h6>
                             </div>
                         </div>
@@ -216,7 +217,6 @@ const FeederPillarDetails = ( props ) => {
                                     <ElectricityCostBreakdownAccordion
                                         accordions={accordions}
                                         toggleAccordion={toggleAccordion}
-                                        // electricityBillCostBreakdownHeader={electricityBillCostBreakdown}
                                         costBreakdownFormElementArray={costBreakdownFormElementArray}
                                         totalBillAmount={totalBillAmount}
                                     />

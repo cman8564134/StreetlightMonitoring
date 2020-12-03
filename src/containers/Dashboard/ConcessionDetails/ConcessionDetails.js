@@ -183,7 +183,7 @@ const ConcessionDetails = ( props ) => {
                     accessor: 'section_name'
                 },
                 {
-                    Header: 'Power Usage (KWh)',
+                    Header: 'Total Power Consumption (KWh)',
                     accessor: 'power_usage'
                 },
                 {
@@ -222,7 +222,7 @@ const ConcessionDetails = ( props ) => {
     ];
 
     const highlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
         {header: "Electrical Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
         {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
     ]

@@ -195,7 +195,7 @@ const initialState = {
     report: {},
     activeTab: "powerUsageTab",
     graphCardTabsNavItemsArray: [{
-        powerUsageTab: {navTitle: "POWER USAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        powerUsageTab: {navTitle: "TOTAL POWER CONSUMPTION", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         electricityBillTab: {navTitle: "ELECTRICITY BILL", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         carbonFootprintTab: {navTitle: "CARBON FOOTPRINT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         energySavingsTab: {navTitle: "ENERGY SAVINGS", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
@@ -203,7 +203,8 @@ const initialState = {
         voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
     }],
     loadingHighlights: false,
-    loadingChart: false
+    loadingChart: false,
+    fileName: ""
 };
 
 const fetchReportConcessionNameMapSuccess = ( state, action ) => {
@@ -406,7 +407,8 @@ const fetchExportableReportDataSuccess = ( state, action ) => {
     
     return updateObject(state, {
         csvData: action.reportData,
-        excelSheets: updatedArray
+        excelSheets: updatedArray,
+        fileName: action.fileName
     });
 }
 

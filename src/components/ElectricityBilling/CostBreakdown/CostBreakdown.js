@@ -27,7 +27,7 @@ const CostBreakdown = ( props ) => {
             </CardHeader>
 
             <CardBody className="pt-4">
-                <Col md="8" className="mx-auto">
+                <Col md="12" className="mx-auto">
                     <FormContent
                         formElementArray={formElementArray}
                         inputChangedHandler={null}

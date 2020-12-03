@@ -283,11 +283,12 @@ export const fetchExportableReportDataStart = () => {
     }
 }
 
-export const fetchExportableReportDataSuccess = (reportData) => {
+export const fetchExportableReportDataSuccess = (reportData, fileName) => {
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_SUCCESS,
         loading: false,
-        reportData: reportData
+        reportData: reportData,
+        fileName: fileName
     }
 }
 
@@ -307,7 +308,7 @@ export const fetchExportableReportData = ( params ) => {
 
         return axios.post('/getExportableReportData', params)
             .then(response => {
-                dispatch(fetchExportableReportDataSuccess(response.data.metrics));
+                dispatch(fetchExportableReportDataSuccess(response.data.metrics, response.data.fileName));
 
                 return Promise.resolve({isSuccessful: true});
             })

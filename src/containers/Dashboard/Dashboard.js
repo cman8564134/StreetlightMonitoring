@@ -118,8 +118,8 @@ const Dashboard = ( props ) => {
     ]
     
     const concessionsHighlightsHeaders = [
-        {header: "Power Usage", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
-        {header: "Uptime %", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage_text", prefix: "", suffix: ""},
+        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Uptime (Lamp Up / Total Lamp)", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage_text", prefix: "", suffix: ""},
         {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
         {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings", prefix: "", suffix: " KWh"},
@@ -170,7 +170,7 @@ const Dashboard = ( props ) => {
                     accessor: 'concession_name'
                 },
                 {
-                    Header: 'Power Usage (KWh)',
+                    Header: 'Total Power Consumption (KWh)',
                     accessor: 'power_usage'
                 },                
                 {
