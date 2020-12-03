@@ -98,7 +98,7 @@ const initialState = {
                 elementConfig: {
                     type: "datePickerDropdown",
                     isDateRange: true,
-                    viewBy: {value: "WEEK"},
+                    viewBy: {value: "DAY"},
                     isHide: true
                 },
                 value: {
@@ -161,14 +161,14 @@ const initialState = {
                 elementConfig: {
                     type: "select",
                     options: [
-                        {value: "DAY", displayValue: "DAY"}, 
+                        {value: "WEEK", displayValue: "WEEK"}, 
                         {value: "MONTH", displayValue: "MONTH"},
                         {value: "YEAR", displayValue: "YEAR"},
                     ],
                     // options: [],
                     isHide: true
                 },
-                value: 'DAY',
+                value: 'WEEK',
                 validation: {
                     required: true
                 },

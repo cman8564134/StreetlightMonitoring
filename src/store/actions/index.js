@@ -9,7 +9,8 @@ export {
     fetchConcessionsSummary,
     fetchConcessionsPowerQualitySummaryChart,
     fetchConcessionsPowerUsageSummaryChart,
-    fetchConcessionsWeeklyElectricityBillChart
+    fetchConcessionsWeeklyElectricityBillChart,
+    fetchConcessionNameMap
 } from './concessions'
 
 export {
@@ -49,10 +50,10 @@ export {
 } from './feederPillarDetails'
 
 export {
-    fetchConcessionNameMap,
     fetchElectricityBillCSVData,
     fetchCostBreakdownBySectionData,
-    fetchElectricityCostBreakdownByLevel
+    fetchElectricityCostBreakdownByLevel,
+    resetBreakdownLevel
 } from './electricityBilling'
 
 export {
@@ -148,7 +149,6 @@ export {
 // } from './parameterConfig';
 
 export {
-    fetchReportConcessionNameMap,
     fetchReportSectionNameMapByConcessionId,
     fetchSubsectionNameMapBySectionId,
     fetchRoadNameMapBySubsectionId,

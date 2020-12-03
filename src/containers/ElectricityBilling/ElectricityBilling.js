@@ -8,7 +8,7 @@ import {
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
-import { HANDLE_ELECTRICITY_BILLING_INPUT_CHANGED_SUCCESS } from '../../store/actions/actionTypes';
+import { HANDLE_ELECTRICITY_BILLING_INPUT_CHANGED_SUCCESS, FETCH_ELECTRICITY_BILLING_CONCESSION_NAME_MAP_SUCCESS } from '../../store/actions/actionTypes';
 
 
 import Layout from '../../hoc/Layout/Layout';
@@ -19,7 +19,9 @@ import AccordionDataTable from "../../components/Accordions/DataTableAccordion/D
 import DataTable from '../../components/Tables/DataTable/DataTable';
 import BasicModal from '../../components/Modal/BasicModal/BasicModal';
 import BreakdownModal from '../../components/ElectricityBilling/BreakdownModal/BreakdownModal';
-import { updateObject } from "../../shared/utility";
+import { updateObject, checkFormValidity, formatDateByDateFormat, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfYear, getLastDayOfYear } from "../../shared/utility";
+import LabelInputFormGroup from "../../components/Form/LabelInputFormGroup/LabelInputFormGroup";
+import DatePickerDropdown from "../../components/Form/DatePicker/DatePickerDropdown/DatePickerDropdown";
 
 
 const ElectricityBilling = ( props ) => {
@@ -38,6 +40,9 @@ const ElectricityBilling = ( props ) => {
         costByLevelTableData,
         onFetchElectricityCostBreakdownByLevel,
         costByLevelTableHeader,
+        level,
+        loadingCostBySectionTableData,
+        onResetBreakdownLevel
     } = props;
     
     const csvLinkRef = useRef();
@@ -56,7 +61,7 @@ const ElectricityBilling = ( props ) => {
                 },
                 {
                     Header: 'Bill Amount',
-                    accessor: 'bill_amount'
+                    accessor: 'total_bill_amount'
                 },
                 {
                     Header: 'Consumption (kWh)',
@@ -91,7 +96,7 @@ const ElectricityBilling = ( props ) => {
                     accessor: 'id',
                     Cell: row => (
                         <div className="d-block w-100 text-center">
-                            <Button size="sm" color="primary" disabled={row.original.level === 3} onClick={()=>{showOrHideBreakdownModal(row.value, row.original.name, row.original.level)}}>
+                            <Button size="sm" color="primary" disabled={level === 3} onClick={()=>{showOrHideBreakdownModal(row.value, row.original.name, level)}}>
                                 Details
                             </Button>
                         </div>
@@ -153,14 +158,12 @@ const ElectricityBilling = ( props ) => {
     }
 
     useEffect(() => {
-        onFetchConcessionNameMap();
-        onFetchCostBreakdownBySectionData();
+        onFetchConcessionNameMap({successType: FETCH_ELECTRICITY_BILLING_CONCESSION_NAME_MAP_SUCCESS});
         
     }, [
         onFetchConcessionNameMap, 
         csvLinkRef, 
-        excelLinkRef, 
-        onFetchCostBreakdownBySectionData
+        excelLinkRef
     ]);
 
     const inputChangedHandler = (event, elementRowIndex, elementId, validationRules) => {
@@ -220,7 +223,38 @@ const ElectricityBilling = ( props ) => {
 
     const showOrHideBreakdownModal = (id, name, breakdownLevel) => {
         if(breakdownLevel >= 0){
-            onFetchElectricityCostBreakdownByLevel({id: id, name: name, level: breakdownLevel});
+            const filters = searchFilters[0];
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const viewBy = filters.viewBy.value;
+            let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            let viewType = "daily";
+
+            switch(viewBy) {
+                case "MONTH":
+                    dateTimeFromStr = getFirstDayOfMonth(dateTimeFrom) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfMonth(dateTimeFrom) + ' 23:59:59';
+                    viewType = "daily"
+                    break;
+                case "YEAR":
+                    const year = formatDateByDateFormat(dateTimeFrom, "y");
+                    dateTimeFromStr = getFirstDayOfYear(year) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfYear(year) + ' 23:59:59'
+                    viewType = "monthly"
+                    break;
+                default:
+                    break;
+            }
+            
+            onFetchElectricityCostBreakdownByLevel(
+                {
+                    id: id, 
+                    dateTimeFrom: dateTimeFromStr,
+                    dateTimeTo: dateTimeToStr,
+                    viewType: viewType,
+                    level: breakdownLevel
+                });
 
             const updatedBreadcrumbItems = [];
 
@@ -246,9 +280,56 @@ const ElectricityBilling = ( props ) => {
                 setShowBreakdownModal(true);
         }else {
             setShowBreakdownModal(false);
+            onResetBreakdownLevel();
         }
         
     }
+
+    const [isSearchFilterValid, setIsSearchFilterValid] = useState(true);
+
+    const onApplyFilterHandler = () => {
+        const isFormValid = checkFormValidity(searchFilters);
+
+        setIsSearchFilterValid(isFormValid);
+
+        if(isFormValid){
+            const filters = searchFilters[0];
+            const concessionId = filters.concession.value;
+            const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
+            const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const viewBy = filters.viewBy.value;
+            let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            let viewType = "daily";
+
+            switch(viewBy) {
+                case "MONTH":
+                    dateTimeFromStr = getFirstDayOfMonth(dateTimeFrom) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfMonth(dateTimeFrom) + ' 23:59:59';
+                    viewType = "daily"
+                    break;
+                case "YEAR":
+                    const year = formatDateByDateFormat(dateTimeFrom, "y");
+                    dateTimeFromStr = getFirstDayOfYear(year) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfYear(year) + ' 23:59:59'
+                    viewType = "monthly"
+                    break;
+                default:
+                    break;
+            }
+
+        
+            onFetchCostBreakdownBySectionData({
+                concessionId: concessionId,
+                dateTimeFrom: dateTimeFromStr,
+                dateTimeTo: dateTimeToStr,
+                viewType: viewType
+            });
+
+            
+        }
+            
+    };
     
     return (
         <Fragment>
@@ -256,14 +337,39 @@ const ElectricityBilling = ( props ) => {
                 <PageTitle
                     heading = "Electricity Billing"
                     icon = "pe-7s-home opacity-6"
-                />
+                >
+                    <div className="d-inline-block pr-3">
+                        <LabelInputFormGroup 
+                            elementRowIndex={0}
+                            elementId={searchFilters[0].viewBy.elementId}
+                            elementLabel={searchFilters[0].viewBy.elementLabel}
+                            elementType={searchFilters[0].viewBy.elementType}
+                            elementConfig={searchFilters[0].viewBy.elementConfig} 
+                            elementValue={searchFilters[0].viewBy.value}
+                            validationRules={searchFilters[0].viewBy.validation}
+                            valid={searchFilters[0].viewBy.valid}
+                            touched={searchFilters[0].viewBy.touched}
+                            errorMessage={searchFilters[0].viewBy.errorMessage}
+                            inputChangedHandler={inputChangedHandler}
+                        />
+                    </div>
+                    
+                    
+                    <DatePickerDropdown 
+                        datePickerFrom={searchFilters[0].dateRange.value.datePickerFrom}
+                        datePickerTo={searchFilters[0].dateRange.value.datePickerTo}
+                        inputChangedHandler={inputChangedHandler}
+                        isDateRange={searchFilters[0].dateRange.elementConfig.isDateRange}
+                        viewType={searchFilters[0].viewBy.value}
+                    />
+                </PageTitle>
 
                 <Container fluid>
                     <SearchFilters 
                         filterElementArray={searchFilters}
                         inputChangedHandler={inputChangedHandler}
                         loading={false}
-                        onApplyFilterHandler={()=>null}
+                        onApplyFilterHandler={onApplyFilterHandler}
                         onExportCSVHandler={onExportCSVHandler}
                         csvLinkRef={csvLinkRef}
                         csvData={csvData}
@@ -271,9 +377,19 @@ const ElectricityBilling = ( props ) => {
                         onExportExcelHandler={onExportExcelHandler}
                         excelSheets={excelSheets}
                         isExportable
+                        isSearchFilterValid={isSearchFilterValid}
                     />
 
-                    <CostBreakdown
+                    <DataTable 
+                        data={costBySectionTableData}
+                        columns={costBySectionTableColumns}
+                        pageSize={10}
+                        header={null}
+                        filterable
+                        loading={loadingCostBySectionTableData}
+                    />
+
+                    {/* <CostBreakdown
                         formElementArray={costVariables}
                         heading={"Cost Breakdown"}
                         totalBillAmount={totalBillAmount}
@@ -283,16 +399,9 @@ const ElectricityBilling = ( props ) => {
                         accordions={accordions}
                         toggleAccordion={toggleAccordion}
                         accordionBody={
-                            <DataTable 
-                                data={costBySectionTableData}
-                                columns={costBySectionTableColumns}
-                                pageSize={10}
-                                header={null}
-                                filterable
-                                loading={loadingCostByLevelTableData}
-                            />
+                            
                         }
-                    />
+                    /> */}
 
                     <BasicModal 
                         modalWidth={1000}
@@ -326,16 +435,18 @@ const mapStateToProps = state => {
         loadingCostByLevelTableData: state.ElectricityBill.loadingCostByLevelTableData,
         costByLevelTableData: state.ElectricityBill.costByLevelTableData,
         costByLevelTableHeader: state.ElectricityBill.costByLevelTableHeader,
+        level: state.ElectricityBill.level,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchConcessionNameMap: () => dispatch(actions.fetchConcessionNameMap()),
+        onFetchConcessionNameMap: (params) => dispatch(actions.fetchConcessionNameMap(params)),
         onHandleInputChanged: (type, value, elementRowIndex, elementId, validationRules) => dispatch(actions.handleInputChanged(type, value, elementRowIndex, elementId, validationRules)),
         onFetchElectricityBillCSVData: (params) => dispatch(actions.fetchElectricityBillCSVData(params)),
-        onFetchCostBreakdownBySectionData: () => dispatch(actions.fetchCostBreakdownBySectionData()),
+        onFetchCostBreakdownBySectionData: (params) => dispatch(actions.fetchCostBreakdownBySectionData(params)),
         onFetchElectricityCostBreakdownByLevel: (params) => dispatch(actions.fetchElectricityCostBreakdownByLevel(params)),
+        onResetBreakdownLevel: (params) => dispatch(actions.resetBreakdownLevel(params)),
     }
 }
 

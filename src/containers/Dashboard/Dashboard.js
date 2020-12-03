@@ -112,7 +112,7 @@ const Dashboard = ( props ) => {
     ]
 
     const summaryHighlightsHeaders = [
-        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
+        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh", accessor2: "daily_yield", prefix2: "", suffix2: " KWh (Daily)"},
         {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg" , prefix: "", suffix: " KG",  accessor2: "carbon_footprint_metric_ton", prefix2: "", suffix2: " Metric Ton"},
         {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
     ]

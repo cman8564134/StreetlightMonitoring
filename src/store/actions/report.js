@@ -1,45 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
 
-export const fetchReportConcessionNameMapStart = () => {
-    return {
-        type: actionTypes.FETCH_REPORT_CONCESSION_NAME_MAP_START,
-        loading: true
-    }
-}
-
-export const fetchReportConcessionNameMapSuccess = (concessionNameMap) => {
-    return {
-        type: actionTypes.FETCH_REPORT_CONCESSION_NAME_MAP_SUCCESS,
-        loading: false,
-        concessionNameMap: concessionNameMap
-    }
-}
-
-export const fetchReportConcessionNameMapFail = (error) => {
-    return {
-        type: actionTypes.FETCH_REPORT_CONCESSION_NAME_MAP_FAIL,
-        loading: false,
-        error: error
-    }
-}
-
-export const fetchReportConcessionNameMap =  () => {
-    return dispatch => {
-        dispatch(fetchReportConcessionNameMapStart());
-
-        axios.get('/getAllConcessionIdAndNameMap')
-            .then(response => {
-                dispatch(fetchReportConcessionNameMapSuccess(response.data.concessions[0]));
-            })
-            .catch(error => {
-                console.log(error);
-                dispatch(fetchReportConcessionNameMapFail(error));
-            });  
-    }
-}
-
-
 export const fetchReportSectionNameMapByConcessionIdStart = () => {
     return {
         type: actionTypes.FETCH_REPORT_SECTION_NAME_MAP_START,
@@ -269,7 +230,7 @@ export const fetchReportChartDataByActiveTab = ( params ) => {
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchReportConcessionNameMapFail(error));
+                dispatch(fetchReportChartDataByActiveTabFail(error));
             });  
 
         

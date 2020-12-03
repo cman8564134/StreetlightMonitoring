@@ -14,7 +14,7 @@ import {
 } from 'react-toastify';
 
 import * as actions from '../../store/actions/index';
-import { HANDLE_REPORT_INPUT_CHANGED_SUCCESS } from '../../store/actions/actionTypes';
+import { HANDLE_REPORT_INPUT_CHANGED_SUCCESS, FETCH_REPORT_CONCESSION_NAME_MAP_SUCCESS } from '../../store/actions/actionTypes';
 
 import Layout from '../../hoc/Layout/Layout';
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
@@ -37,7 +37,7 @@ const Report = ( props ) => {
         activeTab,
         loadingChart,
         graphCardTabsNavItemsArray,
-        onFetchReportConcessionNameMap,
+        onFetchConcessionNameMap,
         onFetchReportSectionNameMapByConcessionId,
         onFetchSubsectionNameMapBySectionId,
         onFetchRoadNameMapBySubsectionId,
@@ -53,9 +53,9 @@ const Report = ( props ) => {
     const excelLinkRef = useRef();
 
     useEffect(() => {
-        onFetchReportConcessionNameMap();
+        onFetchConcessionNameMap({successType: FETCH_REPORT_CONCESSION_NAME_MAP_SUCCESS});
     }, [
-        onFetchReportConcessionNameMap, 
+        onFetchConcessionNameMap, 
         // onFetchReportData,
         // activeTab
         // csvLinkRef, 
@@ -412,7 +412,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchReportConcessionNameMap: () => dispatch(actions.fetchReportConcessionNameMap()),
+        onFetchConcessionNameMap: (params) => dispatch(actions.fetchConcessionNameMap(params)),
         onFetchReportSectionNameMapByConcessionId: (params) => dispatch(actions.fetchReportSectionNameMapByConcessionId(params)),
         onFetchSubsectionNameMapBySectionId: (params) => dispatch(actions.fetchSubsectionNameMapBySectionId(params)),
         onFetchRoadNameMapBySubsectionId: (params) => dispatch(actions.fetchRoadNameMapBySubsectionId(params)),

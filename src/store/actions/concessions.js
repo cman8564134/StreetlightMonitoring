@@ -170,3 +170,27 @@ export const fetchConcessionsWeeklyElectricityBillChart =  (params) => {
             });
     }
 }
+
+export const fetchConcessionNameMapSuccess = (type, concessionNameMap) => {
+    return {
+        type: type,
+        loading: false,
+        concessionNameMap: concessionNameMap
+    }
+}
+
+export const fetchConcessionNameMap =  (params) => {
+    const {
+        successType
+    } = params;
+
+    return dispatch => {
+        axios.get('/getAllConcessionIdAndNameMap')
+            .then(response => {
+                dispatch(fetchConcessionNameMapSuccess(successType, response.data.concessions[0]));
+            })
+            .catch(error => {
+                console.log(error);
+            });  
+    }
+}

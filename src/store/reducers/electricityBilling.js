@@ -20,17 +20,18 @@ const initialState = {
                 validation: {
                     required: true
                 },
-                valid: true,
+                valid: false,
                 touched: false,
-                errorMessage: ''
+                errorMessage: 'Please select Concession'
             },
             dateRange: {
                 elementLabel: '',
                 elementType: 'datePickerDropdown',
                 elementConfig: {
                     type: "datePickerDropdown",
-                    isDateRange: true,
-                    viewBy: {value: "WEEK"}
+                    isDateRange: false,
+                    viewBy: {value: "DAY"},
+                    isHide: true
                 },
                 value: {
                     datePickerFrom: {
@@ -82,7 +83,30 @@ const initialState = {
                 valid: true,
                 touched: false,
                 errorMessage: ''
-            }
+            },
+            viewBy: {
+                elementId: 'viewBy',
+                elementRowIndex: 0,
+                elementLabel: 'View By:',
+                elementType: 'select',
+                elementConfig: {
+                    type: "select",
+                    options: [
+                        {value: "DAY", displayValue: "DAY"}, 
+                        {value: "MONTH", displayValue: "MONTH"},
+                        {value: "YEAR", displayValue: "YEAR"},
+                    ],
+                    // options: [],
+                    isHide: true
+                },
+                value: 'DAY',
+                validation: {
+                    required: true
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
         }
     ],
     csvData: [],
@@ -214,7 +238,8 @@ const initialState = {
     modalBreadcrumbItems: [],
     loadingCostByLevelTableData: false,
     costByLevelTableData: [],
-    costByLevelTableHeader: ""
+    costByLevelTableHeader: "",
+    level: 0
     
 };
 
@@ -265,6 +290,57 @@ const handleElectricityBillingInputChanged = ( state, action ) => {
         updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, updatedObject);
     }
 
+    if(elementId === "viewBy"){
+        const dateRangeState = state[arrayId][0].dateRange;
+        let isDateRange = dateRangeState.elementConfig.isDateRange;
+        let dateFormat = "dd/MM/yyyy";
+        let showMonthYearPicker = false;
+        let showYearPicker = false;
+        
+        const dateFrom = new Date();
+        const dateTo = new Date();
+
+        switch(value){
+            case "DAY":
+                isDateRange = true;
+                break;
+            case "MONTH":
+                dateFormat = "MM/yyyy";
+                isDateRange = false;
+                showMonthYearPicker = true;
+                break;
+            case "YEAR":
+                dateFormat = "yyyy";
+                isDateRange = false;
+                showYearPicker = true;
+                break;
+            default:
+                break;
+        }
+
+        const updatedDatePickerElementConfigObject = updateObject(dateRangeState.value.datePickerFrom.elementConfig, {
+            dateFormat: dateFormat,
+            showMonthYearPicker: showMonthYearPicker,
+            showYearPicker: showYearPicker
+        });
+
+        const updatedDateFromElementConfig = updateObject(dateRangeState.value.datePickerFrom, {
+            elementConfig: updatedDatePickerElementConfigObject,
+            value: dateFrom
+        });
+        
+        const updatedDateToElementConfig = updateObject(dateRangeState.value.datePickerTo, {
+            value: dateTo
+        });
+
+
+        const updatedDateRangeValue = updateObject(dateRangeState.value, {datePickerFrom: updatedDateFromElementConfig, datePickerTo: updatedDateToElementConfig});
+        const updatedDateRangeElementConfig = updateObject(dateRangeState.elementConfig, {isDateRange: isDateRange});
+        const updatedDateRange = updateObject(state[arrayId][0].dateRange, {elementConfig: updatedDateRangeElementConfig, value: updatedDateRangeValue});
+        const updatedArrayAtIndex = updateObject(updatedArray[0], {dateRange: updatedDateRange});
+        updatedArray = updateObject(state[arrayId], {[elementRowIndex]: updatedArrayAtIndex});
+    }
+
     const updatedObjectArray= Object.values(updatedArray);
 
     return updateObject(state, {
@@ -311,7 +387,8 @@ const fetchCostBreakdownBySectionDataStart = ( state, action ) => {
 const fetchCostBreakdownBySectionDataSuccess = ( state, action ) => {
     return updateObject(state, {
         loadingCostBySectionTableData: action.loading,
-        costBySectionTableData: action.costBreakdownBySection
+        costBySectionTableData: action.costBreakdownBySection,
+        level: 0
     });
 }
 
@@ -327,9 +404,9 @@ const fetchElectricityCostBreakdownByLevelStart = ( state, action ) => {
 }
 
 const costBreakdownByLevelHeaders = {
-    0: "Breakdown By Subsection",
-    1: "Breakdown By Road",
-    2: "Breakdown By Feeder Pillar",
+    1: "Breakdown By Subsection",
+    2: "Breakdown By Road",
+    3: "Breakdown By Feeder Pillar",
 } 
 
 const fetchElectricityCostBreakdownByLevelSuccess = ( state, action ) => {
@@ -338,13 +415,33 @@ const fetchElectricityCostBreakdownByLevelSuccess = ( state, action ) => {
     return updateObject(state, {
         loadingCostByLevelTableData: action.loading,
         costByLevelTableData: action.costBreakdownByLevelData,
-        costByLevelTableHeader: header
+        costByLevelTableHeader: header,
+        level: action.level
     });
 }
 
 const fetchElectricityCostBreakdownByLevelFail = ( state, action ) => {
     return updateObject(state, {
         loadingCostByLevelTableData: action.loading,
+    });
+}
+
+const fetchElectricityConcessionNameMapSuccess = ( state, action ) => {
+    const arrayId = "searchFilters";
+    const concessionOptions = createMasterCodeOptions(action.concessionNameMap);
+    
+    const updatedConcessionObject = {options: concessionOptions};
+
+    const updatedArray = updateElementOptionArray(state[arrayId], 0, "concession", "elementConfig", updatedConcessionObject);
+
+    return updateObject(state, {
+        [arrayId]: Object.values(updatedArray)
+    });
+}
+
+const resetBreakdownLevel = ( state, action ) => {
+    return updateObject(state, {
+        level: 0,
     });
 }
 
@@ -368,6 +465,10 @@ const reducer = (state = initialState, action) => {
             return fetchElectricityCostBreakdownByLevelSuccess(state, action);
         case actionTypes.FETCH_COST_BREAKDOWN_BY_LEVEL_FAIL: 
             return fetchElectricityCostBreakdownByLevelFail(state, action);
+        case actionTypes.FETCH_ELECTRICITY_BILLING_CONCESSION_NAME_MAP_SUCCESS: 
+            return fetchElectricityConcessionNameMapSuccess(state, action);
+        case actionTypes.RESET_BREAKDOWN_LEVEL: 
+            return resetBreakdownLevel(state, action);
         default:
             return state;
     }

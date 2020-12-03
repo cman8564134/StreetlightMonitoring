@@ -56,7 +56,7 @@ const DatePickerDropdown = ( props ) => {
     let dateLabel = formatDateByDateFormat(datePickerFrom.value, 'd/m/y');
     
     switch(viewType){
-        case "DAY": 
+        case "WEEK": 
             const dateFrom = formatDateByDateFormat(datePickerFrom.value, 'd/m/y');
             const dateTo = formatDateByDateFormat(datePickerTo.value, 'd/m/y');
             dateLabel = `${dateFrom} - ${dateTo}`;
