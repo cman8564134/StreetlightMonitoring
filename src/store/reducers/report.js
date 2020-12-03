@@ -98,7 +98,8 @@ const initialState = {
                 elementConfig: {
                     type: "datePickerDropdown",
                     isDateRange: true,
-                    viewBy: {value: "WEEK"}
+                    viewBy: {value: "WEEK"},
+                    isHide: true
                 },
                 value: {
                     datePickerFrom: {
@@ -112,7 +113,8 @@ const initialState = {
                             showMonthYearPicker: false,
                             showYearPicker: false,
                             selectsStart: true,
-                            selectsEnd: false
+                            selectsEnd: false,
+                            
                         },
                         value: new Date(),
                         validation: {
@@ -150,7 +152,30 @@ const initialState = {
                 valid: true,
                 touched: false,
                 errorMessage: 'Please select Date Range'
-            }
+            },
+            viewBy: {
+                elementId: 'viewBy',
+                elementRowIndex: 0,
+                elementLabel: 'View By:',
+                elementType: 'select',
+                elementConfig: {
+                    type: "select",
+                    options: [
+                        {value: "DAY", displayValue: "DAY"}, 
+                        {value: "MONTH", displayValue: "MONTH"},
+                        {value: "YEAR", displayValue: "YEAR"},
+                    ],
+                    // options: [],
+                    isHide: true
+                },
+                value: 'DAY',
+                validation: {
+                    required: true
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
         }
     ],
     csvData: [],
@@ -291,6 +316,7 @@ const handleReportInputChanged = ( state, action ) => {
         touched: true
     };
 
+    // UPDATE DATE FROM AND DATE TO  
     if(elementId === "datePickerFrom" || elementId === "datePickerTo"){
         const dateString = formatDateByDateFormat(value, 'd/m/y');
         const isValid = checkValidity(dateString, updatedArray[elementRowIndex]["dateRange"].validation);
@@ -310,6 +336,57 @@ const handleReportInputChanged = ( state, action ) => {
         updatedObject = updateObject(updatedObject, {valid: checkValidity(value, updatedArray.validation)})
         updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, updatedObject);
     }
+
+    if(elementId === "viewBy"){
+        const dateRangeState = state[arrayId][0].dateRange;
+        let isDateRange = dateRangeState.elementConfig.isDateRange;
+        let dateFormat = "dd/MM/yyyy";
+        let showMonthYearPicker = false;
+        let showYearPicker = false;
+        
+        const dateFrom = new Date();
+        const dateTo = new Date();
+
+        switch(value){
+            case "DAY":
+                isDateRange = true;
+                break;
+            case "MONTH":
+                dateFormat = "MM/yyyy";
+                isDateRange = false;
+                showMonthYearPicker = true;
+                break;
+            case "YEAR":
+                dateFormat = "yyyy";
+                isDateRange = false;
+                showYearPicker = true;
+                break;
+            default:
+                break;
+        }
+
+        const updatedDatePickerElementConfigObject = updateObject(dateRangeState.value.datePickerFrom.elementConfig, {
+            dateFormat: dateFormat,
+            showMonthYearPicker: showMonthYearPicker,
+            showYearPicker: showYearPicker
+        });
+
+        const updatedDateFromElementConfig = updateObject(dateRangeState.value.datePickerFrom, {
+            elementConfig: updatedDatePickerElementConfigObject,
+            value: dateFrom
+        });
+        
+        const updatedDateToElementConfig = updateObject(dateRangeState.value.datePickerTo, {
+            value: dateTo
+        });
+
+
+        const updatedDateRangeValue = updateObject(dateRangeState.value, {datePickerFrom: updatedDateFromElementConfig, datePickerTo: updatedDateToElementConfig});
+        const updatedDateRangeElementConfig = updateObject(dateRangeState.elementConfig, {isDateRange: isDateRange});
+        const updatedDateRange = updateObject(state[arrayId][0].dateRange, {elementConfig: updatedDateRangeElementConfig, value: updatedDateRangeValue});
+        const updatedArrayAtIndex = updateObject(updatedArray[0], {dateRange: updatedDateRange});
+        updatedArray = updateObject(state[arrayId], {[elementRowIndex]: updatedArrayAtIndex});
+    }
     
     const updatedObjectArray= Object.values(updatedArray);
 
@@ -328,13 +405,20 @@ const fetchReportDataStart = ( state, action ) => {
 const fetchReportDataSuccess = ( state, action ) => {
     const activeTab = action.activeTab;
     const reportData = action.reportData;
+    const viewType = state.searchFilters[0].viewBy.value;
 
     let updatedBaseChartOptions = baseChartOptions();
 
-    console.log("series", reportData.series.length );
     if(reportData.series.length === 3 ){
-        updatedBaseChartOptions = updateObject(baseChartOptions(), {colors: darkRYB});
+        updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {colors: darkRYB});
     }
+    
+    if(viewType === "YEAR") {
+        updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {xaxis: {}});
+    }
+
+    console.log("updatedBaseChartOptions", updatedBaseChartOptions);
+
     const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
@@ -372,12 +456,17 @@ const fetchReportChartDataByActiveTabStart = ( state, action ) => {
 const fetchReportChartDataByActiveTabSuccess = ( state, action ) => {
     const activeTab = action.activeTab;
     const reportData = action.reportData;
-
+    const viewType = state.searchFilters[0].viewBy.value;
+    
     let updatedBaseChartOptions = baseChartOptions();
 
     console.log("series", reportData.series.length );
     if(reportData.series.length === 3 ){
-        updatedBaseChartOptions = updateObject(baseChartOptions(), {colors: darkRYB});
+        updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {colors: darkRYB});
+    }
+
+    if(viewType === "YEAR") {
+        updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {xaxis: {}});
     }
 
     const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);

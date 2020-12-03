@@ -22,7 +22,10 @@ import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import HighlightsBox from '../../components/Dashboard/HighlightsBox/HighlightsBox';
 import CenterProgressCircle from '../../components/Progress/ProgressCircles/CenterProgressCircle/CenterProgressCircle';
 import GraphCardTabs from '../../components/Tab/GraphCardTabs/GraphCardTabs';
-import { checkFormValidity, formatDateByDateFormat, calculateDifferenceBetweenDates } from "../../shared/utility";
+import { checkFormValidity, formatDateByDateFormat, calculateDifferenceBetweenDates, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfYear, getLastDayOfYear } from "../../shared/utility";
+import DatePickerDropdown from "../../components/Form/DatePicker/DatePickerDropdown/DatePickerDropdown";
+import ExportDropdown from "../../components/Form/ExportDropdown/ExportDropdown";
+import LabelInputFormGroup from "../../components/Form/LabelInputFormGroup/LabelInputFormGroup";
 
 const Report = ( props ) => {
     const {
@@ -53,8 +56,8 @@ const Report = ( props ) => {
         onFetchReportConcessionNameMap();
     }, [
         onFetchReportConcessionNameMap, 
-        onFetchReportData,
-        activeTab
+        // onFetchReportData,
+        // activeTab
         // csvLinkRef, 
         // excelLinkRef, 
         // onFetchCostBreakdownBySectionData
@@ -226,21 +229,36 @@ const Report = ( props ) => {
             const feederPillarId = filters.feeder_pillar.value;
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
+            const viewType = filters.viewBy.value;
             const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
-            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
-            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            let chartType = "realtime";
 
-            if(diffDays > 31) {
-                showToast('Date range should not exceed 31 days');
-            }else {
-                onFetchReportData({
-                    feederPillarId: feederPillarId,
-                    dateTimeFrom: dateTimeFromStr,
-                    dateTimeTo: dateTimeToStr,
-                    activeTabId: tab != null ? tab : activeTab,
-                    chartType: 'realtime'
-                });
+            switch(viewType) {
+                case "MONTH":
+                    dateTimeFromStr = getFirstDayOfMonth(dateTimeFrom) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfMonth(dateTimeFrom) + ' 23:59:59';
+                    chartType = "daily"
+                    break;
+                case "YEAR":
+                    const year = formatDateByDateFormat(dateTimeFrom, "y");
+                    dateTimeFromStr = getFirstDayOfYear(year) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfYear(year) + ' 23:59:59'
+                    chartType = "monthly"
+                    break;
+                default:
+                    break;
             }
+
+        
+            onFetchReportData({
+                feederPillarId: feederPillarId,
+                dateTimeFrom: dateTimeFromStr,
+                dateTimeTo: dateTimeToStr,
+                activeTabId: tab != null ? tab : activeTab,
+                chartType: chartType
+            });
 
             
         }
@@ -258,9 +276,28 @@ const Report = ( props ) => {
             const feederPillarId = filters.feeder_pillar.value;
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
-            const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
-            const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
+            let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
+            let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
             const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
+            const viewType = filters.viewBy.value;
+
+            let chartType = "realtime";
+
+            switch(viewType) {
+                case "MONTH":
+                    dateTimeFromStr = getFirstDayOfMonth(dateTimeFrom) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfMonth(dateTimeFrom) + ' 23:59:59';
+                    chartType = "daily"
+                    break;
+                case "YEAR":
+                    const year = formatDateByDateFormat(dateTimeFrom, "y");
+                    dateTimeFromStr = getFirstDayOfYear(year) + ' 00:00:00';
+                    dateTimeToStr = getLastDayOfYear(year) + ' 23:59:59'
+                    chartType = "monthly"
+                    break;
+                default:
+                    break;
+            }
 
             if(diffDays > 31) {
                 showToast('Date range should not exceed 31 days');
@@ -270,20 +307,54 @@ const Report = ( props ) => {
                     dateTimeFrom: dateTimeFromStr,
                     dateTimeTo: dateTimeToStr,
                     activeTabId: tab,
-                    chartType: 'realtime'
+                    chartType: chartType
                 });
             }
         }
     }
-
-
+    
     return (
+        
         <Fragment>
             <Layout {...props}>
                 <PageTitle
                     heading = "Report"
                     icon = "pe-7s-home opacity-6"
-                ></PageTitle>
+                >
+                    <div className="d-inline-block pr-3">
+                        <LabelInputFormGroup 
+                            elementRowIndex={0}
+                            elementId={searchFilters[0].viewBy.elementId}
+                            elementLabel={searchFilters[0].viewBy.elementLabel}
+                            elementType={searchFilters[0].viewBy.elementType}
+                            elementConfig={searchFilters[0].viewBy.elementConfig} 
+                            elementValue={searchFilters[0].viewBy.value}
+                            validationRules={searchFilters[0].viewBy.validation}
+                            valid={searchFilters[0].viewBy.valid}
+                            touched={searchFilters[0].viewBy.touched}
+                            errorMessage={searchFilters[0].viewBy.errorMessage}
+                            inputChangedHandler={inputChangedHandler}
+                        />
+                    </div>
+                    
+                    
+                    <DatePickerDropdown 
+                        datePickerFrom={searchFilters[0].dateRange.value.datePickerFrom}
+                        datePickerTo={searchFilters[0].dateRange.value.datePickerTo}
+                        inputChangedHandler={inputChangedHandler}
+                        isDateRange={searchFilters[0].dateRange.elementConfig.isDateRange}
+                        viewType={searchFilters[0].viewBy.value}
+                    />
+                    <ExportDropdown 
+                        onExportCSVHandler={onExportCSVHandler}
+                        csvLinkRef={csvLinkRef}
+                        csvData={csvData}
+                        excelLinkRef={excelLinkRef}
+                        onExportExcelHandler={onExportExcelHandler}
+                        excelSheets={excelSheets}
+                        fileName={fileName}
+                    />
+                </PageTitle>
 
                 <Container fluid>
                     <Row>
@@ -299,7 +370,7 @@ const Report = ( props ) => {
                                 excelLinkRef={excelLinkRef}
                                 onExportExcelHandler={onExportExcelHandler}
                                 excelSheets={excelSheets}
-                                isExportable
+                                isExportable={false}
                                 isSearchFilterValid={isSearchFilterValid}
                                 fileName={fileName}
                             />

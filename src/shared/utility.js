@@ -123,6 +123,18 @@ export const getLastDayOfMonth = (date) => {
     return formatDateByDateFormat(lastDayOfMonth, 'y-m-d')
 }
 
+export const getFirstDayOfYear = (year) => {
+    const firstDayOfYear = new Date(year, 0, 1);
+    
+    return formatDateByDateFormat(firstDayOfYear, 'y-m-d')
+}
+
+export const getLastDayOfYear = (year) => {
+    const lastDayOfYear = new Date(year, 11, 31);
+    
+    return formatDateByDateFormat(lastDayOfYear, 'y-m-d')
+}
+
 export const convertUnixTimestampToLocalTime = (unixTimestamp) => {
     // Create a new JavaScript Date object based on the timestamp
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -494,7 +506,8 @@ export const updateCharts = (metricCharts, chartsData) => {
 }
 
 export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle, chartOptions) => {
-    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, true);
+    const isXAxisDateTime = chartOptions.xaxis.hasOwnProperty('type');
+    const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, isXAxisDateTime);
 
     const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions, chartSeries);
     const updatedChart = updateObject(metricCharts[0][chartKey], {

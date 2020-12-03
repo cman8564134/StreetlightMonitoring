@@ -56,7 +56,7 @@ const DatePickerDropdown = ( props ) => {
     let dateLabel = formatDateByDateFormat(datePickerFrom.value, 'd/m/y');
     
     switch(viewType){
-        case "WEEK": 
+        case "DAY": 
             const dateFrom = formatDateByDateFormat(datePickerFrom.value, 'd/m/y');
             const dateTo = formatDateByDateFormat(datePickerTo.value, 'd/m/y');
             dateLabel = `${dateFrom} - ${dateTo}`;
@@ -77,7 +77,7 @@ const DatePickerDropdown = ( props ) => {
                 <DropdownToggle caret color="primary" className="mb-2 mr-2">
                     <span><FontAwesomeIcon icon={faCalendarAlt}/> {dateLabel} </span>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-xl">
+                <DropdownMenu className="dropdown-menu-xl" right>
                     <Card className="main-card">
                         <CardHeader>
                             <CardTitle>Select Date Range</CardTitle>

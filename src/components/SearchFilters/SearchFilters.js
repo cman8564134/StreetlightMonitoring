@@ -96,25 +96,31 @@ const SearchFilters = ( props ) => {
                             config
                         } = element;
 
-                        return (
-                            <div key={elementKey} className="d-inline-block pr-3">
-                                <LabelInputFormGroup 
-                                    elementRowIndex={index}
-                                    elementId={id}
-                                    elementLabel={config.elementLabel}
-                                    elementType={config.elementType}
-                                    elementConfig={config.elementConfig} 
-                                    elementValue={config.value}
-                                    validationRules={config.validation}
-                                    valid={config.valid}
-                                    touched={config.touched}
-                                    errorMessage={config.errorMessage}
-                                    inputChangedHandler={inputChangedHandler}
+                        if(!config.elementConfig.hasOwnProperty('isHide') || (config.elementConfig.hasOwnProperty('isHide') && !config.elementConfig.isHide)){
+                            return (
+                                <div key={elementKey} className="d-inline-block pr-3">
+                                    <LabelInputFormGroup 
+                                        elementRowIndex={index}
+                                        elementId={id}
+                                        elementLabel={config.elementLabel}
+                                        elementType={config.elementType}
+                                        elementConfig={config.elementConfig} 
+                                        elementValue={config.value}
+                                        validationRules={config.validation}
+                                        valid={config.valid}
+                                        touched={config.touched}
+                                        errorMessage={config.errorMessage}
+                                        inputChangedHandler={inputChangedHandler}
+    
+                                        
+                                    />
+                                </div>
+                            )
+                        }else {
+                            return null;
+                        }
 
-                                    
-                                />
-                            </div>
-                        )
+                        
                     })
                 )
             }))}
@@ -128,8 +134,6 @@ const SearchFilters = ( props ) => {
                         Apply
                 </LaddaButton>
             </div>
-
-            {exportDropdownMenu}
 
             {alert}
         </Fragment>

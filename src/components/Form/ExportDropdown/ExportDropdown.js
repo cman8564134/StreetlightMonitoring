@@ -40,7 +40,7 @@ const ExportDropdown = (props) => {
                 <DropdownToggle caret color="primary" className="mb-2 mr-2">
                     <span><FontAwesomeIcon icon={faDownload}/></span>
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu right>
                     <Nav vertical>
                         <NavItem className="nav-item-header">
                             Export
