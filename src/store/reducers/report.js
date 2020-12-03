@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import {darkRYB} from '../../shared/colors';
 
 import { 
     updateObject, 
@@ -201,6 +202,12 @@ const initialState = {
         energySavingsTab: {navTitle: "ENERGY SAVINGS", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         amperageTab: {navTitle: "AMPERAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        activePowerTab: {navTitle: "ACTIVE POWER", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        powerFactorTab: {navTitle: "POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        thdcTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
     }],
     loadingHighlights: false,
     loadingChart: false,
@@ -322,7 +329,13 @@ const fetchReportDataSuccess = ( state, action ) => {
     const activeTab = action.activeTab;
     const reportData = action.reportData;
 
-    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, baseChartOptions());
+    let updatedBaseChartOptions = baseChartOptions();
+
+    console.log("series", reportData.series.length );
+    if(reportData.series.length === 3 ){
+        updatedBaseChartOptions = updateObject(baseChartOptions(), {colors: darkRYB});
+    }
+    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
 
@@ -360,7 +373,14 @@ const fetchReportChartDataByActiveTabSuccess = ( state, action ) => {
     const activeTab = action.activeTab;
     const reportData = action.reportData;
 
-    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, baseChartOptions());
+    let updatedBaseChartOptions = baseChartOptions();
+
+    console.log("series", reportData.series.length );
+    if(reportData.series.length === 3 ){
+        updatedBaseChartOptions = updateObject(baseChartOptions(), {colors: darkRYB});
+    }
+
+    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
 

@@ -238,7 +238,7 @@ const Report = ( props ) => {
                     dateTimeFrom: dateTimeFromStr,
                     dateTimeTo: dateTimeToStr,
                     activeTabId: tab != null ? tab : activeTab,
-                    chartType: 'daily'
+                    chartType: 'realtime'
                 });
             }
 
@@ -270,7 +270,7 @@ const Report = ( props ) => {
                     dateTimeFrom: dateTimeFromStr,
                     dateTimeTo: dateTimeToStr,
                     activeTabId: tab,
-                    chartType: 'daily'
+                    chartType: 'realtime'
                 });
             }
         }
