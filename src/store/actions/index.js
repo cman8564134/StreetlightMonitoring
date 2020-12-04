@@ -44,6 +44,11 @@ export {
 } from './roadDetails'
 
 export {
+    getTrafficLightInfo,
+    postNewTrafficLightInfo
+} from './trafficLightForm'
+
+export {
     fetchFeederPillarByFeederPillarId,
     fetchFeederPillarDetails,
     fetchFeederPillarMetricCharts

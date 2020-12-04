@@ -8,7 +8,19 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {
     Container,
-    Button
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Col,
+    CardTitle,
+    FormText,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    InputGroup, InputGroupAddon
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -48,10 +60,15 @@ const RoadDetails = ( props ) => {
         streetlightStatusByPhase,
         electricityBill,
         costBreakdownFormElementArray,
-        totalBillAmount
+        totalBillAmount,
+        onFetchTrafficLightForm,
+        postTrafficLightForm,
+        TrafficLightForm
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
+    const [isTrafficLightForm, setIsTrafficLightForm] = useState(false);
+    const {pillar_id, no_of_streetlight_r, no_of_streetlight_y, no_of_streetlight_b, total_ampere } = TrafficLightForm
 
     const showOrHidePillarDetailsModal = (pillarId) => {
         const roadId = props.match.params.roadId
@@ -78,6 +95,13 @@ const RoadDetails = ( props ) => {
         // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
         // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         setIsPillarDetailsModalVisible(!isPillarDetailsModalVisible);
+    }
+
+    const showTrafficLightForm = (pillarID) => {
+        console.log("showTrafficLightForm: " + pillarID)
+        //post, retrieve value if exist, set them into form and display
+        onFetchTrafficLightForm({feederPillarId: pillarID});
+        setIsTrafficLightForm(!isTrafficLightForm);
     }
 
     useEffect(() => {
@@ -239,7 +263,7 @@ const RoadDetails = ( props ) => {
                 },
                 {
                     Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint_kg'
+                    accessor: 'carbon_footprint'
                 },
                 {
                     Header: 'Energy Savings (KWh)',
@@ -257,11 +281,16 @@ const RoadDetails = ( props ) => {
                     Header: 'Actions',
                     accessor: 'pillar_id',
                     Cell: row => (
-                        <div className="d-block w-100 text-center">
-                            <Button size="sm" color="primary" onClick={() => showOrHidePillarDetailsModal(row.value)}>
-                                Details
-                            </Button>
-                        </div>
+                            <div className="d-block w-100 text-center">
+                                <Button size="sm" color="primary" className="btn-"
+                                        onClick={() => showOrHidePillarDetailsModal(row.value)}>
+                                    Details
+                                </Button>{' '}
+                                <Button size="sm" color="primary" className="btn-"
+                                        onClick={ ()=>{ showTrafficLightForm (row.value); }}>
+                                    Traffic Light Info
+                                </Button>
+                            </div>
                     )
                 }
             ]
@@ -345,6 +374,15 @@ const RoadDetails = ( props ) => {
                             totalBillAmount={totalBillAmount}
                         />
                     </BasicModal>
+                    <TrafficLightForm isVisible={isTrafficLightForm}
+                                      isRevealPassword={false}
+                                      RValue = {no_of_streetlight_r}
+                                      YValue = {no_of_streetlight_y}
+                                      BValue ={no_of_streetlight_b}
+                                      totalAmp={total_ampere}
+                                      pillarID = {pillar_id}
+                                      postFormFunction = {postTrafficLightForm}
+                    />
                 </Container>
             </Layout>
         </Fragment>
@@ -370,7 +408,8 @@ const mapStateToProps = state => {
         loadingRoadDetails: state.RoadDetails.loadingRoadDetails,
         costBreakdownFormElementArray: state.FeederPillarDetails.costBreakdownFormElementArray,
         totalBillAmount: state.FeederPillarDetails.totalBillAmount,
-        electricityBill: state.FeederPillarDetails.electricityBill
+        electricityBill: state.FeederPillarDetails.electricityBill,
+        TrafficLightForm : state.TrafficForm.trafficLightForm,
     }
 }
 
@@ -381,7 +420,8 @@ const mapDispatchToProps = dispatch => {
         onFetchRoadMetricCharts: (params) => dispatch(actions.fetchRoadMetricCharts(params)),
         onFetchFeederPillarDetails: (params) => dispatch(actions.fetchFeederPillarDetails(params)),
         onFetchFeederPillarMetricCharts: (params) => dispatch(actions.fetchFeederPillarMetricCharts(params)),
-        
+        onFetchTrafficLightForm :(params) => dispatch(actions.getTrafficLightInfo(params)),
+        postTrafficLightForm :(params) => dispatch(actions.postNewTrafficLightInfo(params))
     }
 }
 
