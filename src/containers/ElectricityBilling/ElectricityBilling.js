@@ -60,7 +60,7 @@ const ElectricityBilling = ( props ) => {
                     accessor: 'bill_date'
                 },
                 {
-                    Header: 'Bill Amount',
+                    Header: 'Bill Amount (RM)',
                     accessor: 'total_bill_amount'
                 },
                 {
@@ -80,11 +80,11 @@ const ElectricityBilling = ( props ) => {
                     accessor: 'current_month_usage'
                 },
                 {
-                    Header: 'GST',
+                    Header: 'GST (RM)',
                     accessor: 'gst'
                 },
                 {
-                    Header: 'Feed-In Tariff',
+                    Header: 'Feed-In Tariff (RM)',
                     accessor: 'feed_in_tariff'
                 },
             ]
