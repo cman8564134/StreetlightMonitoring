@@ -40,7 +40,7 @@ const CostBreakdown = ( props ) => {
                         <div className="widget-chart-content">
                             <div className="widget-chart-flex">
                                 <div className="widget-numbers">
-                                    Total Bill Amount: RM <span className="text-primary">{totalBillAmount}</span>
+                                    Today's Bill Amount: RM <span className="text-primary">{totalBillAmount}</span>
                                 </div>
                             </div>
                         </div>

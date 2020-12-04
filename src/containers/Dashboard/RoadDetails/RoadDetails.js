@@ -221,8 +221,17 @@ const RoadDetails = ( props ) => {
                     accessor: 'status'
                 },
                 {
-                    Header: 'Uptime %',
-                    accessor: 'uptime_percentage'
+                    Header: 'Uptime (Lamp Up / Total Lamp)',
+                    Cell: row => {
+                            console.log(row.original);
+                            return row.original.total_active_streetlights + "/" + row.original.total_streetlights
+                        }
+                },
+                {
+                    Header: 'Downtime (Lamp Down / Total Lamp)',
+                    Cell: row => {
+                        return row.original.total_inactive_streetlights + "/" + row.original.total_streetlights
+                    }
                 },
                 {
                     Header: 'Electricity Bill (RM)',

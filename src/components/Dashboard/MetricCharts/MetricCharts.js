@@ -48,7 +48,7 @@ const MetricCharts = ( props ) => {
                         }
 
                         return (
-                            <Col key={key} sm="12" md="6" xl="6">
+                            <Col key={key} sm="12" md="12" xl="12">
                                 <Card className="mb-3">
                                     {chartComponent}
                                     
