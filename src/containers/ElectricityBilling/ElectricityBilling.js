@@ -96,9 +96,14 @@ const ElectricityBilling = ( props ) => {
                     accessor: 'id',
                     Cell: row => (
                         <div className="d-block w-100 text-center">
-                            <Button size="sm" color="primary" disabled={level === 3} onClick={()=>{showOrHideBreakdownModal(row.value, row.original.name, level)}}>
-                                Details
-                            </Button>
+                            {level !== 3 
+                                ? 
+                                <Button size="sm" color="primary" disabled={level === 3} onClick={()=>{showOrHideBreakdownModal(row.value, row.original.name, level)}}>
+                                    Details
+                                </Button>
+                                : null
+                            }
+                            
                         </div>
                     )
                 }
