@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
+import { updateObject } from '../../shared/utility';
 
 export const fetchReportSectionNameMapByConcessionIdStart = () => {
     return {
@@ -266,18 +267,46 @@ export const fetchExportableReportData = ( params ) => {
     return dispatch => {
         dispatch(fetchExportableReportDataStart());    
 
+        return getPaginatedExportableData(params)
+        .then(response => {
+            dispatch(fetchExportableReportDataSuccess(response.metrics, response.fileName));
+            return Promise.resolve({isSuccessful: true});
+            
+        }).catch(error => {
+            console.log(error);
+            dispatch(fetchExportableReportDataFail(error));
+        });  ;
 
-        return axios.post('/getExportableReportData', params)
-            .then(response => {
-                dispatch(fetchExportableReportDataSuccess(response.data.metrics, response.data.fileName));
-
-                return Promise.resolve({isSuccessful: true});
-            })
-            .catch(error => {
-                console.log(error);
-                dispatch(fetchExportableReportDataFail(error));
-            });  
+        
 
         
     }
 }
+
+const getPaginatedExportableData = async (params) => {  
+    const response = await axios.post('/getExportableReportData', params);
+    console.log('params', params);
+    const data = response.data;
+    let metrics = data.metrics;
+    let fileName = data.fileName;
+    let metricsData = data.metrics.data;
+    
+    if(metrics){
+        const currentPage = metrics.current_page;
+        console.log('currentPage', currentPage);
+        console.log('lastPage', metrics.last_page);
+        if (metrics.last_page > currentPage) {
+            const paginatedParams = updateObject(params, {page: currentPage + 1});
+            const paginatedData = await getPaginatedExportableData(paginatedParams);
+            fileName = paginatedData.fileName;
+            console.log('metricsData', metricsData);
+            console.log('paginatedData', paginatedData);
+            metricsData = metricsData.concat(paginatedData.metrics);
+            console.log('metricsData', metricsData);
+        }
+    }
+    
+    const exportableData = {metrics: metricsData, fileName: fileName};
+
+    return exportableData; 
+  }

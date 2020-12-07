@@ -288,10 +288,10 @@ const RoadDetails = ( props ) => {
                                         onClick={() => showOrHidePillarDetailsModal(row.value)}>
                                     Details
                                 </Button>{' '}
-                                <Button size="sm" color="primary" className="btn-"
+                                {/* <Button size="sm" color="primary" className="btn-"
                                         onClick={ ()=>{ showTrafficLightForm (row.value); }}>
                                     Traffic Light Info
-                                </Button>
+                                </Button> */}
                             </div>
                     )
                 }

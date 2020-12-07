@@ -59,7 +59,7 @@ const ExportDropdown = (props) => {
                         </NavItem>
                         <NavItem>
                             <NavLink href="#" onClick={(e) => onExportExcelHandler(e)}>Excel</NavLink>
-                            <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("abc")}>Excel</button>}>
+                            <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("Exporting Data to Excel")}>Excel</button>}>
                                 {excelSheets.map((sheets, index) => {
                                     const sheetObjects = [];
 

@@ -119,24 +119,21 @@ const Report = ( props ) => {
             const feederPillarId = filters.feeder_pillar.value;
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
-            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
             const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
             const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
 
-            if(diffDays > 10) {
-                showToast('Date range should not exceed 10 days when exporting');
-            }else {
-                onFetchExportableReportData({
-                    feederPillarId: feederPillarId,
-                    dateTimeFrom: dateTimeFromStr,
-                    dateTimeTo: dateTimeToStr
-                })
-                .then((response) => {
-                    if(response.isSuccessful){
-                        csvLinkRef.current.link.click();
-                    }
-                });
-            }   
+        
+            onFetchExportableReportData({
+                feederPillarId: feederPillarId,
+                dateTimeFrom: dateTimeFromStr,
+                dateTimeTo: dateTimeToStr
+            })
+            .then((response) => {
+                if(response.isSuccessful){
+                    csvLinkRef.current.link.click();
+                }
+            });
+             
         }
     }
 
@@ -152,7 +149,6 @@ const Report = ( props ) => {
             const feederPillarId = filters.feeder_pillar.value;
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
-            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
             const dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
             const dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
             const dateFromStr = formatDateByDateFormat(dateTimeFrom, 'ymd');
@@ -165,22 +161,18 @@ const Report = ( props ) => {
                 dateStr = dateFromStr + '_to_' + dateToStr;
             }
                 
-
-            if(diffDays > 10) {
-                showToast('Date range should not exceed 10 days when exporting');
-            }else {
-                onFetchExportableReportData({
-                    feederPillarId: feederPillarId,
-                    dateTimeFrom: dateTimeFromStr,
-                    dateTimeTo: dateTimeToStr,
-                    dateStr: dateStr
-                })
-                .then((response) => {
-                    if(response.isSuccessful){
-                        excelLinkRef.current.click();
-                    }
-                });;
-            }   
+            onFetchExportableReportData({
+                feederPillarId: feederPillarId,
+                dateTimeFrom: dateTimeFromStr,
+                dateTimeTo: dateTimeToStr,
+                dateStr: dateStr
+            })
+            .then((response) => {
+                if(response.isSuccessful){
+                    excelLinkRef.current.click();
+                }
+            });
+            
         }
     }
 
@@ -195,31 +187,6 @@ const Report = ( props ) => {
     const showToast = (message) => toast.error(message,{position: toast.POSITION.BOTTOM_RIGHT});
     
     const onApplyFilterHandler = (site, tab) => {
-        // const viewType = filterElementArray[0].viewBy.value;
-        // let dateFrom = formatDateByDateFormat(filterElementArray[0].datePickerFrom.value, "d/m/y");
-        // let dateTo = formatDateByDateFormat(filterElementArray[0].datePickerTo.value, "d/m/y");
-
-        // switch(viewType) {
-        //     case "MONTH":
-        //         dateFrom = formatDateByDateFormat(filterElementArray[0].datePickerFrom.value, "m-y");
-        //         break;
-        //     case "YEAR":
-        //         dateFrom = formatDateByDateFormat(filterElementArray[0].datePickerFrom.value, "y");
-        //         break;
-        //     default:
-        //         break;
-        // }
-
-        // let sites = [];
-
-        // const siteOptions = filterElementArray[0].siteOption.value
-        // for(let key in siteOptions){
-        //     sites.push(siteOptions[key].value);
-        // }
-        // sites = site != null ? site : sites;
-
-        // const params = {viewType: viewType, dateFrom: dateFrom, dateTo: dateTo, sites: sites, activeTabId: tab != null ? tab : activeTab};
-
         const isFormValid = checkFormValidity(searchFilters);
 
         setIsSearchFilterValid(isFormValid);
@@ -230,7 +197,6 @@ const Report = ( props ) => {
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
             const viewType = filters.viewBy.value;
-            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
             let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
             let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
             let chartType = "realtime";
