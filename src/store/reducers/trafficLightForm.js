@@ -7,7 +7,7 @@ import {
 } from '../../shared/utility';
 
 const initialState = {
-    trafficLightForm: {},
+    trafficLightConfig: {},
     isRevealPassword : false
 };
 
@@ -21,18 +21,18 @@ const PostTrafficLightFormSuccess = ( state, action ) => {
 
     console.log("Action: " + action);
     return updateObject(state, {
-        trafficLightForm: action.formData
+        trafficLightConfig: action.formData
     });
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_TRAFFIC_LIGHT_FORM_SUCCESS:
-            return PostTrafficLightFormSuccess;
+            return PostTrafficLightFormSuccess( state, action );
         case actionTypes.START_TRAFFIC_LIGHT_FORM:
-            return TrafficLightFormStart;
+            return TrafficLightFormStart( state, action );
         case  actionTypes.POST_TRAFFIC_LIGHT_FORM_SUCCESS:
-            return PostTrafficLightFormSuccess
+            return PostTrafficLightFormSuccess( state, action );
         default:
             return state;
     }

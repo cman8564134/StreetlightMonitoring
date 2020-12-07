@@ -10,14 +10,15 @@ import CardFooter from "reactstrap/lib/CardFooter";
 const TrafficLightForm = (props) =>{
 
     let {
+        trafficLightConfig,
         isVisible,
         isRevealPassword,
-        RValue,
-        YValue,
-        BValue,
-        totalTrafficLight,
-        totalAmp,
-        pillarID,
+        // RValue,
+        // YValue,
+        // BValue,
+        // totalTrafficLight,
+        // totalAmp,
+        // pillarID,
         postFormFunction
     } = props
     // const [isRevealPassword, setIsRevealPassword] = useState(false);
@@ -28,15 +29,21 @@ const TrafficLightForm = (props) =>{
     // const [totalAmp, setTotalAmp] = useState(0);
     // const [pillarID, setPillarID] = useState();
 
-    useEffect(() => {
-        const sum = parseInt(RValue) + parseInt(BValue) + parseInt(YValue)
-        if(sum<0) {
-            alert("R,B,Y Value has to be more than zero!");
-        }
-        else {
-            totalTrafficLight = sum
-        }
-    },[RValue, YValue, BValue])
+    console.log('TrafficLightForm - trafficLightForm', trafficLightConfig);
+    let {pillar_id, no_of_streetlight_r, no_of_streetlight_y, no_of_streetlight_b, total_ampere, total_no_of_streetlight } = trafficLightConfig;
+
+    // useEffect(() => {
+    //     // const sum = parseInt(RValue) + parseInt(BValue) + parseInt(YValue)
+    //     const sum = parseInt(no_of_streetlight_r) + parseInt(no_of_streetlight_y) + parseInt(no_of_streetlight_b)
+    //     if(sum<0) {
+    //         alert("R,B,Y Value has to be more than zero!");
+    //     }
+    //     else {
+    //         total_no_of_streetlight = sum;
+    //     }
+    // },[RValue, YValue, BValue])
+
+
 
     return <Fragment>
         <BasicModal
@@ -62,7 +69,7 @@ const TrafficLightForm = (props) =>{
                                     Feeder Pillar ID
                                 </Label>
                                 <Col sm={10}>
-                                    <Input readOnly  id="PillarID" value = {pillarID}/>
+                                    <Input readOnly  id="PillarID" value = {pillar_id}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -70,7 +77,7 @@ const TrafficLightForm = (props) =>{
                                     R Value
                                 </Label>
                                 <Col sm={10}>
-                                    <Input id="RValue" placeholder="R Value" type="number" step="1" min = "0" value ={RValue}/>
+                                    <Input id="RValue" placeholder="R Value" type="number" step="1" min = "0" value ={no_of_streetlight_r}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -78,7 +85,7 @@ const TrafficLightForm = (props) =>{
                                     Y Value
                                 </Label>
                                 <Col sm={10}>
-                                    <Input id="YValue" placeholder="Y Value" type="number" step="1" min = "0" value ={YValue} />
+                                    <Input id="YValue" placeholder="Y Value" type="number" step="1" min = "0" value ={no_of_streetlight_y} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -86,7 +93,7 @@ const TrafficLightForm = (props) =>{
                                     B Value
                                 </Label>
                                 <Col sm={10}>
-                                    <Input id="BValue" placeholder="B Value" type="number" step="1" min = "0" value ={BValue} />
+                                    <Input id="BValue" placeholder="B Value" type="number" step="1" min = "0" value ={no_of_streetlight_b} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -94,7 +101,7 @@ const TrafficLightForm = (props) =>{
                                     Total Number of StreetLight
                                 </Label>
                                 <Col sm={10}>
-                                    <Input readOnly  id="TotalStreetLight" value = {totalTrafficLight}/>
+                                    <Input readOnly  id="TotalStreetLight" value = {total_no_of_streetlight}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -102,7 +109,7 @@ const TrafficLightForm = (props) =>{
                                     Total Amp
                                 </Label>
                                 <Col sm={10}>
-                                    <Input id="TotalAmp" placeholder="Total Amp" type="number" step="1" min="0" value ={totalAmp} />
+                                    <Input id="TotalAmp" placeholder="Total Amp" type="number" step="1" min="0" value ={total_ampere} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -110,7 +117,7 @@ const TrafficLightForm = (props) =>{
                                     Amp for Each Street Light
                                 </Label>
                                 <Col sm={10}>
-                                    <Input readOnly  id="EachStreetLightAmp" value = {totalAmp/totalTrafficLight}/>
+                                    <Input readOnly  id="EachStreetLightAmp" value = {total_ampere/total_no_of_streetlight}/>
                                 </Col>
                             </FormGroup>
 

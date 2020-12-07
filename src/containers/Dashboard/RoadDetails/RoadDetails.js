@@ -35,6 +35,7 @@ import DataTable from '../../../components/Tables/DataTable/DataTable';
 import Overview from '../../../components/Dashboard/Overview/Overview';
 import BasicModal from '../../../components/Modal/BasicModal/BasicModal';
 import FeederPillarDetails from '../../../components/Dashboard/FeederPillarDetails/FeederPillarDetails';
+import TrafficLightForm from '../TrafficLightForm/TrafficLightForm';
 
 const RoadDetails = ( props ) => {
     const {
@@ -63,12 +64,13 @@ const RoadDetails = ( props ) => {
         totalBillAmount,
         onFetchTrafficLightForm,
         postTrafficLightForm,
-        TrafficLightForm
+        trafficLightConfig
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
     const [isTrafficLightForm, setIsTrafficLightForm] = useState(false);
-    const {pillar_id, no_of_streetlight_r, no_of_streetlight_y, no_of_streetlight_b, total_ampere } = TrafficLightForm
+    
+    // const {pillar_id, no_of_streetlight_r, no_of_streetlight_y, no_of_streetlight_b, total_ampere } = trafficLightForm;
 
     const showOrHidePillarDetailsModal = (pillarId) => {
         const roadId = props.match.params.roadId
@@ -376,11 +378,12 @@ const RoadDetails = ( props ) => {
                     </BasicModal>
                     <TrafficLightForm isVisible={isTrafficLightForm}
                                       isRevealPassword={false}
-                                      RValue = {no_of_streetlight_r}
-                                      YValue = {no_of_streetlight_y}
-                                      BValue ={no_of_streetlight_b}
-                                      totalAmp={total_ampere}
-                                      pillarID = {pillar_id}
+                                      trafficLightConfig={trafficLightConfig}
+                                    //   RValue = {no_of_streetlight_r}
+                                    //   YValue = {no_of_streetlight_y}
+                                    //   BValue ={no_of_streetlight_b}
+                                    //   totalAmp={total_ampere}
+                                    //   pillarID = {pillar_id}
                                       postFormFunction = {postTrafficLightForm}
                     />
                 </Container>
@@ -409,7 +412,7 @@ const mapStateToProps = state => {
         costBreakdownFormElementArray: state.FeederPillarDetails.costBreakdownFormElementArray,
         totalBillAmount: state.FeederPillarDetails.totalBillAmount,
         electricityBill: state.FeederPillarDetails.electricityBill,
-        TrafficLightForm : state.TrafficForm.trafficLightForm,
+        trafficLightConfig : state.TrafficForm.trafficLightConfig,
     }
 }
 

@@ -14,6 +14,7 @@ export const getTrafficLightInfo = (params) =>{
     return dispatch => {
         axios.post('/getTrafficLightForm',params,{timeout:10000 })
             .then(res => {
+                console.log("getTrafficLightInfo res.data: ", res.data);
                 const data = res.data;
                 dispatch(fetchTrafficDetails(data));
             })
