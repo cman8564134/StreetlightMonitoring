@@ -285,7 +285,6 @@ export const fetchExportableReportData = ( params ) => {
 
 const getPaginatedExportableData = async (params) => {  
     const response = await axios.post('/getExportableReportData', params);
-    console.log('params', params);
     const data = response.data;
     let metrics = data.metrics;
     let fileName = data.fileName;
@@ -293,16 +292,11 @@ const getPaginatedExportableData = async (params) => {
     
     if(metrics){
         const currentPage = metrics.current_page;
-        console.log('currentPage', currentPage);
-        console.log('lastPage', metrics.last_page);
         if (metrics.last_page > currentPage) {
             const paginatedParams = updateObject(params, {page: currentPage + 1});
             const paginatedData = await getPaginatedExportableData(paginatedParams);
             fileName = paginatedData.fileName;
-            console.log('metricsData', metricsData);
-            console.log('paginatedData', paginatedData);
             metricsData = metricsData.concat(paginatedData.metrics);
-            console.log('metricsData', metricsData);
         }
     }
     

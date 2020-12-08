@@ -52,6 +52,10 @@ const Report = React.lazy(() => {
   return import('./containers/Report/Report');
 });
 
+const Analytics = React.lazy(() => {
+  return import('./containers/Analytics/Analytics');
+});
+
 const App = ( props ) => {
   const [ closedSmallerSidebar ] = useState(false);
   let {
@@ -109,6 +113,7 @@ const App = ( props ) => {
               <Route path="/alert" render={(props) => <Alert {...props}/>}/>
               {/* <Route path="/configurations" render={(props) => <Configurations {...props}/>}/> */}
               <Route path="/report" render={(props) => <Report {...props}/>}/>
+              <Route path="/analytics" render={(props) => <Analytics {...props}/>}/>
               <Route path="/" exact component={Login} />
               <Redirect to="/"/>  
             </Switch>

@@ -25,7 +25,7 @@ export const AnalyticsNav = [
     {
         icon: 'lnr-chart-bars',
         label: 'Analytics',
-        to: '#',
+        to: '/analytics',
     }
 ];
 
