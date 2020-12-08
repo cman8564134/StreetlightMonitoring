@@ -348,7 +348,7 @@ const handleReportInputChanged = ( state, action ) => {
         const dateTo = new Date();
 
         switch(value){
-            case "DAY":
+            case "WEEK":
                 isDateRange = true;
                 break;
             case "MONTH":

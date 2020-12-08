@@ -244,7 +244,6 @@ const Report = ( props ) => {
             const dateTimeTo = filters.dateRange.value.datePickerTo.value;
             let dateTimeFromStr = formatDateByDateFormat(dateTimeFrom, 'y-m-d') + ' 00:00:00';
             let dateTimeToStr = formatDateByDateFormat(dateTimeTo, 'y-m-d') + ' 23:59:59';
-            const diffDays = calculateDifferenceBetweenDates(dateTimeFrom, dateTimeTo);
             const viewType = filters.viewBy.value;
 
             let chartType = "realtime";
@@ -265,17 +264,15 @@ const Report = ( props ) => {
                     break;
             }
 
-            if(diffDays > 31) {
-                showToast('Date range should not exceed 31 days');
-            }else {
-                onFetchReportChartDataByActiveTab({
-                    feederPillarId: feederPillarId,
-                    dateTimeFrom: dateTimeFromStr,
-                    dateTimeTo: dateTimeToStr,
-                    activeTabId: tab,
-                    chartType: chartType
-                });
-            }
+            
+            onFetchReportChartDataByActiveTab({
+                feederPillarId: feederPillarId,
+                dateTimeFrom: dateTimeFromStr,
+                dateTimeTo: dateTimeToStr,
+                activeTabId: tab,
+                chartType: chartType
+            });
+            
         }
     }
     

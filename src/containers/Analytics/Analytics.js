@@ -12,9 +12,9 @@ const Analytics = ( props ) => {
                         <div className="text-center">
                             <Loader type="ball-clip-rotate-multiple"/>
                         </div>
-                        <h5 className="mt-5">
+                        <h1 className="mt-5">
                             <small>Machine Learning In Progress</small>
-                        </h5>
+                        </h1>
                     </div>
                 </div>
             </Layout>
