@@ -24,7 +24,14 @@ import Loader from '../../components/Loader/BallClipRotateMultiple/BallClipRotat
 
 import * as actions from '../../store/actions/index';
 import * as formInputActions from '../../store/actions/formInput';
-import { HANDLE_ALERT_INPUT_CHANGED_SUCCESS, FETCH_ALERT_USERS_SUCCESS } from '../../store/actions/actionTypes';
+import { 
+    HANDLE_ALERT_INPUT_CHANGED_SUCCESS, 
+    FETCH_ALERT_USERS_SUCCESS, 
+    FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS, 
+    FETCH_ALERT_CODE_MASTER_CODE_SUCCESS,
+    HANDLE_ALERT_SEARCH_FILTER_CHANGED_SUCCESS
+} from '../../store/actions/actionTypes';
+import SearchFilters from '../../components/SearchFilters/SearchFilters';
 
 
 const Alert = ( props ) => {
@@ -35,7 +42,7 @@ const Alert = ( props ) => {
         alertElementArray,
         onFetchAlertById,
         loadingModal,
-        onFetchAlertStatusMasterCode,
+        onFetchMasterCodeMapByMasterCode,
         onFetchUsers,
         onHandleInputChanged,
         formIsValid,
@@ -43,24 +50,27 @@ const Alert = ( props ) => {
         savingAlert,
         selectedAlertId,
         onMarkAlertAsRead,
-        alertStatusMasterCode
+        alertStatusMasterCode,
+        searchFilters,
+        onFetchAlertByAlertCode
     } = props;
 
     useEffect(() => {
         onFetchAlertOrderByDesc();
-        onFetchAlertStatusMasterCode({masterCode: 'ALERTSTATUS'});
+        onFetchMasterCodeMapByMasterCode({masterCode: 'ALERTSTATUS', type: FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS});
+        onFetchMasterCodeMapByMasterCode({masterCode: 'ALERTCODE', type: FETCH_ALERT_CODE_MASTER_CODE_SUCCESS});
         // onMarkAlertAsRead();
     }, [
         onFetchAlertOrderByDesc,
         onMarkAlertAsRead,
-        onFetchAlertStatusMasterCode
+        onFetchMasterCodeMapByMasterCode
     ])
 
     const [ visible, setVisible ] = useState(false);
 
     const showOrHideModal = (id) => {
         setVisible(!visible);
-        onFetchAlertStatusMasterCode({masterCode: 'ALERTSTATUS'});
+        onFetchMasterCodeMapByMasterCode({masterCode: 'ALERTSTATUS', type: FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS});
         onFetchUsers(FETCH_ALERT_USERS_SUCCESS);
         onFetchAlertById({id: id})
     }
@@ -200,6 +210,18 @@ const Alert = ( props ) => {
         saveButton = <Loader/>
     }
 
+    const onApplyFilterHandler = () => {
+        console.log("categories value", searchFilters[0].categories.value);
+            onFetchAlertByAlertCode({
+                alertCode:searchFilters[0].categories.value
+            });            
+            
+    };
+
+    const searchFilterChangedHandler = (event, elementRowIndex, elementId, validationRules) => {
+        onHandleInputChanged(HANDLE_ALERT_SEARCH_FILTER_CHANGED_SUCCESS, event.target.value, elementRowIndex, elementId, validationRules);
+    }
+
     return (
         <Layout {...props}>
             <PageTitle
@@ -211,6 +233,14 @@ const Alert = ( props ) => {
             </PageTitle>
 
             <Container fluid>
+                <SearchFilters 
+                    filterElementArray={searchFilters}
+                    inputChangedHandler={searchFilterChangedHandler}
+                    loading={false}
+                    onApplyFilterHandler={onApplyFilterHandler}
+                    isSearchFilterValid={true}
+                />
+
                 <DataTable 
                     data={alertTableData}
                     columns={alertTableColumns}
@@ -248,7 +278,8 @@ const mapStateToProps = state => {
         formIsValid: state.Alert.formIsValid,
         savingAlert: state.Alert.savingAlert,
         selectedAlertId: state.Alert.selectedAlertId,
-        alertStatusMasterCode: state.Alert.alertStatusMasterCode
+        alertStatusMasterCode: state.Alert.alertStatusMasterCode,
+        searchFilters: state.Alert.searchFilters,
     }
 }
 
@@ -256,11 +287,12 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchAlertOrderByDesc: () => dispatch(actions.fetchAlertOrderByDesc()),
         onFetchAlertById: (params) => dispatch(actions.fetchAlertById(params)),
-        onFetchAlertStatusMasterCode: (params) => dispatch(actions.fetchAlertStatusMasterCode(params)),
+        onFetchMasterCodeMapByMasterCode: (params) => dispatch(actions.fetchMasterCodeMapByMasterCode(params)),
         onFetchUsers: (type) => dispatch(actions.fetchUsers(type)),
         onHandleInputChanged: (type, value, elementRowIndex, elementId, validationRules) => dispatch(formInputActions.handleInputChanged(type, value, elementRowIndex, elementId, validationRules)),
         onSaveAlert: (params) => dispatch(actions.saveAlert(params)),
         onMarkAlertAsRead: () => dispatch(actions.markAlertAsRead()),
+        onFetchAlertByAlertCode: (params) => dispatch(actions.fetchAlertByAlertCode(params)),
     }
 }
 

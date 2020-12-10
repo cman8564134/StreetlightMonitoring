@@ -88,38 +88,6 @@ export const fetchAlertById = (params) => {
     
 }
 
-export const fetchAlertStatusMasterCodeSuccess = (alertStatus) => {
-    return {
-        type: actionTypes.FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS,
-        alertStatus: alertStatus
-    }
-}
-
-export const fetchAlertStatusMasterCode = ( data ) => {
-    return dispatch => {
-        const response = {
-            data: {
-                "masterCodeMap": {
-                    "IIP": "INVESTIGATION IN PROGRESS",
-                    "PI": "PENDING INVESTIGATION",
-                    "R": "RESOLVED",
-                    "RI": "RESOLVING ISSUE",
-                    "C": "CLOSED",
-                }
-            }
-        }
-        dispatch(fetchAlertStatusMasterCodeSuccess(response.data.masterCodeMap));
-        // axios.post('/getCodeAndDescByMasterCode', data)
-        //     .then(response => {
-        //         dispatch(fetchAlertStatusMasterCodeSuccess(response.data.masterCodeMap));
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-    }
-    
-}
-
 export const saveAlertStart = () => {
     return {
         type: actionTypes.SAVE_ALERT_START,
@@ -189,5 +157,41 @@ export const markAlertAsRead =  () => {
         }
         
     }
-    
+}
+
+export const fetchAlertByAlertCodeStart = () => {
+    return {
+        type: actionTypes.FETCH_ALERT_BY_ALERT_CODE_START,
+        loading: true
+    }
+}
+
+export const fetchAlertByAlertCodeSuccess = (alerts) => {
+    return {
+        type: actionTypes.FETCH_ALERT_BY_ALERT_CODE_SUCCESS,
+        loading: false,
+        alerts: alerts,
+    }
+}
+
+export const fetchAlertByAlertCodeFail = (error) => {
+    return {
+        type: actionTypes.FETCH_ALERT_BY_ALERT_CODE_FAIL,
+        loading: false
+    }
+}
+
+export const fetchAlertByAlertCode = (params) => {
+    return dispatch => {
+        dispatch(fetchAlertByAlertCodeStart());
+        
+        axios.post('/getAlertByAlertCode', params)
+            .then(response => {
+                dispatch(fetchAlertByAlertCodeSuccess(response.data.alerts));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchAlertByAlertCodeFail(error));
+            });
+    }   
 }

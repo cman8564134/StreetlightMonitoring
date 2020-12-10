@@ -167,6 +167,25 @@ const initialState = {
                     errorMessage: ''
                 }
             }
+        ],
+        searchFilters: [
+            {
+                categories: {
+                    elementLabel: 'Categories:',
+                    elementType: 'select',
+                    elementConfig: {
+                        type: "select",
+                        options: []
+                    },
+                    value: '',
+                    validation: {
+                        required: false
+                    },
+                    valid: false,
+                    touched: false,
+                    errorMessage: ''
+                }
+            }
         ]
 };
 
@@ -270,12 +289,22 @@ const fetchAlertByIdFail = ( state, action ) => {
 }
 
 const fetchAlertStatusMasterCodeSuccess = ( state, action ) => {
-    const updatedOption = {options: createMasterCodeOptions(action.alertStatus)};
+    const updatedOption = {options: createMasterCodeOptions(action.masterCodeMap)};
     const updatedArray = updateElementOptionArray(state.alertElementArray, 3, "status", "elementConfig", updatedOption);
     
     return updateObject(state, {
         alertElementArray: Object.values(updatedArray),
-        alertStatusMasterCode: action.alertStatus
+        alertStatusMasterCode: action.masterCodeMap
+    });
+}
+
+const fetchAlertCodeMasterCodeSuccess = ( state, action ) => {
+    const updatedOption = {options: createMasterCodeOptions(action.masterCodeMap)};
+    const updatedArray = updateElementOptionArray(state.searchFilters, 0, "categories", "elementConfig", updatedOption);
+    
+    return updateObject(state, {
+        searchFilters: Object.values(updatedArray),
+        // alertStatusMasterCode: action.alertStatus
     });
 }
 
@@ -334,6 +363,47 @@ const markAlertAsReadSuccess = ( state, action ) => {
     return state;
 }
 
+const fetchAlertByAlertCodeStart = ( state, action ) => {
+    return updateObject(state, {
+        loadingAlertTable: action.loading
+    });
+}
+
+const fetchAlertByAlertCodeSuccess = ( state, action ) => {
+    return updateObject(state, {
+        loadingAlertTable: action.loading,
+        alertTableData: action.alerts,
+    });
+}
+
+const fetchAlertByAlertCodeFail = ( state, action ) => {
+    return updateObject(state, {
+        loadingAlertTable: action.loading
+    });
+}
+
+const handleAlertSearchFilterChanged = ( state, action ) => {
+    const value = action.value;
+    const elementRowIndex = action.elementRowIndex;
+    const elementId = action.elementId; 
+    const validationRules = action.validationRules;
+    const arrayId = "searchFilters";
+    const isInputValid = checkValidity(value, validationRules);
+
+    const udpatedObject = {
+        value: value,
+        touched: true,
+        valid: isInputValid
+    };
+    const updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, udpatedObject);
+    const updatedObjectArray= Object.values(updatedArray);
+
+    return updateObject(state, {
+        [arrayId]: updatedObjectArray,
+        formIsValid: checkFormValidity(updatedObjectArray)
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_ALERT_ORDER_BY_DESC_START:
@@ -350,6 +420,8 @@ const reducer = (state = initialState, action) => {
             return fetchAlertByIdFail( state, action );
         case actionTypes.FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS:
             return fetchAlertStatusMasterCodeSuccess( state, action );
+        case actionTypes.FETCH_ALERT_CODE_MASTER_CODE_SUCCESS:
+            return fetchAlertCodeMasterCodeSuccess( state, action );
         case actionTypes.FETCH_ALERT_USERS_SUCCESS:
             return fetchUsersSuccess( state, action );
         case actionTypes.HANDLE_ALERT_INPUT_CHANGED_SUCCESS:
@@ -362,6 +434,14 @@ const reducer = (state = initialState, action) => {
             return saveAlertFail( state, action );
         case actionTypes.MARK_ALERT_NOTIFICATION_AS_READ_SUCCESS:
             return markAlertAsReadSuccess( state, action );
+        case actionTypes.FETCH_ALERT_BY_ALERT_CODE_START:
+            return fetchAlertByAlertCodeStart( state, action );
+        case actionTypes.FETCH_ALERT_BY_ALERT_CODE_SUCCESS:
+            return fetchAlertByAlertCodeSuccess( state, action );
+        case actionTypes.FETCH_ALERT_BY_ALERT_CODE_FAIL:
+            return fetchAlertByAlertCodeFail( state, action );
+        case actionTypes.HANDLE_ALERT_SEARCH_FILTER_CHANGED_SUCCESS:
+            return handleAlertSearchFilterChanged( state, action );
         default:
             return state;
     }

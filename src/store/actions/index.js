@@ -91,9 +91,9 @@ export {
 export {
     fetchAlertOrderByDesc,
     fetchAlertById,
-    fetchAlertStatusMasterCode,
     saveAlert,
-    markAlertAsRead
+    markAlertAsRead,
+    fetchAlertByAlertCode
 } from './alert';
 
 // export {
@@ -170,3 +170,7 @@ export {
     authCheckState,
     fetchUnreadNotification
 } from './authentication';
+
+export {
+    fetchMasterCodeMapByMasterCode
+} from './masterCode';
