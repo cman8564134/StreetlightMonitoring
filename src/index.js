@@ -19,6 +19,7 @@ import electricityBillingReducer from './store/reducers/electricityBilling';
 import alertReducer from './store/reducers/alert';
 import reportReducer from './store/reducers/report';
 import TrafficLightFormReducer from './store/reducers/trafficLightForm'
+import AnalyticsReducer from './store/reducers/analytics'
 import * as serviceWorker from './serviceWorker';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose ;
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
   ElectricityBill: electricityBillingReducer,
   Report: reportReducer,
   Alert: alertReducer,
-  TrafficForm : TrafficLightFormReducer
+  TrafficForm : TrafficLightFormReducer,
+  Analytics : AnalyticsReducer,
 });
 
 const store = createStore(rootReducer, composeEnhancers(

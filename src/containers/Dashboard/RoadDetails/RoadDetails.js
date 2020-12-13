@@ -357,25 +357,6 @@ const RoadDetails = ( props ) => {
                         tabPanes={tabPanes}
                         onChangeHandler={onTabChangeHandler}
                     />
-
-                    <BasicModal 
-                        modalWidth={1000}
-                        visible={isPillarDetailsModalVisible}
-                        showOrHideModal={showOrHidePillarDetailsModal}
-                    >
-                        <FeederPillarDetails
-                            loading={loadingFeederPillarDetails}
-                            feederPillar={feederPillar}
-                            metricCharts={feederPillarMetricCharts}
-                            loadingMetricCharts={loadingFeederPillarDetails}
-                            streetlightStatusChartOptions={streetlightStatusChartOptions}
-                            streetlightStatusChartSeries={streetlightStatusChartSeries}
-                            streetlightStatusByPhase={streetlightStatusByPhase}
-                            electricityBill={electricityBill}
-                            costBreakdownFormElementArray={costBreakdownFormElementArray}
-                            totalBillAmount={totalBillAmount}
-                        />
-                    </BasicModal>
                     <TrafficLightForm isVisible={isTrafficLightForm}
                                       isRevealPassword={false}
                                       trafficLightConfig={trafficLightConfig}
@@ -388,6 +369,24 @@ const RoadDetails = ( props ) => {
                     />
                 </Container>
             </Layout>
+            <BasicModal 
+                modalWidth={"100%"}
+                visible={isPillarDetailsModalVisible}
+                showOrHideModal={showOrHidePillarDetailsModal}
+            >
+                <FeederPillarDetails
+                    loading={loadingFeederPillarDetails}
+                    feederPillar={feederPillar}
+                    metricCharts={feederPillarMetricCharts}
+                    loadingMetricCharts={loadingFeederPillarDetails}
+                    streetlightStatusChartOptions={streetlightStatusChartOptions}
+                    streetlightStatusChartSeries={streetlightStatusChartSeries}
+                    streetlightStatusByPhase={streetlightStatusByPhase}
+                    electricityBill={electricityBill}
+                    costBreakdownFormElementArray={costBreakdownFormElementArray}
+                    totalBillAmount={totalBillAmount}
+                />
+            </BasicModal>
         </Fragment>
     )
 }

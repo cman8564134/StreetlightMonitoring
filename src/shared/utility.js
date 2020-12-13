@@ -483,6 +483,31 @@ export const baseRadialBarChartOptions = () => {
     }
 }
 
+export const basePolarChartOptions = () => {
+    return {
+        chart: {
+            type: 'polarArea',
+            },
+            stroke: {
+            colors: ['#fff']
+        },
+        fill: {
+            opacity: 0.8
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    }
+}
+
 export const updateCharts = (metricCharts, chartsData) => {
     let updatedMetricChartsAtIndex = metricCharts[0];
     const chartDataKeys = Object.keys(chartsData);
