@@ -504,7 +504,20 @@ export const basePolarChartOptions = () => {
                     position: 'bottom'
                 }
             }
-        }]
+        }],
+        tooltip: {
+            shared: true,
+            intersect: false,
+            y: {
+                formatter: function (y) {
+                    if(typeof y !== "undefined") {
+                        return y + "%";
+                    }
+                    return y;
+
+                }
+            }
+        }
     }
 }
 
