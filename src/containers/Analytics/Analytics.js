@@ -29,36 +29,31 @@ const Analytics = ( props ) => {
                         <CardHeader className="card-header-tab">
                             <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
                                 <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i>
-                                Imbalance Ampere
+                                Unbalanced Cable Stress Detected
                             </div>
                         </CardHeader>
                         <div className="p-2 center-elem w-100">
                             <BasicApexChart 
                                 options={imbalanceAmpereChartData.chart_options}
                                 series={imbalanceAmpereChartData.chart_series}
-                                type="polarArea"
+                                type="bar"
                                 width="100%"
                                 height={300}
                             />
                             <div className="widget-subheading text-secondary text-center">
-                                *Kindly check device Feeder Pillar 1 as imbalance ampere is detected.
+                                *Kindly check device Feeder Pillar 1 at Jalan 9/A as unbalanced Cable Stress is detected.
                             </div>
                         </div>
                     </Card>
                 </Col>
-                {/* <Card> */}
-                    <Col sm="12" md="12" xl="12">
-                        <h1 className="mt-5">
-                            <div className="widget-subheading text-secondary text-center">
-                                Machine Learning In Progress...
-                                
-                            </div>
-                        </h1>
-                    </Col>
-                {/* </Card> */}
                 
-                {/* <Loader type="ball-clip-rotate-multiple"/> */}
-                
+                <Col sm="12" md="12" xl="12">
+                    <h1 className="mt-5">
+                        <div className="widget-subheading text-secondary text-center">
+                            Machine Learning In Progress...
+                        </div>
+                    </h1>
+                </Col>
             </Layout>
         </Fragment>
     )

@@ -593,7 +593,6 @@ export const generateChartSeriesObject = (name, type, data, labels, isXAxisDateT
         // data: data
         data: chartSeriesData
     }
-
     return chartSeriesObject;
 }
 

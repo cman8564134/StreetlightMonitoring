@@ -30,10 +30,10 @@ export const fetchImbalanceAmpereChartData = () => {
 
         const response = {data: {
             chartsData:{
-                series: ["12.4","83.3","4.3"],
-                labels: ["R", "Y", "B"]
+                data: [[12.4],[83.3],[4.3]],
+                labels: ["Percentage"],
+                series: ["R", "Y", "B"],
             }
-            
         }}
 
         dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData));
