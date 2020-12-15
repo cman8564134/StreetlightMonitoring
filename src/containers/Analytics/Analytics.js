@@ -40,19 +40,21 @@ const Analytics = ( props ) => {
                                 width="100%"
                                 height={300}
                             />
-                            <div className="widget-subheading text-secondary text-center">
-                                *Kindly check device Feeder Pillar 1 at Jalan 9/A as unbalanced Cable Stress is detected.
-                            </div>
                         </div>
                     </Card>
                 </Col>
                 
                 <Col sm="12" md="12" xl="12">
-                    <h1 className="mt-5">
-                        <div className="widget-subheading text-secondary text-center">
-                            Machine Learning In Progress...
+                    <Card>
+                        <div className="float-left mr-3 mb-3">
+                            <h1 className="mt-5">
+                                <div className="widget-subheading text-secondary text-center">
+                                    <Loader type="ball-pulse"/>
+                                    Machine Learning In Progress
+                                </div>
+                            </h1>
                         </div>
-                    </h1>
+                    </Card>
                 </Col>
             </Layout>
         </Fragment>

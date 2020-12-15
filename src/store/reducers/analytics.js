@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { 
-    updateObject, basePolarChartOptions, baseChartSeries, baseChartOptions, updateCharts, generateChartSeriesObject, generateChartSeriesArray
+    updateObject, baseChartSeries, baseChartOptions, generateChartSeriesArray
  } from '../../shared/utility';
 
 import {darkRYB} from '../../shared/colors';
@@ -16,7 +16,7 @@ const initialState = {
     //     }
     // }]
     imbalanceAmpereChartData: {
-            title: "Unbalanced Cable Stress", 
+            title: "Percentage", 
             loading: false, 
             chart_options: updateObject(baseChartOptions(), {colors: darkRYB, xaxis: {}}), 
             chart_series: baseChartSeries(),
@@ -38,9 +38,9 @@ const fetchImbalanceAmpereChartDataSuccess = ( state, action ) => {
             labels: chart.labels, 
             tooltip: {
                 y: {
-                    formatter: function (y) {
+                    formatter: function (y, opt) {
                         if(typeof y !== "undefined") {
-                            return  y.toFixed(2) + "%";
+                            return  y + "% = " + chart.ampere[opt.seriesIndex] + " KWh" 
                         }
                         return y;
 
@@ -49,9 +49,15 @@ const fetchImbalanceAmpereChartDataSuccess = ( state, action ) => {
             } ,
             dataLabels: {
                 formatter: function(val, opt) {
-                    return val + "%"
+                    return val + "% = " + chart.ampere[opt.seriesIndex] + " KWh" 
                 }
-            }
+            },
+            yaxis: {
+                title: {
+                    text: state.imbalanceAmpereChartData.title,
+                },
+            },
+
               
         }
     );
