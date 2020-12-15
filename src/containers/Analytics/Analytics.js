@@ -41,6 +41,10 @@ const Analytics = ( props ) => {
                                 height={300}
                             />
                         </div>
+
+                        <div className="widget-subheading text-secondary text-center">
+                            *Check device Feeder Pillar 1 at Jalan 9/A as unbalanced Cable Stress is detected.
+                        </div>
                     </Card>
                 </Col>
                 
