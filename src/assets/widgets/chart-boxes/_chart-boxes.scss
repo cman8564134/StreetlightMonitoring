@@ -176,6 +176,11 @@ $widget-spacer: $spacer;
     align-items: center;
 
     .icon-wrapper {
+      min-width: 54px;
+      margin: 0 ($widget-spacer) 0 0;
+    }
+
+    .logo-wrapper {
       min-width: $logo-width;
       margin: 0 ($widget-spacer) 0 0;
     }
@@ -254,6 +259,49 @@ $widget-spacer: $spacer;
 }
 
 .icon-wrapper {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto;
+  @extend %center-elem;
+  position: relative;
+  overflow: hidden;
+
+  &[class*="border-"] {
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .icon-wrapper-bg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    opacity: .2;
+
+    &.bg-light {
+      opacity: .08;
+    }
+
+  }
+
+  i {
+    margin: 0 auto;
+    font-size: 1.7rem;
+    position: relative;
+    z-index: 5;
+
+    &:before {
+      margin-top: -3px;
+    }
+  }
+
+  .progress-circle-wrapper {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.logo-wrapper {
   width: $logo-width;
   height: $logo-height;
   margin: 0 auto;
