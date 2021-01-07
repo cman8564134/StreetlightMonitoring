@@ -25,7 +25,7 @@ export const AnalyticsNav = [
     {
         icon: 'lnr-chart-bars',
         label: 'Analytics',
-        to: '/analytics',
+        to: '/analytics'
     }
 ];
 
@@ -34,10 +34,12 @@ export const AdministrationNav = [
         icon: 'pe-7s-tools',
         label: 'Configuration',
         to: '/configurations',
+        
     },
     // {
     //     icon: 'pe-7s-config',
     //     label: 'Batch Process',
     //     to: '#/charts/apexcharts',
+        
     // }
 ];

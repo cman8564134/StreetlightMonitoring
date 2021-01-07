@@ -8,6 +8,7 @@ import AppLogo from '../AppLogo/AppLogo';
 import UserBox from './UserBox/UserBox';
 
 import HeaderDots from "./HeaderDots/HeaderDots";
+import CustomMenu from '../../Menu/CustomMenu/CustomMenu';
 
 const Header = ( props ) => {
     
@@ -18,7 +19,9 @@ const Header = ( props ) => {
         enableClosedSidebar,
         toggleEnableClosedSidebar,
         toggleMobileSidebar,
-        toggleMobileSmall
+        toggleMobileSmall,
+        concessionMultiLevelNavMenu,
+        concessionNavMenuExpandState
     } = props;
 
     return (
@@ -53,6 +56,11 @@ const Header = ( props ) => {
                         </div>
                     </div>
                     <div className="app-header-right">
+                        <CustomMenu {...props} 
+                            menuTitle="Concessions" 
+                            multiMenuNavItems={concessionMultiLevelNavMenu}
+                            menuExpandState={concessionNavMenuExpandState}
+                        />
                         <HeaderDots {...props}/>
                         <UserBox {...props}/>
                     </div>

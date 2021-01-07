@@ -20,6 +20,7 @@ import alertReducer from './store/reducers/alert';
 import reportReducer from './store/reducers/report';
 import TrafficLightFormReducer from './store/reducers/trafficLightForm'
 import AnalyticsReducer from './store/reducers/analytics'
+import NavigationReducer from './store/reducers/navigation';
 import * as serviceWorker from './serviceWorker';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose ;
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   Alert: alertReducer,
   TrafficForm : TrafficLightFormReducer,
   Analytics : AnalyticsReducer,
+  Navigation: NavigationReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

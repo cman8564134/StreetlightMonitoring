@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions';
@@ -21,8 +21,20 @@ const Layout = ( props ) => {
         enableHeaderShadow,
         closedSmallerSidebar,
         headerBackgroundColor,
-        enableMobileMenuSmall
+        enableMobileMenuSmall,
+        
+        //Navigation
+        onFetchConcessionNavItems,
+        concessionMultiLevelNavMenu,
+        concessionNavMenuExpandState,
+        onUpdateCustomMultiLevelMenuExpandState
     } = props;
+
+    useEffect(() => {
+        onFetchConcessionNavItems();
+    }, [
+        onFetchConcessionNavItems
+    ]);
 
     const toggleMobileSidebar = () => {
         let {enableMobileMenu, setEnableMobileMenu} = props;
@@ -39,6 +51,12 @@ const Layout = ( props ) => {
         setEnableMobileMenuSmall(!enableMobileMenuSmall);
     }
 
+    //Expand Custom Multi Level Menu
+    const onToggleCaret = (e, id) => {
+        e.preventDefault();
+        onUpdateCustomMultiLevelMenuExpandState(id);
+    }
+
     return (
         <Fragment>
             <AppHeader 
@@ -51,6 +69,9 @@ const Layout = ( props ) => {
                 toggleEnableClosedSidebar = {toggleEnableClosedSidebar}
                 toggleMobileSidebar = {toggleMobileSidebar}
                 toggleMobileSmall = {toggleMobileSmall}
+                concessionMultiLevelNavMenu={concessionMultiLevelNavMenu}
+                concessionNavMenuExpandState={concessionNavMenuExpandState}
+                onToggleCaret={onToggleCaret}
             />
             <div className="app-main">
                 <AppSidebar 
@@ -86,12 +107,16 @@ const mapStateToProps = state => ({
     enableHeaderShadow: state.ThemeOptions.enableHeaderShadow,
     closedSmallerSidebar: state.ThemeOptions.closedSmallerSidebar,
     headerBackgroundColor: state.ThemeOptions.headerBackgroundColor,
+    concessionMultiLevelNavMenu: state.Navigation.concessionMultiLevelNavMenu,
+    concessionNavMenuExpandState: state.Navigation.concessionNavMenuExpandState,
 });
 
 const mapDispatchToProps = dispatch => ({
     setEnableMobileMenu: enable => dispatch(actions.setEnableMobileMenu(enable)),
     setEnableClosedSidebar: enable => dispatch(actions.setEnableClosedSidebar(enable)),
-    setEnableMobileMenuSmall: enable => dispatch(actions.setEnableMobileMenuSmall(enable))
+    setEnableMobileMenuSmall: enable => dispatch(actions.setEnableMobileMenuSmall(enable)),
+    onFetchConcessionNavItems: () => dispatch(actions.fetchConcessionNavItems()),
+    onUpdateCustomMultiLevelMenuExpandState: (id) => dispatch(actions.updateCustomMultiLevelMenuExpandState(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

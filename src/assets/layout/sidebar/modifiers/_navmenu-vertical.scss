@@ -41,6 +41,7 @@
       &:hover {
         background: $dropdown-link-hover-bg;
         text-decoration: none;
+        cursor: pointer;
         //transform: scale(1.02);
 
         i.metismenu-icon {
@@ -60,6 +61,12 @@
       &.has-active-child,
       &.active {
         font-weight: bold;
+      }
+    }
+
+    i.metismenu-caret-left{
+      &:hover {
+        background: $primary
       }
     }
 

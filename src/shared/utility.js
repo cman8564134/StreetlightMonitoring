@@ -652,3 +652,39 @@ export const calculateDifferenceBetweenDates = (date1, date2) => {
 
     return diffDays;
 }
+
+export const createCustomMenuExpandStateObject = (multiLevelNavItems) => {
+    const multiLevelNavItemsVal = Object.values(multiLevelNavItems);
+    
+    let customMultiLevelNavMenu = {};
+    let customMenuExpandState = {};
+    multiLevelNavItemsVal.map((multiLevelNavItem, index) => {
+        const level = index + 1;
+        let navItemsGroupByParentId = {};
+        multiLevelNavItem.map(navItems => {
+            const {
+                parentId,
+                id
+            } = navItems;
+
+            let navItemsGroupByParentIdArr = navItemsGroupByParentId[parentId];
+            if(navItemsGroupByParentIdArr){
+                navItemsGroupByParentIdArr.push(navItems);
+            }else{
+                navItemsGroupByParentIdArr = [];
+                navItemsGroupByParentIdArr.push(navItems);
+                navItemsGroupByParentId = updateObject(navItemsGroupByParentId, {[parentId]: navItemsGroupByParentIdArr});
+            }
+            
+            const key = parentId !== 0 ? parentId + "/" + id : id;
+            const object = {id: key, isExpand: false};
+            customMenuExpandState = updateObject(customMenuExpandState, {[key]: object});
+        });
+
+        customMultiLevelNavMenu = updateObject(customMultiLevelNavMenu, {[level]: navItemsGroupByParentId});
+    })
+
+    const customMenuState = {customMultiLevelNavMenu:customMultiLevelNavMenu, customMenuExpandState: customMenuExpandState};
+
+    return customMenuState;
+}
