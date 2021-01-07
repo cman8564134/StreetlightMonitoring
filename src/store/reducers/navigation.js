@@ -32,8 +32,27 @@ const fetchConcessionNavItemsFail = ( state, action ) => {
 }
 
 const updateCustomMultiLevelMenuExpandState = ( state, action ) => {
-    const prevIsExpand = state.concessionNavMenuExpandState[action.id].isExpand;
-    const updatedMenuExpandState = updateObject(state.concessionNavMenuExpandState, {[action.id]: {isExpand: !prevIsExpand}});
+    const id = action.id;
+    const concessionNavMenuExpandState = state.concessionNavMenuExpandState;
+    const updatedIsExpandState = !concessionNavMenuExpandState[id].isExpand;
+    const menuItemIsExpandState = updateObject(concessionNavMenuExpandState[id],{isExpand: updatedIsExpandState});
+    let updatedMenuExpandState = updateObject(concessionNavMenuExpandState, {[id]: menuItemIsExpandState});
+
+    const navMenuExpandStateKeys = Object.keys(updatedMenuExpandState);
+
+    //IF COLLAPSE MENU, COLLAPSE ALL ITS CHILD MENU
+    if(!updatedIsExpandState){
+        navMenuExpandStateKeys.map((key) => {
+            const navMenuExpandState = updatedMenuExpandState[key];
+            const parentId = navMenuExpandState.parentId;
+            
+            if(id !== navMenuExpandState.id && (parentId === id || parentId.startsWith(id))){
+                const updatedExpandState = updateObject(updatedMenuExpandState[key],{isExpand: false});
+                updatedMenuExpandState = updateObject(updatedMenuExpandState, {[key]: updatedExpandState});
+            }
+        });
+    }
+
     return updateObject(state, {
         concessionNavMenuExpandState: updatedMenuExpandState
     });

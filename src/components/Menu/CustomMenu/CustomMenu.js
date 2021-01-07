@@ -32,7 +32,7 @@ const CustomMenu = ( props ) => {
             <Nav className="header-megamenu">
                 <NavItem>
                     <NavLink href="#"  id="PopoverMegaMenu">
-                        <i className="nav-link-icon pe-7s-gift"> </i>
+                        <i className="nav-link-icon pe-7s-search"> </i>
                         {menuTitle}
                         <FontAwesomeIcon className="ml-2 opacity-5" icon={faAngleDown} onClick={toggle}/>
                     </NavLink>

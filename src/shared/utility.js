@@ -677,7 +677,7 @@ export const createCustomMenuExpandStateObject = (multiLevelNavItems) => {
             }
             
             const key = parentId !== 0 ? parentId + "/" + id : id;
-            const object = {id: key, isExpand: false};
+            const object = {id: key, parentId: parentId !== 0 ? "" + parentId : "" + id,isExpand: false};
             customMenuExpandState = updateObject(customMenuExpandState, {[key]: object});
         });
 
