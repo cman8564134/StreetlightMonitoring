@@ -127,7 +127,7 @@ const LoginBoxed = (props) => {
                             </div>
                         </div>
                         <div className="text-center text-white opacity-8 mt-3">
-                            Copyright &copy; Arkmind
+                            {/* Copyright &copy; Arkmind */}
                         </div>
                     </Col>
                 </div>
