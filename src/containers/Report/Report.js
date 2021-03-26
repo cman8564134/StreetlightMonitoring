@@ -14,7 +14,7 @@ import {
 } from 'react-toastify';
 
 import * as actions from '../../store/actions/index';
-import { HANDLE_REPORT_INPUT_CHANGED_SUCCESS, FETCH_REPORT_CONCESSION_NAME_MAP_SUCCESS } from '../../store/actions/actionTypes';
+import { HANDLE_REPORT_INPUT_CHANGED_SUCCESS, FETCH_REPORT_CONCESSION_NAME_MAP_SUCCESS, FETCH_REPORT_METRIC_FILTERS_CHANGED_SUCCESS } from '../../store/actions/actionTypes';
 
 import Layout from '../../hoc/Layout/Layout';
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
@@ -46,7 +46,11 @@ const Report = ( props ) => {
         onFetchReportData,
         onFetchReportChartDataByActiveTab,
         onFetchExportableReportData,
-        fileName
+        fileName,
+        metricFilters,
+        selectedMetrics,
+        generatingExcel,
+        generatingCSV,
     } = props;
     
     const csvLinkRef = useRef();
@@ -106,6 +110,13 @@ const Report = ( props ) => {
                 
         }
     }
+    
+    const metricFiltersInputChangedHandler = (event, elementRowIndex, elementId, validationRules) => {
+        const type = FETCH_REPORT_METRIC_FILTERS_CHANGED_SUCCESS;
+
+        const value = event.target.checked;
+        onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
+    }
 
     const onExportCSVHandler = (event) => {
         event.preventDefault();
@@ -126,7 +137,9 @@ const Report = ( props ) => {
             onFetchExportableReportData({
                 feederPillarId: feederPillarId,
                 dateTimeFrom: dateTimeFromStr,
-                dateTimeTo: dateTimeToStr
+                dateTimeTo: dateTimeToStr,
+                selectedMetrics: selectedMetrics,
+                exportFileType: 'csv'
             })
             .then((response) => {
                 if(response.isSuccessful){
@@ -141,10 +154,14 @@ const Report = ( props ) => {
         event.preventDefault();
 
         const isFormValid = checkFormValidity(searchFilters);
+        let isMetricFiltersSelected = false; 
+
+        if(selectedMetrics.length > 3)
+            isMetricFiltersSelected = true;
 
         setIsSearchFilterValid(isFormValid);
 
-        if(isFormValid){
+        if(isFormValid && isMetricFiltersSelected){
             const filters = searchFilters[0];
             const feederPillarId = filters.feeder_pillar.value;
             const dateTimeFrom = filters.dateRange.value.datePickerFrom.value;
@@ -165,7 +182,9 @@ const Report = ( props ) => {
                 feederPillarId: feederPillarId,
                 dateTimeFrom: dateTimeFromStr,
                 dateTimeTo: dateTimeToStr,
-                dateStr: dateStr
+                dateStr: dateStr,
+                selectedMetrics: selectedMetrics,
+                exportFileType: 'excel'
             })
             .then((response) => {
                 if(response.isSuccessful){
@@ -174,6 +193,12 @@ const Report = ( props ) => {
             });
             
         }
+
+        if(!isMetricFiltersSelected){
+            const message = "Please select at least 1 Metric in order to export data";
+            showToast(message);
+        }
+            
     }
 
     const highlightsHeaders = [
@@ -316,6 +341,10 @@ const Report = ( props ) => {
                         onExportExcelHandler={onExportExcelHandler}
                         excelSheets={excelSheets}
                         fileName={fileName}
+                        metricFilters={metricFilters}
+                        inputChangedHandler={metricFiltersInputChangedHandler}
+                        generatingCSV={generatingCSV}
+                        generatingExcel={generatingExcel}
                     />
                 </PageTitle>
 
@@ -370,6 +399,10 @@ const mapStateToProps = state => {
         loadingChart: state.Report.loadingChart,
         graphCardTabsNavItemsArray: state.Report.graphCardTabsNavItemsArray,
         fileName: state.Report.fileName,
+        metricFilters: state.Report.metricFilters,
+        selectedMetrics: state.Report.selectedMetrics,
+        generatingExcel: state.Report.generatingExcel,
+        generatingCSV: state.Report.generatingCSV,
     }
 }
 

@@ -238,26 +238,30 @@ export const fetchReportChartDataByActiveTab = ( params ) => {
     }
 }
 
-export const fetchExportableReportDataStart = () => {
+export const fetchExportableReportDataStart = (fileType) => {
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_START,
-        loading: true
+        generatingExcel: fileType === 'excel' ? true : false,
+        generatingCSV: fileType === 'csv' ? true : false,
     }
 }
 
-export const fetchExportableReportDataSuccess = (reportData, fileName) => {
+export const fetchExportableReportDataSuccess = (reportData, fileName, selectedMetrics) => {
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_SUCCESS,
-        loading: false,
+        generatingExcel: false,
+        generatingCSV: false,
         reportData: reportData,
-        fileName: fileName
+        fileName: fileName,
+        selectedMetrics: selectedMetrics
     }
 }
 
 export const fetchExportableReportDataFail = (error) => {
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_FAIL,
-        loading: false,
+        generatingExcel: false,
+        generatingCSV: false,
         error: error
     }
 }
@@ -265,21 +269,17 @@ export const fetchExportableReportDataFail = (error) => {
 export const fetchExportableReportData = ( params ) => {
     
     return dispatch => {
-        dispatch(fetchExportableReportDataStart());    
+        dispatch(fetchExportableReportDataStart(params.exportFileType));
 
         return getPaginatedExportableData(params)
         .then(response => {
-            dispatch(fetchExportableReportDataSuccess(response.metrics, response.fileName));
+            dispatch(fetchExportableReportDataSuccess(response.metrics, response.fileName, params.selectedMetrics));
             return Promise.resolve({isSuccessful: true});
             
         }).catch(error => {
             console.log(error);
             dispatch(fetchExportableReportDataFail(error));
-        });  ;
-
-        
-
-        
+        });  
     }
 }
 

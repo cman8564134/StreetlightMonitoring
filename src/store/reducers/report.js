@@ -178,42 +178,340 @@ const initialState = {
             },
         }
     ],
+    metricFilters: [
+        {
+            active_power_l1: {
+                elementLabel: 'Active Power R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            active_power_l2: {
+                elementLabel: 'Active Power Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            active_power_l3: {
+                elementLabel: 'Active Power B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            voltage_l1_n: {
+                elementLabel: 'Voltage R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            voltage_l2_n: {
+                elementLabel: 'Voltage Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            voltage_l3_n: {
+                elementLabel: 'Voltage B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            current_p1: {
+                elementLabel: 'Current R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            current_p2: {
+                elementLabel: 'Current Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            current_p3: {
+                elementLabel: 'Current B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            frequency: {
+                elementLabel: 'Frequency',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            power_factor_p1: {
+                elementLabel: 'Power Factor R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            power_factor_p2: {
+                elementLabel: 'Power Factor Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            power_factor_p3: {
+                elementLabel: 'Power Factor B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            total_yield: {
+                elementLabel: 'Total Yield',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdv1: {
+                elementLabel: 'THDV R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdv2: {
+                elementLabel: 'THDV Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdv3: {
+                elementLabel: 'THDV B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdc1: {
+                elementLabel: 'THDC R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdc2: {
+                elementLabel: 'THDC Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdc3: {
+                elementLabel: 'THDC B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdp1: {
+                elementLabel: 'THDP R',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdp2: {
+                elementLabel: 'THDP Y',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            thdp3: {
+                elementLabel: 'THDP B',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
+            
+        }
+    ],
+    selectedMetrics: ["id", "pillar_id", "created_at"],
     csvData: [],
     excelSheets: [
         {
             "Metrics": {
                 data: [],
-                columns: [
-                    {label: "ID", accessor: "id"},
-                    {label: "Pillar ID", accessor: "pillar_id"},
-                    {label: "Created At", accessor: "created_at"},
-                    {label: "Active Power R", accessor: "active_power_l1"},
-                    {label: "Active Power Y", accessor: "active_power_l2"},
-                    {label: "Active Power B", accessor: "active_power_l3"},
-                    {label: "Voltage R", accessor: "voltage_l1_n"},
-                    {label: "Voltage Y", accessor: "voltage_l2_n"},
-                    {label: "Voltage B", accessor: "voltage_l3_n"},
-                    {label: "Current R", accessor: "current_p1"},
-                    {label: "Current Y", accessor: "current_p2"},
-                    {label: "Current B", accessor: "current_p3"},
-                    {label: "Frequency", accessor: "frequency"},
-                    {label: "Current R", accessor: "current_p1"},
-                    {label: "Current Y", accessor: "current_p3"},
-                    {label: "Current B", accessor: "current_p3"},
-                    {label: "Power Factor R", accessor: "power_factor_p1"},
-                    {label: "Power Factor Y", accessor: "power_factor_p2"},
-                    {label: "Power Factor B", accessor: "power_factor_p3"},
-                    {label: "Total Yield", accessor: "total_yield"},
-                    {label: "THDV R", accessor: "thdv1"},
-                    {label: "THDV Y", accessor: "thdv2"},
-                    {label: "THDV B", accessor: "thdv3"},
-                    {label: "THDC R", accessor: "thdc1"},
-                    {label: "THDC Y", accessor: "thdc2"},
-                    {label: "THDC B", accessor: "thdc3"},
-                    {label: "THDP R", accessor: "thdp1"},
-                    {label: "THDP Y", accessor: "thdp2"},
-                    {label: "THDP B", accessor: "thdp3"},
-                ]
+                columns: []
             }
         }
     ],
@@ -236,8 +534,40 @@ const initialState = {
     }],
     loadingHighlights: false,
     loadingChart: false,
-    fileName: ""
+    fileName: "",
+    generatingExcel: false,
+    generatingCSV: false,
+    metricFiltersErrorMessage: ""
 };
+
+const metricColumnsName = {
+    id: {label: "ID", accessor: "id"},
+    pillar_id: {label: "Pillar ID", accessor: "pillar_id"},
+    created_at: {label: "Created At", accessor: "created_at"},
+    active_power_l1: {label: "Active Power R", accessor: "active_power_l2"},
+    active_power_l2: {label: "Active Power Y", accessor: "active_power_l2"},
+    active_power_l3: {label: "Active Power B", accessor: "active_power_l3"},
+    voltage_l1_n: {label: "Voltage R", accessor: "voltage_l1_n"},
+    voltage_l2_n: {label: "Voltage Y", accessor: "voltage_l2_n"},
+    voltage_l3_n: {label: "Voltage B", accessor: "voltage_l3_n"},
+    current_p1: {label: "Current R", accessor: "current_p1"},
+    current_p2: {label: "Current Y", accessor: "current_p2"},
+    current_p3: {label: "Current B", accessor: "current_p3"},
+    frequency: {label: "Frequency", accessor: "frequency"},
+    power_factor_p1: {label: "Power Factor R", accessor: "power_factor_p1"},
+    power_factor_p2: {label: "Power Factor Y", accessor: "power_factor_p2"},
+    power_factor_p3: {label: "Power Factor B", accessor: "power_factor_p3"},
+    total_yield: {label: "Total Yield", accessor: "total_yield"},
+    thdv1: {label: "THDV R", accessor: "thdv1"},
+    thdv2: {label: "THDV Y", accessor: "thdv2"},
+    thdv3: {label: "THDV B", accessor: "thdv3"},
+    thdc1: {label: "THDC R", accessor: "thdc1"},
+    thdc2: {label: "THDC Y", accessor: "thdc2"},
+    thdc3: {label: "THDC B", accessor: "thdc3"},
+    thdp1: {label: "THDP R", accessor: "thdp1"},
+    thdp2: {label: "THDP Y", accessor: "thdp2"},
+    thdp3: {label: "THDP B", accessor: "thdp3"},
+}
 
 const fetchReportConcessionNameMapSuccess = ( state, action ) => {
     const arrayId = "searchFilters";
@@ -417,8 +747,6 @@ const fetchReportDataSuccess = ( state, action ) => {
         updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {xaxis: {}});
     }
 
-    console.log("updatedBaseChartOptions", updatedBaseChartOptions);
-
     const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
@@ -460,7 +788,6 @@ const fetchReportChartDataByActiveTabSuccess = ( state, action ) => {
     
     let updatedBaseChartOptions = baseChartOptions();
 
-    console.log("series", reportData.series.length );
     if(reportData.series.length === 3 ){
         updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {colors: darkRYB});
     }
@@ -496,15 +823,23 @@ const fetchReportChartDataByActiveTabFail = ( state, action ) => {
 
 const fetchExportableReportDataStart = ( state, action ) => {
     return updateObject(state, {
-        
+        generatingExcel: action.generatingExcel,
+        generatingCSV: action.generatingCSV
     });
 }
 
 const fetchExportableReportDataSuccess = ( state, action ) => {
-    const updatedObject = {data: action.reportData}
+    const selectedMetrics = action.selectedMetrics;
     const sheet1Title = 'Metrics';
-    const updatedBillingData = updateObject(state["excelSheets"][0][sheet1Title], updatedObject);
-    const updatedBilling = updateObject(state["excelSheets"][0], {[sheet1Title] : updatedBillingData});
+
+    let updatedExcelSheetsColumnLabel = [];
+
+    selectedMetrics.map((metric) => {
+        updatedExcelSheetsColumnLabel = [...updatedExcelSheetsColumnLabel, metricColumnsName[metric]];
+    })
+
+    const updatedExcelSheetsDataColumn = updateObject(state["excelSheets"][0][sheet1Title], {data: action.reportData, columns: updatedExcelSheetsColumnLabel});
+    const updatedBilling = updateObject(state["excelSheets"][0], {[sheet1Title] : updatedExcelSheetsDataColumn});
 
     const updatedArray = state["excelSheets"].map((item, index) => {
         if(index === 0){
@@ -513,16 +848,55 @@ const fetchExportableReportDataSuccess = ( state, action ) => {
 
         return item[index];
     })
+
+    
     
     return updateObject(state, {
         csvData: action.reportData,
         excelSheets: updatedArray,
-        fileName: action.fileName
+        fileName: action.fileName,
+        generatingExcel: action.generatingExcel,
+        generatingCSV: action.generatingCSV,
+        
     });
 }
 
 const fetchExportableReportDataFail = ( state, action ) => {
     return updateObject(state, {
+        generatingExcel: action.generatingExcel,
+        generatingCSV: action.generatingCSV
+    });
+}
+
+const handleMetricFiltersInputChanged = ( state, action ) => {
+    const elementRowIndex = action.elementRowIndex;
+    const elementId = action.elementId; 
+    const arrayId = "metricFilters";
+    const value = action.value;
+    let updatedArray = state[arrayId];
+    
+    let updatedObject = {
+        value: !state[arrayId][elementRowIndex][elementId].value,
+        touched: true
+    };
+    
+    updatedObject = updateObject(updatedObject, {valid: checkValidity(value, updatedArray.validation)})
+    updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, updatedObject);
+    
+    const updatedObjectArray= Object.values(updatedArray);
+
+    let updatedSelectedMetrics = state.selectedMetrics;
+    if(value){
+        updatedSelectedMetrics = [...state.selectedMetrics, elementId];
+    }else{
+        updatedSelectedMetrics = state.selectedMetrics.filter((element) => {
+            return element !== elementId;
+        })
+    }
+
+    return updateObject(state, {
+        [arrayId]: updatedObjectArray,
+        selectedMetrics: updatedSelectedMetrics
     });
 }
 
@@ -560,6 +934,8 @@ const reducer = (state = initialState, action) => {
             return fetchExportableReportDataSuccess(state, action);
         case actionTypes.FETCH_EXPORTABLE_REPORT_DATA_FAIL: 
             return fetchExportableReportDataFail(state, action);
+        case actionTypes.FETCH_REPORT_METRIC_FILTERS_CHANGED_SUCCESS: 
+            return handleMetricFiltersInputChanged(state, action);
         default:
             return state;
     }

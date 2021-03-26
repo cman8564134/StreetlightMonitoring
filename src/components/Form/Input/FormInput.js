@@ -148,6 +148,16 @@ const FormInput = ( props ) => {
                     elementId={elementId} 
                     validationRules={validationRules}
                     inputChangedHandler={inputChangedHandler}/>
+                    
+        case 'checkbox': 
+                return <CustomInput 
+                    type={elementConfig.type} 
+                    id={elementId}
+                    label={elementLabel}
+                    checked={elementValue}
+                    onChange={(event)=>inputChangedHandler(event, elementRowIndex, elementId, validationRules)}
+                    />
+                    
         default:
             return (
                 <Input 

@@ -4,10 +4,16 @@ import {
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
-    Nav,
-    NavItem,
-    NavLink
+    Card,
+    CardBody,
+    CardTitle,
+    CardFooter,
+    CardSubtitle
 } from 'reactstrap';
+
+import LaddaButton, {
+    ZOOM_IN,
+} from 'react-ladda';
 
 import {
     faDownload
@@ -19,6 +25,10 @@ import { CSVLink } from 'react-csv';
 
 import ReactExport from "react-data-export";
 
+import MetricFilters from './MetricFilters/MetricFilters';
+
+import PerfectScrollbar from 'react-perfect-scrollbar';
+
 const ExportDropdown = (props) => {
     let {
         onExportCSVHandler,
@@ -27,7 +37,11 @@ const ExportDropdown = (props) => {
         excelLinkRef,
         onExportExcelHandler,
         excelSheets,
-        fileName
+        fileName,
+        metricFilters,
+        inputChangedHandler,
+        generatingExcel,
+        generatingCSV
     } = props;
 
     const ExcelFile = ReactExport.ExcelFile;
@@ -41,12 +55,28 @@ const ExportDropdown = (props) => {
                     <span><FontAwesomeIcon icon={faDownload}/></span>
                 </DropdownToggle>
                 <DropdownMenu right>
-                    <Nav vertical>
-                        <NavItem className="nav-item-header">
-                            Export
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="#" onClick={(e) => onExportCSVHandler(e)}>CSV</NavLink>
+                    <Card className="main-card mb-3">
+                        <CardBody>
+                            <CardTitle>Export</CardTitle>
+                            <CardSubtitle>Select at least 1 metric:</CardSubtitle>
+                            <div className="scroll-area-sm-md">
+                                <PerfectScrollbar>
+                                    <MetricFilters
+                                        filters={metricFilters}
+                                        inputChangedHandler={inputChangedHandler}
+                                    />
+                                </PerfectScrollbar>
+                            </div>
+                        </CardBody>
+                        <CardFooter>
+                            <LaddaButton 
+                                className="mb-2 mr-2 btn btn-pill btn-primary"
+                                loading={generatingCSV}
+                                onClick={(e) => onExportCSVHandler(e)}
+                                data-style={ZOOM_IN}
+                            >
+                                CSV
+                            </LaddaButton>
                             <CSVLink 
                                 className="nav-link" 
                                 data={csvData}
@@ -56,9 +86,15 @@ const ExportDropdown = (props) => {
                             >
                                 CSV
                             </CSVLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="#" onClick={(e) => onExportExcelHandler(e)}>Excel</NavLink>
+
+                            <LaddaButton 
+                                className="mb-2 mr-2 btn btn-pill btn-primary"
+                                loading={generatingExcel}
+                                onClick={(e) => onExportExcelHandler(e)}
+                                data-style={ZOOM_IN}
+                            >
+                                Excel
+                            </LaddaButton>
                             <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("Exporting Data to Excel")}>Excel</button>}>
                                 {excelSheets.map((sheets, index) => {
                                     const sheetObjects = [];
@@ -85,8 +121,8 @@ const ExportDropdown = (props) => {
                                     )
                                 })}
                             </ExcelFile>
-                        </NavItem>
-                    </Nav>
+                        </CardFooter>
+                    </Card>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         </div>
