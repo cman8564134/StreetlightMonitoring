@@ -49,9 +49,14 @@ const Concession = ( props ) => {
     )
 
     if(!loadingConcessionChart) {
+        let chart = <Chart options={{}} series={{}} type="line" width="100%"/>
+        if(concessionChart){
+            chart = <Chart options={concessionChart.chart_options} series={concessionChart.chart_series} type="line" width="100%"/>
+        }
         chartComponent = (
             <ResponsiveContainer height={300}>
-                <Chart options={concessionChart.chart_options} series={concessionChart.chart_series} type="line" width="100%"/>
+                {/* <Chart options={concessionChart.chart_options} series={concessionChart.chart_series} type="line" width="100%"/> */}
+                {chart}
             </ResponsiveContainer>
             
         )
