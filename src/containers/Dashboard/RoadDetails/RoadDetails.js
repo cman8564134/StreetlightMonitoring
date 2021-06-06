@@ -97,6 +97,7 @@ const RoadDetails = ( props ) => {
         // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['current_p1', 'current_p2', 'current_p3'], chartId: 'amperage'}));
         // onFetchFeederPillarMetricCharts(updateObject(baseMetricChartParams, {dataKey: ['voltage_l1_n', 'voltage_l2_n', 'voltage_l3_n'], chartId: 'voltage'}));
         setIsPillarDetailsModalVisible(!isPillarDetailsModalVisible);
+        setSelectedFeederPillarId(pillarId);
     }
 
     const showTrafficLightForm = (pillarID) => {
@@ -105,6 +106,8 @@ const RoadDetails = ( props ) => {
         onFetchTrafficLightForm({feederPillarId: pillarID});
         setIsTrafficLightForm(!isTrafficLightForm);
     }
+
+    const [selectedFeederPillarId, setSelectedFeederPillarId] = useState("");
 
     useEffect(() => {
         const roadId = props.match.params.roadId;
@@ -146,7 +149,7 @@ const RoadDetails = ( props ) => {
                     // dataKey: [], 
                     chartType: 'realtime', 
                     // chartId: '',
-                    feederPillarId: pillarId,
+                    feederPillarId: selectedFeederPillarId,
                     // formulaType: null,
                     roadId: roadId
                 }
@@ -178,7 +181,8 @@ const RoadDetails = ( props ) => {
         onFetchRoadMetricCharts,
         pillarId,
         onFetchFeederPillarDetails,
-        onFetchFeederPillarMetricCharts
+        onFetchFeederPillarMetricCharts,
+        selectedFeederPillarId
     ])
     
     const breadcrumbItems = [
