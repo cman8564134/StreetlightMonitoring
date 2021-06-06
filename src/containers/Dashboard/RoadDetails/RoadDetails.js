@@ -249,7 +249,6 @@ const RoadDetails = ( props ) => {
                 {
                     Header: 'Uptime (Lamp Up / Total Lamp)',
                     Cell: row => {
-                            console.log(row.original);
                             return row.original.total_active_streetlights + "/" + row.original.total_streetlights
                         }
                 },

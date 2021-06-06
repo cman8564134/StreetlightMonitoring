@@ -28,10 +28,10 @@ export const fetchReportSectionNameMapByConcessionIdFail = (error) => {
 export const fetchReportSectionNameMapByConcessionId =  (params) => {
     return dispatch => {
         dispatch(fetchReportSectionNameMapByConcessionIdStart());
-
+        
         return axios.post('/getSectionsIdAndNameMapByConcessionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(response.data.sections[0])));
+                return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(response.data.sections)));
             })
             .catch(error => {
                 console.log(error);
@@ -69,7 +69,7 @@ export const fetchSubsectionNameMapBySectionId =  (params) => {
         
         return axios.post('/getSubsectionsIdAndNameMapBySectionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(response.data.subsections[0])));
+                return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(response.data.subsections)));
             })
             .catch(error => {
                 console.log(error);
@@ -107,7 +107,7 @@ export const fetchRoadNameMapBySubsectionId =  (params) => {
         
         return axios.post('/getRoadsIdAndNameMapBySubsectionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchRoadNameMapBySubsectionIdSuccess(response.data.roads[0])));
+                return Promise.resolve(dispatch(fetchRoadNameMapBySubsectionIdSuccess(response.data.roads)));
             })
             .catch(error => {
                 console.log(error);
@@ -145,7 +145,7 @@ export const fetchFeederPillarNameMapByRoadId =  (params) => {
         
         return axios.post('/getFeederPillarsIdAndNameMapByRoadId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchFeederPillarNameMapByRoadIdSuccess(response.data.feederPillars[0])));
+                return Promise.resolve(dispatch(fetchFeederPillarNameMapByRoadIdSuccess(response.data.feederPillars)));
             })
             .catch(error => {
                 console.log(error);

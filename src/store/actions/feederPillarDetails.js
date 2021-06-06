@@ -30,6 +30,7 @@ export const fetchFeederPillarByFeederPillarId =  (params) => {
         if(!params.isRefresh)
             dispatch(fetchFeederPillarByFeederPillarIdStart());
 
+            console.log("params.feederPillarId", params.feederPillarId);
         axios.post('/getFeederPillarMetricsByFeederPillarId', params)
         .then(response => {
             dispatch(fetchFeederPillarByFeederPillarIdSuccess(response.data.feederPillar, params.feederPillarId));
@@ -125,8 +126,6 @@ export const fetchFeederPillarDetails =  (params) => {
                 radialBarChartData,
                 electricityBill
             } = data;
-
-            
 
             dispatch(fetchFeederPillarDetailsSuccess(feederPillar, params.feederPillarId, chartsData, streetlightStatusByPhase, radialBarChartData, electricityBill));
         })

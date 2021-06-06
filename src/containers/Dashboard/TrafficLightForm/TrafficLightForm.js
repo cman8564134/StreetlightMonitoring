@@ -29,7 +29,6 @@ const TrafficLightForm = (props) =>{
     // const [totalAmp, setTotalAmp] = useState(0);
     // const [pillarID, setPillarID] = useState();
 
-    console.log('TrafficLightForm - trafficLightForm', trafficLightConfig);
     let {pillar_id, no_of_streetlight_r, no_of_streetlight_y, no_of_streetlight_b, total_ampere, total_no_of_streetlight } = trafficLightConfig;
 
     // useEffect(() => {

@@ -187,7 +187,7 @@ export const fetchConcessionNameMap =  (params) => {
     return dispatch => {
         axios.get('/getAllConcessionIdAndNameMap')
             .then(response => {
-                dispatch(fetchConcessionNameMapSuccess(successType, response.data.concessions[0]));
+                dispatch(fetchConcessionNameMapSuccess(successType, response.data.concessions));
             })
             .catch(error => {
                 console.log(error);

@@ -33,6 +33,21 @@ const initialState = {
                 errorMessage: 'Please select Concession'
             },
             section: {
+                elementLabel: 'Majlis:',
+                elementType: 'select',
+                elementConfig: {
+                    type: "select",
+                    options: []
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false,
+                errorMessage: 'Please select Majlis'
+            },
+            subsection: {
                 elementLabel: 'Section:',
                 elementType: 'select',
                 elementConfig: {
@@ -46,21 +61,6 @@ const initialState = {
                 valid: false,
                 touched: false,
                 errorMessage: 'Please select Section'
-            },
-            subsection: {
-                elementLabel: 'Subsection:',
-                elementType: 'select',
-                elementConfig: {
-                    type: "select",
-                    options: []
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                touched: false,
-                errorMessage: 'Please select Subsection'
             },
             road: {
                 elementLabel: 'Road:',
@@ -598,11 +598,10 @@ const fetchReportSectionNameMapByConcessionIdSuccess = ( state, action ) => {
 const fetchSubsectionNameMapBySectionIdSuccess = ( state, action ) => {
     const arrayId = "searchFilters";
     const subsectionOptions = createMasterCodeOptions(action.subsectionNameMap);
-    
     const updatedSubsectionObject = {options: subsectionOptions};
 
     const updatedArray = updateElementOptionArray(state[arrayId], 0, "subsection", "elementConfig", updatedSubsectionObject);
-
+    
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
     });

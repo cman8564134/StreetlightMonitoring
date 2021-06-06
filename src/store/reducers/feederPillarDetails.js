@@ -226,9 +226,6 @@ const fetchFeederPillarDetailsSuccess = ( state, action ) => {
         updatedTotalBillAmount = updateObject(updatedTotalBillAmount, {[formElementArrayId]: electricityBill.total_bill_amount});
     };
 
-    
-
-
     return updateObject(state, {
         loadingFeederPillarDetails: action.loading,
         feederPillar: feederPillar,
