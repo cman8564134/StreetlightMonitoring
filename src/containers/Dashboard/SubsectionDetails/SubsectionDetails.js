@@ -133,36 +133,73 @@ const SubsectionDetails = ( props ) => {
             columns: [
                 {
                     Header: 'Road',
-                    accessor: 'road_name'
+                    accessor: 'road_name',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {row.value}
+                            </div>)
+                    }
                 },
                 {
                     Header: 'Total Power Consumption (KWh)',
-                    accessor: 'power_usage'
+                    accessor: 'power_usage',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {row.value}
+                            </div>)
+                    }
                 },
                 {
                     Header: 'Uptime (Lamp Up / Total Lamp)',
                     Cell: row => {
-                            console.log(row.original);
-                            return row.original.total_active_streetlights + "/" + row.original.total_streetlights
+                            const uptime = row.original.total_active_streetlights + "/" + row.original.total_streetlights;
+                            return (
+                                <div className="d-block w-100 text-center">
+                                    {uptime}
+                                </div>)
                         }
                 },
                 {
                     Header: 'Downtime (Lamp Down / Total Lamp)',
                     Cell: row => {
-                        return row.original.total_inactive_streetlights + "/" + row.original.total_streetlights
+                        const uptime = row.original.total_inactive_streetlights + "/" + row.original.total_streetlights;
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {uptime}
+                            </div>)
                     }
                 },
                 {
                     Header: 'Electricity Bill (RM)',
-                    accessor: 'electricity_bill'
+                    accessor: 'electricity_bill',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {row.value}
+                            </div>)
+                    }
                 },
                 {
                     Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint_kg'
+                    accessor: 'carbon_footprint_kg',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {row.value}
+                            </div>)
+                    }
                 },
                 {
                     Header: 'Energy Savings (KWh)',
-                    accessor: 'energy_savings'
+                    accessor: 'energy_savings',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                {row.value}
+                            </div>)
+                    }
                 },
             ]
         },
