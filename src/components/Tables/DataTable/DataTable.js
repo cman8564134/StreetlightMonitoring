@@ -4,7 +4,8 @@ import {
     Card,
     CardBody,
     CardTitle,
-    CardHeader
+    CardHeader,
+    CardSubtitle,
 } from 'reactstrap';
 
 import ReactTable from "react-table";
@@ -17,7 +18,8 @@ const DataTable = ( props ) => {
         header,
         filterable,
         subComponentCallback,
-        loading
+        loading,
+        subtitle
     } = props;
     
     let cardTitle = null;
@@ -34,6 +36,14 @@ const DataTable = ( props ) => {
         )
     }
 
+    let cardSubtitle = null;
+    
+    if (subtitle !== null) {
+        cardSubtitle = (
+            <CardSubtitle>{subtitle}</CardSubtitle>
+        )
+    }
+
     const filterCaseInsensitive = (filter, row) => {
         const id = filter.pivotId || filter.id;
         return (
@@ -47,7 +57,9 @@ const DataTable = ( props ) => {
     return (
         <Card className="main-card mb-3">
             {cardTitle}
+            
             <CardBody>
+                {cardSubtitle}
                 <ReactTable
                     data={data}
                     columns={columns}

@@ -15,6 +15,8 @@ const BreakdownModal = ( props ) => {
         header
     } = props;
 
+    const breakdownModalNote = "*Note: Adjust the table column width for better visibility";
+
     return (
         <Fragment>
             <div style={{marginLeft: '25px', marginTop: '25px'}}>
@@ -36,6 +38,8 @@ const BreakdownModal = ( props ) => {
                         header={header}
                         filterable
                         loading={loading}
+                        subtitle={breakdownModalNote}
+
                     />
                 </PerfectScrollbar>
             </div>

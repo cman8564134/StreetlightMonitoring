@@ -404,7 +404,7 @@ const fetchElectricityCostBreakdownByLevelStart = ( state, action ) => {
 }
 
 const costBreakdownByLevelHeaders = {
-    1: "Breakdown By Subsection",
+    1: "Breakdown By Section",
     2: "Breakdown By Road",
     3: "Breakdown By Feeder Pillar",
 } 

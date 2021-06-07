@@ -48,8 +48,8 @@ const AdvancedOverview = ( props ) => {
 
     const profileAttributes = [
         {title: "Location", className: "lnr-license icon-gradient bg-night-fade", accessor: "location"},
-        {title: "No of Sections", className: "lnr-cog fa-spin icon-gradient bg-happy-itmeo", accessor: "total_sections"},
-        {title: "No of Subsections", className: "lnr-cloud-upload icon-gradient bg-plum-plate", accessor: "total_subsections"},
+        {title: "MBSA", className: "lnr-cog fa-spin icon-gradient bg-happy-itmeo", accessor: "total_sections"},
+        {title: "No of Sections", className: "lnr-cloud-upload icon-gradient bg-plum-plate", accessor: "total_subsections"},
         {title: "No of Roads", className: "lnr-cloud-upload icon-gradient bg-plum-plate", accessor: "total_roads"},
         {title: "No of Feeder Pillars", className: "lnr-license text-primary", accessor: "total_feeder_pillar"}
     ]
