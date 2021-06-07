@@ -47,9 +47,9 @@ const Header = ( props ) => {
                     {'header-mobile-open': enableMobileMenuSmall},
                 )}>
                     <div className="app-header-center">
-                        <div className="logo-wrapper logo">
+                        {/* <div className="logo-wrapper logo">
                             <div className="icon-wrapper-bg"/>
-                        </div>
+                        </div> */}
                         <div>
                             {/* iDynamix Streetlight Monitoring */}
                             {/* Streetlight Monitoring */}
