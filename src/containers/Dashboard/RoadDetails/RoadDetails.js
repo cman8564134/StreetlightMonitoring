@@ -268,7 +268,7 @@ const RoadDetails = ( props ) => {
                 },
                 {
                     Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint'
+                    accessor: 'carbon_footprint_kg'
                 },
                 {
                     Header: 'Energy Savings (KWh)',
