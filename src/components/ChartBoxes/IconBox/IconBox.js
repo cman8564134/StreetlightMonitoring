@@ -14,7 +14,8 @@ const IconBox = ( props ) => {
         font,
         value2,
         prefix2,
-        suffix2
+        suffix2,
+        subtitle2
     } = props;
 
     let widgetValue = <Loader/>;
@@ -35,9 +36,19 @@ const IconBox = ( props ) => {
         
         if(value2) {
             widgetValue2 = (
-                <div className={widgetValueClassName}>
-                    <span className="font-size-md">{prefix2}</span>{value2}<span className="font-size-md">{suffix2}</span>
-                </div>
+                <Fragment>
+                    {subtitle2 ? 
+                        <div className="widget-subheading">
+                            {subtitle2}
+                        </div>
+                        : null
+                    }
+                    
+                    <div className={widgetValueClassName}>
+                        <span className="font-size-md">{prefix2}</span>{value2}<span className="font-size-md">{suffix2}</span>
+                    </div>
+                </Fragment>
+                
             );  
         }
     }

@@ -82,13 +82,24 @@ const Dashboard = ( props ) => {
                 isRefresh: isRefresh, 
                 dateTimeFrom: dateFrom, 
                 dateTimeTo: dateTo, 
-                dataKey: ['thdc1'], 
+                dataKey: ['total_yield'], 
                 chartType: "daily", 
-                chartId: "power_usage",
+                chartId: "power_quality",
                 startType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_START,
                 successType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_SUCCESS,
                 failType: actionTypes.FETCH_CONCESSIONS_POWER_QUALITY_SUMMARY_CHART_FAIL,
-                formulaType: 'powerQuality'
+                formulaType: 'electricityBill'
+            });
+            onFetchConcessionsPowerUsageSummaryChart({
+                isRefresh: isRefresh, 
+                dateTimeFrom: dateFrom, 
+                dateTimeTo: dateTo, 
+                dataKey: ['total_yield'], 
+                chartType: "daily", 
+                chartId: "power_usage",
+                startType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_START,
+                successType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_SUCCESS,
+                failType: actionTypes.FETCH_CONCESSIONS_POWER_USAGE_SUMMARY_CHART_FAIL,
             });
         }, 30000);
 
@@ -112,7 +123,7 @@ const Dashboard = ( props ) => {
     ]
 
     const summaryHighlightsHeaders = [
-        {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh", accessor2: "daily_yield", prefix2: "", suffix2: " KWh (Daily)"},
+        {header: "Accumulated Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh", accessor2: "daily_yield", prefix2: "", suffix2: " KWh (Daily)", subtitle2: "7a.m to 7a.m"},
         {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg" , prefix: "", suffix: " KG",  accessor2: "carbon_footprint_metric_ton", prefix2: "", suffix2: " Metric Ton"},
         {header: "Monthly Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
     ]

@@ -53,6 +53,7 @@ const Header = ( props ) => {
                         <div>
                             {/* iDynamix Streetlight Monitoring */}
                             {/* Streetlight Monitoring */}
+                            Majlis Bandaraya Shah Alam
                         </div>
                     </div>
                     <div className="app-header-right">

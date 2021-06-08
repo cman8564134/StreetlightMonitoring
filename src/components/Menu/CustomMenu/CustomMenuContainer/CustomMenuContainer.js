@@ -21,22 +21,24 @@ const CustomMenuContainer = ( props ) => {
                 menuItemsArray.map((menuItemGroupByParentId) => {
                     return menuItemGroupByParentId.map((menuItem,index) => {
                         const {
-                            parentId,
                             id,
                             label
                         } = menuItem;
     
-                        return <CustomMenuItem
-                            {...props}
-                            key={index}
-                            parentId={parentId}
-                            id={id}
-                            label={label}
-                            multiLevelMenuNavItems={multiLevelMenuNavItems}
-                            menuExpandState={menuExpandState}
-                            level={level}
-                            onToggleCaret={onToggleCaret}
-                        />
+                        if (!parentId || parentId === menuItem.parentId){
+                            return <CustomMenuItem
+                                        {...props}
+                                        key={index}
+                                        parentId={menuItem.parentId}
+                                        id={id}
+                                        label={label}
+                                        multiLevelMenuNavItems={multiLevelMenuNavItems}
+                                        menuExpandState={menuExpandState}
+                                        level={level}
+                                        onToggleCaret={onToggleCaret}
+                                    />
+                        }
+                        else return null
                     })
 
                     
