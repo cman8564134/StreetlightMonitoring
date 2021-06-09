@@ -2,24 +2,24 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
 import { updateObject } from '../../shared/utility';
 
-export const fetchReportSectionNameMapByConcessionIdStart = () => {
+export const fetchReportSectionNameMapByConcessionIdStart = (type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SECTION_NAME_MAP_START,
+        type: type + "_START",
         loading: true
     }
 }
 
-export const fetchReportSectionNameMapByConcessionIdSuccess = (sectionNameMap) => {
+export const fetchReportSectionNameMapByConcessionIdSuccess = (sectionNameMap, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SECTION_NAME_MAP_SUCCESS,
+        type: type + "_SUCCESS",
         loading: false,
         sectionNameMap: sectionNameMap
     }
 }
 
-export const fetchReportSectionNameMapByConcessionIdFail = (error) => {
+export const fetchReportSectionNameMapByConcessionIdFail = (error, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SECTION_NAME_MAP_FAIL,
+        type: type + "_FAIL",
         loading: false,
         error: error
     }
@@ -27,37 +27,37 @@ export const fetchReportSectionNameMapByConcessionIdFail = (error) => {
 
 export const fetchReportSectionNameMapByConcessionId =  (params) => {
     return dispatch => {
-        dispatch(fetchReportSectionNameMapByConcessionIdStart());
+        dispatch(fetchReportSectionNameMapByConcessionIdStart(params.type));
         
         return axios.post('/getSectionsIdAndNameMapByConcessionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(response.data.sections)));
+                return Promise.resolve(dispatch(fetchReportSectionNameMapByConcessionIdSuccess(response.data.sections, params.type)));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchReportSectionNameMapByConcessionIdFail(error));
+                dispatch(fetchReportSectionNameMapByConcessionIdFail(error, params.type));
             }); 
     }
 }
 
-export const fetchSubsectionNameMapBySectionIdStart = () => {
+export const fetchSubsectionNameMapBySectionIdStart = (type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SUBSECTION_NAME_MAP_START,
+        type: type + "_START",
         loading: true
     }
 }
 
-export const fetchSubsectionNameMapBySectionIdSuccess = (subsectionNameMap) => {
+export const fetchSubsectionNameMapBySectionIdSuccess = (subsectionNameMap,type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SUBSECTION_NAME_MAP_SUCCESS,
+        type: type + "_SUCCESS",
         loading: false,
         subsectionNameMap: subsectionNameMap
     }
 }
 
-export const fetchSubsectionNameMapBySectionIdFail = (error) => {
+export const fetchSubsectionNameMapBySectionIdFail = (error, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_SUBSECTION_NAME_MAP_FAIL,
+        type: type + "_FAIL",
         loading: false,
         error: error
     }
@@ -65,37 +65,37 @@ export const fetchSubsectionNameMapBySectionIdFail = (error) => {
 
 export const fetchSubsectionNameMapBySectionId =  (params) => {
     return dispatch => {
-        dispatch(fetchSubsectionNameMapBySectionIdStart());
+        dispatch(fetchSubsectionNameMapBySectionIdStart(params.type));
         
         return axios.post('/getSubsectionsIdAndNameMapBySectionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(response.data.subsections)));
+                return Promise.resolve(dispatch(fetchSubsectionNameMapBySectionIdSuccess(response.data.subsections, params.type)));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchSubsectionNameMapBySectionIdFail(error));
+                dispatch(fetchSubsectionNameMapBySectionIdFail(error, params.type));
             }); 
     }
 }
 
-export const fetchRoadNameMapBySubsectionIdStart = () => {
+export const fetchRoadNameMapBySubsectionIdStart = (type) => {
     return {
-        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_START,
+        type: type + "_START",
         loading: true
     }
 }
 
-export const fetchRoadNameMapBySubsectionIdSuccess = (roadNameMap) => {
+export const fetchRoadNameMapBySubsectionIdSuccess = (roadNameMap,type) => {
     return {
-        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_SUCCESS,
+        type: type + "_SUCCESS",
         loading: false,
         roadNameMap: roadNameMap,
     }
 }
 
-export const fetchRoadNameMapBySubsectionIdFail = (error) => {
+export const fetchRoadNameMapBySubsectionIdFail = (error, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_ROAD_NAME_MAP_FAIL,
+        type: type + "_FAIL",
         loading: false,
         error: error
     }
@@ -103,37 +103,37 @@ export const fetchRoadNameMapBySubsectionIdFail = (error) => {
 
 export const fetchRoadNameMapBySubsectionId =  (params) => {
     return dispatch => {
-        dispatch(fetchRoadNameMapBySubsectionIdStart());
+        dispatch(fetchRoadNameMapBySubsectionIdStart(params.type));
         
         return axios.post('/getRoadsIdAndNameMapBySubsectionId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchRoadNameMapBySubsectionIdSuccess(response.data.roads)));
+                return Promise.resolve(dispatch(fetchRoadNameMapBySubsectionIdSuccess(response.data.roads, params.type)));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchRoadNameMapBySubsectionIdFail(error));
+                dispatch(fetchRoadNameMapBySubsectionIdFail(error, params.type));
             }); 
     }
 }
 
-export const fetchFeederPillarNameMapByRoadIdStart = () => {
+export const fetchFeederPillarNameMapByRoadIdStart = (type) => {
     return {
-        type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_START,
+        type: type + "_START",
         loading: true
     }
 }
 
-export const fetchFeederPillarNameMapByRoadIdSuccess = (feederPillarNameMap) => {
+export const fetchFeederPillarNameMapByRoadIdSuccess = (feederPillarNameMap, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_SUCCESS,
+        type: type + "_SUCCESS",
         loading: false,
         feederPillarNameMap: feederPillarNameMap,
     }
 }
 
-export const fetchFeederPillarNameMapByRoadIdFail = (error) => {
+export const fetchFeederPillarNameMapByRoadIdFail = (error, type) => {
     return {
-        type: actionTypes.FETCH_REPORT_FEEDER_PILLAR_NAME_MAP_FAIL,
+        type: type + "_FAIL",
         loading: false,
         error: error
     }
@@ -141,15 +141,15 @@ export const fetchFeederPillarNameMapByRoadIdFail = (error) => {
 
 export const fetchFeederPillarNameMapByRoadId =  (params) => {
     return dispatch => {
-        dispatch(fetchFeederPillarNameMapByRoadIdStart());
+        dispatch(fetchFeederPillarNameMapByRoadIdStart(params.type));
         
         return axios.post('/getFeederPillarsIdAndNameMapByRoadId', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchFeederPillarNameMapByRoadIdSuccess(response.data.feederPillars)));
+                return Promise.resolve(dispatch(fetchFeederPillarNameMapByRoadIdSuccess(response.data.feederPillars, params.type)));
             })
             .catch(error => {
                 console.log(error);
-                dispatch(fetchFeederPillarNameMapByRoadIdFail(error));
+                dispatch(fetchFeederPillarNameMapByRoadIdFail(error, params.type));
             }); 
     }
 }

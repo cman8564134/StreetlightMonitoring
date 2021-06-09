@@ -76,29 +76,29 @@ const Report = ( props ) => {
         }
 
         const type = HANDLE_REPORT_INPUT_CHANGED_SUCCESS;
-
+        
         switch(elementId) {
             case "concession": 
-                onFetchReportSectionNameMapByConcessionId({concession_id: value})
+                onFetchReportSectionNameMapByConcessionId({concession_id: value, type: "FETCH_REPORT_SECTION_NAME_MAP"})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });
             break;
             case "section": 
-                onFetchSubsectionNameMapBySectionId({section_id: value})
+                onFetchSubsectionNameMapBySectionId({section_id: value, type: "FETCH_REPORT_SUBSECTION_NAME_MAP"})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });
             break;
             
             case "subsection": 
-                onFetchRoadNameMapBySubsectionId({subsection_id: value})
+                onFetchRoadNameMapBySubsectionId({subsection_id: value, type: "FETCH_REPORT_ROAD_NAME_MAP"})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });
             break;
             case "road": 
-                onFetchFeederPillarNameMapByRoadId({road_id: value})
+                onFetchFeederPillarNameMapByRoadId({road_id: value, type: "FETCH_REPORT_FEEDER_PILLAR_NAME_MAP"})
                     .then(response => {
                         onHandleInputChanged(type, value, elementRowIndex, elementId, validationRules);
                     });

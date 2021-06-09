@@ -24,28 +24,17 @@ export const fetchImbalanceAmpereChartDataFail = (error) => {
     }
 }
 
-export const fetchImbalanceAmpereChartData = () => {
+export const fetchImbalanceAmpereChartData = (params) => {
     return dispatch => {
         dispatch(fetchImbalanceAmpereChartDataStart());
-
-        const response = {data: {
-            chartsData:{
-                data: [[12.52],[83.16],[4.32]],
-                labels: [""],
-                series: ["R", "Y", "B"],
-                ampere: [[3.33], [22.12], [1.15]]
-            }
-        }}
-
-        dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData));
         
-        // axios.post('/getImbalanceAmpere', params)
-        //     .then(response => {
-        //         dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.alerts));
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //         dispatch(fetchImbalanceAmpereChartDataFail(error));
-        //     });
+        axios.post('/getImbalanceAmpereChartData', params)
+            .then(response => {
+                dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(fetchImbalanceAmpereChartDataFail(error));
+            });
     }   
 }
