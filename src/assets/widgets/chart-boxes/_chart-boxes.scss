@@ -188,6 +188,10 @@ $widget-spacer: $spacer;
     .widget-numbers {
       margin-left: 0;
     }
+    
+    .widget-numbers-md {
+      margin-left: 0;
+    }
 
     .widget-chart-content {
       display: flex;
@@ -425,6 +429,34 @@ $widget-spacer: $spacer;
     position: absolute;
     left: 0;
     top: 0;
+  }
+}
+
+.widget-numbers-md {
+  font-weight: bold;
+  font-size: 2.0rem;
+  display: block;
+  line-height: 1;
+  margin: $widget-spacer auto;
+
+  & + .widget-chart-flex,
+  & + .widget-description,
+  & + .widget-subheading {
+    margin-top: -($widget-spacer / 2);
+  }
+}
+
+.widget-subheading {
+  margin: -0.5rem 0 0;
+  display: block;
+  opacity: .6;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  & + .widget-numbers-md {
+    margin-top: ($widget-spacer / 2);
   }
 }
 

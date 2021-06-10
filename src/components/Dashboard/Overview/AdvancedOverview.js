@@ -14,7 +14,7 @@ import * as actionTypes from '../../../store/actions/actionTypes';
 import { getCurrentDateTimeInDBFormat,subtractMinuteFromDateTime, formatDateByDateFormat, subtractDaysFromDate } from '../../../shared/utility';
 
 import ProfileCard from '../../ProfileCard/ProfileCard';
-import HighlightsBox from '../HighlightsBox/HighlightsBox';
+import HighlightsBox from '../HighlightsBox/HighlightsBoxFourCol';
 import LeftProgressCircle from '../../Progress/ProgressCircles/LeftProgressCircle/LeftProgressCircle';
 import LeftLiquidGaugeCard from '../../Gauge/Alignment/LeftLiquidGaugeCard/LeftLiquidGaugeCard';
 import WeatherWidget from '../../Widgets/WeatherWidget/WeatherWidget';

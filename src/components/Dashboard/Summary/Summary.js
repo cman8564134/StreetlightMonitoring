@@ -5,7 +5,7 @@ import {
     Col
 } from 'reactstrap';
 
-import HighlightsBox from '../HighlightsBox/HighlightsBox';
+import HighlightsBox from '../HighlightsBox/HighlightsBoxFourCol';
 import LargeTitleTab from '../../Tab/LargeTitleTab/LargeTitleTab';
 import LeftProgressCircle from '../../Progress/ProgressCircles/LeftProgressCircle/LeftProgressCircle';
 import DataTable from '../../Tables/DataTable/DataTable';

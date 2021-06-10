@@ -30,53 +30,6 @@ const fetchConcessionsStart = ( state, action ) => {
 }
 
 const fetchConcessionsSuccess = ( state, action ) => {
-    const dummyConcessions = [{
-        "concession_id": 1,
-        "concession_name": "DEF SDN BHD",
-        "location": "SHAH ALAM",
-        "thdc1": "41.77",
-        "total_feeder_pillar": 1,
-        "total_active_feeder_pillar": 1,
-        "id": 1,
-        "power_usage": "41.77",
-        "carbon_footprint": "2172.04",
-        "electricity_bill": "1378.41",
-        "uptime_percentage": "100",
-        "uptime_percentage_text": "1/1 (100%)",
-        "energy_savings": "417.70"
-    },
-    {
-        "concession_id": 1,
-        "concession_name": "GHI SDN BHD",
-        "location": "SHAH ALAM",
-        "thdc1": "41.77",
-        "total_feeder_pillar": 1,
-        "total_active_feeder_pillar": 1,
-        "id": 1,
-        "power_usage": "41.77",
-        "carbon_footprint": "2172.04",
-        "electricity_bill": "1378.41",
-        "uptime_percentage": "100",
-        "uptime_percentage_text": "1/1 (100%)",
-        "energy_savings": "417.70"
-    },
-    {
-        "concession_id": 1,
-        "concession_name": "JKL SDN BHD",
-        "location": "SHAH ALAM",
-        "thdc1": "41.77",
-        "total_feeder_pillar": 1,
-        "total_active_feeder_pillar": 1,
-        "id": 1,
-        "power_usage": "41.77",
-        "carbon_footprint": "2172.04",
-        "electricity_bill": "1378.41",
-        "uptime_percentage": "100",
-        "uptime_percentage_text": "1/1 (100%)",
-        "energy_savings": "417.70"
-    }];
-
-    const updatedSummary = action.concessions.concat(dummyConcessions);
     return updateObject(state, {
         concessions: action.concessions,
         // concessions: updatedSummary,

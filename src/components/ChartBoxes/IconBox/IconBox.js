@@ -21,7 +21,7 @@ const IconBox = ( props ) => {
     let widgetValue = <Loader/>;
     let widgetValue2 = null;
 
-    let widgetValueClassName = "widget-numbers";
+    let widgetValueClassName = "widget-numbers-md";
 
     if(font === "sm") {
         widgetValueClassName = "widget-numbers-sm"
