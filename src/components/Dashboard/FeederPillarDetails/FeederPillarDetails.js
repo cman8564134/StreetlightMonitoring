@@ -73,6 +73,7 @@ const FeederPillarDetails = ( props ) => {
         {header: "THDPB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp3", prefix: "", suffix: ""},
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
         {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
+        {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " Wh"},
     ]
     
     const electricityBillCostBreakdown = [
