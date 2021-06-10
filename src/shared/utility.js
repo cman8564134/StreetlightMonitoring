@@ -411,7 +411,7 @@ export const baseChartOptions = () => {
             curve: 'smooth',
             width: 1
         },
-        labels: ["1/7/2020", "2/7/2020", "3/7/2020", "4/7/2020", "5/7/2020", "6/7/2020", "7/7/2020"],
+        labels: [],
         markers: {
             size: 0
         },
@@ -423,7 +423,10 @@ export const baseChartOptions = () => {
                 text: 'Total Power Consumption',
             },
             min: (min) => {
-                return min;
+                if(min === 5e-324)
+                    return 0;
+                else
+                    return min;
             }
         },
         tooltip: {
@@ -441,7 +444,12 @@ export const baseChartOptions = () => {
             x: {
                 format: 'dd MMM yyyy HH:mm:yy'
             }
-        }
+        },
+        noData: {
+            text: "No Data",
+            align: 'center',
+            verticalAlign: 'middle'
+          }
     }
 }
 
