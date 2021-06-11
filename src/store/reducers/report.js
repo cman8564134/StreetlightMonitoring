@@ -502,6 +502,20 @@ const initialState = {
                 touched: false,
                 errorMessage: ''
             },
+            current_n: {
+                elementLabel: 'Neutral Current',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
             
         }
     ],
@@ -531,6 +545,7 @@ const initialState = {
         thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        neutralCurrentTab: {navTitle: "NEUTRAL CURRENT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
     }],
     loadingHighlights: false,
     loadingChart: false,
@@ -567,6 +582,7 @@ const metricColumnsName = {
     thdp1: {label: "THDP R", accessor: "thdp1"},
     thdp2: {label: "THDP Y", accessor: "thdp2"},
     thdp3: {label: "THDP B", accessor: "thdp3"},
+    current_n: {label: "Neutral Current", accessor: "current_n"},
 }
 
 const fetchReportConcessionNameMapSuccess = ( state, action ) => {

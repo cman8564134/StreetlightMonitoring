@@ -71,9 +71,9 @@ const FeederPillarDetails = ( props ) => {
         {header: "THDPR", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp1", prefix: "", suffix: ""},
         {header: "THDPY", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp2", prefix: "", suffix: ""},
         {header: "THDPB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp3", prefix: "", suffix: ""},
-        {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
-        {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
-        {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-6 bg-success", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " Wh"},
+        {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
+        {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
+        {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " A"},
     ]
     
     const electricityBillCostBreakdown = [

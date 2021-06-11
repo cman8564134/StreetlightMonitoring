@@ -28,9 +28,9 @@ export const fetchImbalanceAmpereChartData = (params) => {
     return dispatch => {
         dispatch(fetchImbalanceAmpereChartDataStart());
         
-        axios.post('/getImbalanceAmpereChartData', params)
+        return axios.post('/getImbalanceAmpereChartData', params)
             .then(response => {
-                dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData));
+                return Promise.resolve(dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData)));
             })
             .catch(error => {
                 console.log(error);

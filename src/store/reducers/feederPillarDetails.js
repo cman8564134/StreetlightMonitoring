@@ -27,6 +27,7 @@ const initialState = {
             "thdc": {title: "THDC", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "thdp": {title: "THDP", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "frequency": {title: "Frequency", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
+            "neutralCurrent": {title: "Neutral Current (A)", chart_options: baseChartOptions(), chart_series: baseChartSeries(), chart_type: "line"},
         }
     ],
     loadingFeederPillarDetails: false,

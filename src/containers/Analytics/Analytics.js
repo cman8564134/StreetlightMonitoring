@@ -90,6 +90,8 @@ const Analytics = ( props ) => {
         }
     }
 
+    const [barChartTitle, setBarChartTitle] = useState("");
+
     const onApplyFilterHandler = (site, tab) => {
         const isFormValid = checkFormValidity(searchFilters);
 
@@ -101,6 +103,15 @@ const Analytics = ( props ) => {
         
             onFetchImbalanceAmpereChartData({
                 feederPillarId: feederPillarId,
+            })
+            .then(response => {
+                setBarChartTitle (
+                    <Fragment>
+                        <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i> 
+                        Unbalanced Cable Stress Detected
+                    </Fragment>
+                    
+                );
             });
 
             
@@ -154,8 +165,8 @@ const Analytics = ( props ) => {
                         <Card className="mb-3">
                             <CardHeader className="card-header-tab">
                                 <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                    <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i>
-                                    Unbalanced Cable Stress Detected
+                                    
+                                    {/* {}Unbalanced Cable Stress Detected */}{barChartTitle}
                                 </div>
                             </CardHeader>
                             <div className="p-2 center-elem w-100">

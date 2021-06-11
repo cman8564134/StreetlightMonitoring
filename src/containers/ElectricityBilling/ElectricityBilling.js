@@ -407,23 +407,21 @@ const ElectricityBilling = ( props ) => {
                             
                         }
                     /> */}
-
-                    <BasicModal 
-                        modalWidth={1000}
-                        visible={showBreakdownModal}
-                        showOrHideModal={showOrHideBreakdownModal}
-                    >
-                        <BreakdownModal
-                            breadcrumbItems={modalBreadcrumbItems}
-                            data={costByLevelTableData}
-                            tableColumns={costBySectionTableColumns}
-                            loading={loadingCostByLevelTableData}
-                            header={costByLevelTableHeader}
-                        />
-                    </BasicModal>
-
                 </Container>
             </Layout>
+            <BasicModal 
+                modalWidth="100%"
+                visible={showBreakdownModal}
+                showOrHideModal={showOrHideBreakdownModal}
+            >
+                <BreakdownModal
+                    breadcrumbItems={modalBreadcrumbItems}
+                    data={costByLevelTableData}
+                    tableColumns={costBySectionTableColumns}
+                    loading={loadingCostByLevelTableData}
+                    header={costByLevelTableHeader}
+                />
+            </BasicModal>
         </Fragment>
     )
 }
