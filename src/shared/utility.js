@@ -696,3 +696,25 @@ export const createCustomMenuExpandStateObject = (multiLevelNavItems) => {
 
     return customMenuState;
 }
+
+const pushItemsIntoBreadcrumbArray = (items) => {
+    let breadcrumbItemsArray = [];
+    items.map(item => {
+        breadcrumbItemsArray.push(item);
+    })
+
+    return breadcrumbItemsArray;
+}
+
+export const populateBreadcrumbItemsBasedOnUserConcessionId = (userConcessionId, home, subPages) => {
+    let breadcrumbItems = [];
+
+    if(userConcessionId){
+        breadcrumbItems = pushItemsIntoBreadcrumbArray(subPages);
+    }else{
+        const allPages = home.concat(subPages);
+        breadcrumbItems = pushItemsIntoBreadcrumbArray(allPages);
+    }
+
+    return breadcrumbItems;
+}

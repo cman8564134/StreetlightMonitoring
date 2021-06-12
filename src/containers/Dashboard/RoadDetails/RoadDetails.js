@@ -9,23 +9,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     Container,
     Button,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    Col,
-    CardTitle,
-    FormText,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    InputGroup, InputGroupAddon
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
 
-import { updateObject, getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime } from '../../../shared/utility';
+import { updateObject, getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime, populateBreadcrumbItemsBasedOnUserConcessionId } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 
 import Layout from '../../../hoc/Layout/Layout';
@@ -64,7 +52,8 @@ const RoadDetails = ( props ) => {
         totalBillAmount,
         onFetchTrafficLightForm,
         postTrafficLightForm,
-        trafficLightConfig
+        trafficLightConfig,
+        userConcessionId
     } = props;
 
     const [ isPillarDetailsModalVisible, setIsPillarDetailsModalVisible ] = useState(false);
@@ -184,18 +173,19 @@ const RoadDetails = ( props ) => {
         onFetchFeederPillarMetricCharts,
         selectedFeederPillarId
     ])
-    
-    const breadcrumbItems = [
-        {
-            title: "Concessions",
-            href: '',
-            onClickHandler: (e)=>{
-                e.preventDefault();
-                props.history.push("/dashboard");
-            },
-            children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
-            isActive: false
+
+    const home = [{
+        title: "Concessions",
+        href: '',
+        onClickHandler: (e)=>{
+            e.preventDefault();
+            props.history.push("/dashboard");
         },
+        children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
+        isActive: false
+    }];
+
+    const subPages = [
         {
             title: onFetchFeederPillarsByRoad.concession_name,
             href: '',
@@ -234,6 +224,9 @@ const RoadDetails = ( props ) => {
             isActive: true
         }
     ]
+
+    const breadcrumbItems = populateBreadcrumbItemsBasedOnUserConcessionId(userConcessionId, home, subPages);
+    
 
     const feederPillarsTableColumns = [
         {

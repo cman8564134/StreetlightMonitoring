@@ -71,6 +71,8 @@ const App = ( props ) => {
     location
   } = props;
 
+  const [userConcessionId, setUserConcessionId] = useState(null);
+
   useEffect (() => {
     onTryAutoSignIn({pathname: location.pathname})
       .then(response => {
@@ -79,6 +81,7 @@ const App = ( props ) => {
         }else if(!response.isLoggedIn){
           props.history.push('/');
         }
+        setUserConcessionId(response.concessionId);
       });
   }, [onTryAutoSignIn, props.history, location.pathname]);
 
@@ -107,10 +110,10 @@ const App = ( props ) => {
           }>
             <Switch>
               {/* <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:feederPillarId" render={(props) => <FeederPillarDetails {...props}/>}/> */}
-              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:roadId" render={(props) => <RoadDetails {...props}/>}/>
-              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId" render={(props) => <SubsectionDetails {...props}/>}/>
-              <Route path="/dashboard/:concessionId/:sectionId" render={(props) => <SectionDetails {...props}/>}/>
-              <Route path="/dashboard/:concessionId" render={(props) => <ConcessionDetails {...props}/>}/>
+              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId/:roadId" render={(props) => <RoadDetails {...props} userConcessionId={userConcessionId}/>}/>
+              <Route path="/dashboard/:concessionId/:sectionId/:subsectionId" render={(props) => <SubsectionDetails {...props} userConcessionId={userConcessionId}/>}/>
+              <Route path="/dashboard/:concessionId/:sectionId" render={(props) => <SectionDetails {...props} userConcessionId={userConcessionId}/>}/>
+              <Route path="/dashboard/:concessionId" render={(props) => <ConcessionDetails {...props} userConcessionId={userConcessionId}/>}/>
               <Route path="/dashboard" render={(props) => <Dashboard {...props}/>}/>
               <Route path="/billing" render={(props) => <ElectricityBilling {...props}/>}/>
               {/* <Route path="/inverter" render={(props) => <Inverter {...props}/>}/> */}

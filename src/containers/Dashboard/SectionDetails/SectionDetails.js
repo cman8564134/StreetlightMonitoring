@@ -13,7 +13,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime, updateObject } from '../../../shared/utility';
+import { getCurrentDateTimeInDBFormat, formatDateByDateFormat, subtractMinuteFromDateTime, updateObject, populateBreadcrumbItemsBasedOnUserConcessionId } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 // import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -34,7 +34,8 @@ const SectionDetails = ( props ) => {
         onFetchSectionDetails,
         onFetchSubsectionsBySection,
         onFetchSectionMetricCharts,
-        loadingSectionDetails
+        loadingSectionDetails,
+        userConcessionId
     } = props;
 
     useEffect(() => {
@@ -88,18 +89,19 @@ const SectionDetails = ( props ) => {
         onFetchSectionDetails,
         // onFetchSectionMetricCharts
     ])
-    
-    const breadcrumbItems = [
-        {
-            title: "Concessions",
-            href: '',
-            onClickHandler: (e)=>{
-                e.preventDefault();
-                props.history.push("/dashboard");
-            },
-            children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
-            isActive: false
+
+    const home = [{
+        title: "Concessions",
+        href: '',
+        onClickHandler: (e)=>{
+            e.preventDefault();
+            props.history.push("/dashboard");
         },
+        children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
+        isActive: false
+    }];
+
+    const subPages = [
         {
             title: section.concession_name,
             href: '',
@@ -118,6 +120,8 @@ const SectionDetails = ( props ) => {
             isActive: true
         }
     ]
+    
+    const breadcrumbItems = populateBreadcrumbItemsBasedOnUserConcessionId(userConcessionId, home, subPages);
 
     const onClickViewDetailsHandler = ( subsectionId ) => {
         props.history.push(props.match.url + "/" + subsectionId);

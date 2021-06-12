@@ -105,19 +105,19 @@ export const authCheckState = (data) => {
                         return Promise.resolve({isLoggedIn: true, isPageNotFound: true, concessionId: concessionId});
                     }
                     else{
-                        return Promise.resolve({isLoggedIn: true, isPageNotFound: false});
+                        return Promise.resolve({isLoggedIn: true, isPageNotFound: false, concessionId: concessionId});
                     }
                 }
                 else{
-                    return Promise.resolve({isLoggedIn: true, isPageNotFound: false});
+                    return Promise.resolve({isLoggedIn: true, isPageNotFound: false, concessionId: concessionId});
                 }
             }else{
                 dispatch(logout());
-                return Promise.resolve({isLoggedIn: false, isPageNotFound: false});
+                return Promise.resolve({isLoggedIn: false, isPageNotFound: false, concessionId: null});
             }
         }else{
             dispatch(logout());
-            return Promise.resolve({isLoggedIn: false});
+            return Promise.resolve({isLoggedIn: false, isPageNotFound: false, concessionId: null});
         }
     }
 }

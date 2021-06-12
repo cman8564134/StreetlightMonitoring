@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import {
     faHome
@@ -21,7 +21,7 @@ import PageTitle from '../../../components/Layout/PageTitle/PageTitle';
 import BasicTab from '../../../components/Tab/BasicTab/BasicTab';
 import DataTable from '../../../components/Tables/DataTable/DataTable';
 import AdvancedOverview from "../../../components/Dashboard/Overview/AdvancedOverview";
-import { getCurrentDateTimeInDBFormat, subtractMinuteFromDateTime, formatDateByDateFormat } from "../../../shared/utility";
+import { getCurrentDateTimeInDBFormat, subtractMinuteFromDateTime, formatDateByDateFormat, populateBreadcrumbItemsBasedOnUserConcessionId } from "../../../shared/utility";
 
 const ConcessionDetails = ( props ) => {
     const {
@@ -49,7 +49,8 @@ const ConcessionDetails = ( props ) => {
         realTimeElectricityBillChartData,
         dailyElectricityBillChartData,
         monthlyElectricityBillChartData,
-        onFetchConcessionRealTimeElectricityBillChart
+        onFetchConcessionRealTimeElectricityBillChart,
+        userConcessionId
     } = props;
 
     useEffect(() => {
@@ -149,27 +150,26 @@ const ConcessionDetails = ( props ) => {
         onFetchWeatherForecast
     ])
 
-    
-    
-    const breadcrumbItems = [
-        {
-            title: "Concessions",
-            href: '',
-            onClickHandler: (e)=>{
-                e.preventDefault();
-                props.history.push("/dashboard");
-            },
-            children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
-            isActive: false
+    const home = [{
+        title: "Concessions",
+        href: '',
+        onClickHandler: (e)=>{
+            e.preventDefault();
+            props.history.push("/dashboard");
         },
-        {
-            title: concession.concession_name,
-            href: null,
-            onClickHandler: null,
-            children: concession.concession_name,
-            isActive: true
-        }
-    ]
+        children: (<span><FontAwesomeIcon icon={faHome}/> Concessions</span> ),
+        isActive: false
+    }];
+    
+    const subPages = [{
+        title: concession.concession_name,
+        href: null,
+        onClickHandler: null,
+        children: concession.concession_name,
+        isActive: true
+    }];
+
+    const breadcrumbItems = populateBreadcrumbItemsBasedOnUserConcessionId(userConcessionId, home, subPages);
 
     const onClickViewDetailsHandler = ( sectionId ) => {
         props.history.push(props.match.url + "/" + sectionId);
