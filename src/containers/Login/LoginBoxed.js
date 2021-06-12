@@ -28,8 +28,13 @@ const LoginBoxed = (props) => {
         onAuthentication(params)
             .then((response) => {
                 if(response.isSuccess) {
-                    props.history.push("/dashboard");
-                    
+                    const concessionId = response.concessionId;
+                    if(concessionId){
+                        props.history.push("/dashboard/" + concessionId);   
+                    }
+                    else{
+                        props.history.push("/dashboard");
+                    }
                 }
             });
         

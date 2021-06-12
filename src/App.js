@@ -7,6 +7,7 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import Login from './containers/Login/LoginBoxed';
 import Loader from './components/Loader/BallClipRotateMultiple/BallClipRotateMultiple';
 import * as actions from './store/actions/index';
+import NotFound from './containers/NotFound/NotFound';
 
 const Dashboard = React.lazy(() => {
   return import('./containers/Dashboard/Dashboard');
@@ -66,17 +67,20 @@ const App = ( props ) => {
     enableClosedSidebar,
     enableMobileMenu,
     enablePageTabsAlt,
-    // onTryAutoSignIn
+    onTryAutoSignIn,
+    location
   } = props;
 
-  // useEffect (() => {
-  //   onTryAutoSignIn()
-  //     .then(response => {
-  //       if(!response.isLoggedIn){
-  //         props.history.push('/');
-  //       }
-  //     });
-  // }, [onTryAutoSignIn, props.history]);
+  useEffect (() => {
+    onTryAutoSignIn({pathname: location.pathname})
+      .then(response => {
+        if(response.isLoggedIn && response.isPageNotFound){
+          props.history.push('/page-not-found');
+        }else if(!response.isLoggedIn){
+          props.history.push('/');
+        }
+      });
+  }, [onTryAutoSignIn, props.history, location.pathname]);
 
   return (
     <ResizeDetector 
@@ -115,7 +119,8 @@ const App = ( props ) => {
               <Route path="/report" render={(props) => <Report {...props}/>}/>
               <Route path="/analytics" render={(props) => <Analytics {...props}/>}/>
               <Route path="/" exact component={Login} />
-              <Redirect to="/"/>  
+              <Route path="/page-not-found" exact component={NotFound} />
+              <Redirect to="/page-not-found"/>  
             </Switch>
           </Suspense>
           
@@ -137,7 +142,7 @@ const mapStateToProp = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // onTryAutoSignIn: () => dispatch(actions.authCheckState())
+  onTryAutoSignIn: (params) => dispatch(actions.authCheckState(params))
 });
 
 export default withRouter(connect(mapStateToProp, mapDispatchToProps)(App));

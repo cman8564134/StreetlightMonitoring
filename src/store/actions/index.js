@@ -168,7 +168,8 @@ export {
     authentication,
     logout,
     authCheckState,
-    fetchUnreadNotification
+    fetchUnreadNotification,
+    checkUserConcessionId
 } from './authentication';
 
 export {

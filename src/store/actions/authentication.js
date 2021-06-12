@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-// import axios from '../../axios-backend';
+import axios from '../../axios-backend';
 
 export const authenticationStart = () => {
     return {
@@ -30,58 +30,32 @@ export const authenticationFail = (error) => {
 export const authentication =  (params) => {
     return dispatch => {
         dispatch(authenticationStart());
-        
-        if(params.username === "admin" && params.password === "arkmind"){
-            const response = {data: {
-                data: {
-                    id: "1",
-                    username: "admin",
-                    name: "Admin",
-                    email: "admin@arkmind.com.my",
-                    auth_token: "abc",
-                    roles: ["admin"]
+
+        return axios.post('/loginUser', params)
+            .then(response => {
+                if(response.data.success) {
+                    const appState = setAppState(response);
+
+                      // save app state with user date in local storage
+                      localStorage["appState"] = JSON.stringify(appState);
+
+                      dispatch(authenticationSuccess(response.data.data));
+                        
+                      return {isSuccess: true, concessionId: response.data.data.concession_id};
+                } else {
+                    dispatch(authenticationFail(response.data.data));
+                    return {isSuccess: false};
                 }
-            }}
-    
-            const appState = setAppState(response);
-    
-            // save app state with user date in local storage
-            localStorage["appState"] = JSON.stringify(appState);
-    
-            dispatch(authenticationSuccess(response.data.data));
+            })
+            .catch(error => {
+                console.log(error);
 
-            return Promise.resolve({isSuccess: true});
-        }else{
-            dispatch(authenticationFail("Failed to login"));
-            return Promise.resolve({isSuccess: false});
-        }
-
-
-        // return axios.post('/loginUser', params)
-        //     .then(response => {
-        //         if(response.data.success) {
-        //             const appState = setAppState(response);
-
-        //               // save app state with user date in local storage
-        //               localStorage["appState"] = JSON.stringify(appState);
-
-        //               dispatch(authenticationSuccess(response.data.data));
-
-        //               return {isSuccess: true};
-        //         } else {
-        //             dispatch(authenticationFail(response.data.data));
-        //             return {isSuccess: false};
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-
-        //         if(error.response){
-        //             console.log(error.response);
-        //             dispatch(authenticationFail(error.response.data.errors))
-        //         }
-        //         return {isSuccess: false};
-        //     });
+                if(error.response){
+                    console.log(error.response);
+                    dispatch(authenticationFail(error.response.data.errors))
+                }
+                return {isSuccess: false};
+            });
     }
     
 }
@@ -94,7 +68,8 @@ const setAppState = (response) => {
         email: response.data.data.email,
         auth_token: response.data.data.auth_token,
         timestamp: new Date().toString(),
-        roles: response.data.data.roles
+        roles: response.data.data.roles,
+        concession_id: response.data.data.concession_id
       };
     let appState = {
     isLoggedIn: true,
@@ -116,37 +91,49 @@ export const logout = () => {
     }
 }
 
-export const authCheckState = () => {
+export const authCheckState = (data) => {
     return dispatch => {
         let state = localStorage["appState"];
         
         if(state) {
             const appState = JSON.parse(state);
             if(appState.isLoggedIn) {
-                const params = {auth_token: appState.user.auth_token};
-                // return axios.post('/authenticateUserByAuthToken', params)
-                //     .then(response => {
-                //         if(response.data.success){
-                //             const appState = setAppState(response);
-                //             localStorage["appState"] = JSON.stringify(appState);
-                //             dispatch(authenticationSuccess(response.data.data));
-                //             return Promise.resolve({isLoggedIn: true});
-                //         }else{
-                //             dispatch(logout());
-                //             return Promise.resolve({isLoggedIn: false});
-                //         }
-                //     })
-                //     .catch(error => {
-                //         dispatch(logout());
-                //         return Promise.resolve({isLoggedIn: false});
-                //     })
+                const concessionId = appState.user.concession_id;
+                if(concessionId){
+                    const pathName = data.pathname;
+                    if(pathName === "/dashboard" || (pathName.startsWith("/dashboard") && !pathName.startsWith("/dashboard/" + concessionId))){
+                        return Promise.resolve({isLoggedIn: true, isPageNotFound: true, concessionId: concessionId});
+                    }
+                    else{
+                        return Promise.resolve({isLoggedIn: true, isPageNotFound: false});
+                    }
+                }
+                else{
+                    return Promise.resolve({isLoggedIn: true, isPageNotFound: false});
+                }
             }else{
                 dispatch(logout());
-                return Promise.resolve({isLoggedIn: false});
+                return Promise.resolve({isLoggedIn: false, isPageNotFound: false});
             }
         }else{
             dispatch(logout());
             return Promise.resolve({isLoggedIn: false});
+        }
+    }
+}
+
+export const checkUserConcessionId = () => {
+    return dispatch => {
+        let state = localStorage["appState"];
+        
+        if(state) {
+            const appState = JSON.parse(state);
+            if(appState.isLoggedIn) {
+                const concessionId = appState.user.concession_id;
+                return Promise.resolve({isLoggedIn: true, concessionId: concessionId});
+            }
+        }else{
+            return Promise.resolve({isLoggedIn: false, concessionId: null})
         }
     }
 }
