@@ -177,8 +177,8 @@ const SectionDetails = ( props ) => {
                     }
                 },
                 {
-                    Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint_kg',
+                    Header: 'Carbon Footprint (Metric Ton)',
+                    accessor: 'carbon_footprint_metric_ton',
                     Cell: row => {
                         return (
                             <div className="d-block w-100 text-center">
@@ -220,7 +220,7 @@ const SectionDetails = ( props ) => {
         {header: "Uptime (Lamp Up / Total Lamp)", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_text", prefix: "", suffix: ""},
         {header: "Downtime (Lamp Down / Total Lamp)", iconBgClassName: "icon-wrapper-bg opacity-5 bg-danger", iconClassName: "lnr-warning text-dark opacity-8", accessor: "downtime_text", prefix: "", suffix: ""},
         {header: "Accumulated Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
-        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
+        {header: "Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_metric_ton", prefix: "", suffix: " Metric Ton"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings", prefix: "", suffix: " KWh"},
     ]
 

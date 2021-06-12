@@ -270,7 +270,7 @@ const AdvancedOverview = ( props ) => {
                     <ProfileCard 
                         profileHeaderTitle={highlightValues.concession_name}
                         profileBodyTitle="Concession Profile"
-                        profileSubtitle=""
+                        profileSubtitle="Scroll Down for More Info"
                         profileAttributes={profileAttributes}
                         profile={highlightValues}
                         profileHeaderBg={bg}

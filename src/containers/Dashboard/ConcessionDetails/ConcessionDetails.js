@@ -229,8 +229,8 @@ const ConcessionDetails = ( props ) => {
                     }
                 },
                 {
-                    Header: 'Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint_kg',
+                    Header: 'Carbon Footprint (Metric Ton)',
+                    accessor: 'carbon_footprint_metric_ton',
                     Cell: row => {
                         return (
                             <div className="d-block w-100 text-center">

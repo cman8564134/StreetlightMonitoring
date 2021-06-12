@@ -22,7 +22,7 @@ import * as actions from '../../../../store/actions';
 
 const UserBox = ( props ) => {
     const {
-        // onLogout,
+        onLogout,
         userData,
         // onFetchUnreadNotification
     } = props;
@@ -33,10 +33,10 @@ const UserBox = ( props ) => {
 
     // }, [onFetchUnreadNotification, userData])
 
-    // const onLogoutHandler = () => {
-    //     onLogout();
-    //     props.history.push("/");
-    // }
+    const onLogoutHandler = () => {
+        onLogout();
+        props.history.push("/");
+    }
 
     return (
         <Fragment>
@@ -76,7 +76,7 @@ const UserBox = ( props ) => {
                                                             <Button 
                                                                 className="btn-pill btn-shadow btn-shine"
                                                                 color="focus"
-                                                                // onClick={() => onLogoutHandler()}
+                                                                onClick={() => onLogoutHandler()}
                                                                 >
                                                                 Logout
                                                             </Button>
@@ -109,7 +109,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    // onLogout: () => dispatch(actions.logout()),
+    onLogout: () => dispatch(actions.logout()),
     // onFetchUnreadNotification: (params) => dispatch(actions.fetchUnreadNotification(params)),
 });
 

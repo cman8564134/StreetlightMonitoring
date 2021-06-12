@@ -108,6 +108,8 @@ const initialState = {
             }
         }
     ],
+    neutralCurrent: 0,
+    speedometerText: ""
 
 };
 
@@ -157,7 +159,9 @@ const fetchImbalanceAmpereChartDataSuccess = ( state, action ) => {
     })
     return updateObject(state, {
         loadingImbalanceAmpere: action.loading,
-        imbalanceAmpereChartData: updatedImbalanceAmpereChartData
+        imbalanceAmpereChartData: updatedImbalanceAmpereChartData,
+        neutralCurrent: action.neutralCurrent,
+        speedometerText: action.speedometerText
     });
 }
 

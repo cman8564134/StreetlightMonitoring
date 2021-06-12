@@ -9,11 +9,13 @@ export const fetchImbalanceAmpereChartDataStart = () => {
     }
 }
 
-export const fetchImbalanceAmpereChartDataSuccess = (chartsData) => {
+export const fetchImbalanceAmpereChartDataSuccess = (chartsData, neutralCurrent, speedometerText) => {
     return {
         type: actionTypes.FETCH_IMBALANCE_AMPERE_SUCCESS,
         loading: false,
         chartsData: chartsData,
+        neutralCurrent: neutralCurrent,
+        speedometerText: speedometerText
     }
 }
 
@@ -30,7 +32,9 @@ export const fetchImbalanceAmpereChartData = (params) => {
         
         return axios.post('/getImbalanceAmpereChartData', params)
             .then(response => {
-                return Promise.resolve(dispatch(fetchImbalanceAmpereChartDataSuccess(response.data.chartsData)));
+                const data = response.data;
+                dispatch(fetchImbalanceAmpereChartDataSuccess(data.chartsData, data.neutralCurrent, data.speedometerText))
+                return Promise.resolve({isUnbalancedAmpere: response.data.isUnbalancedAmpere});
             })
             .catch(error => {
                 console.log(error);

@@ -72,7 +72,7 @@ const FeederPillarDetails = ( props ) => {
         {header: "THDPY", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp2", prefix: "", suffix: ""},
         {header: "THDPB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "thdp3", prefix: "", suffix: ""},
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
-        {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " Wh"},
+        {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " KWh"},
         {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " A"},
     ]
     

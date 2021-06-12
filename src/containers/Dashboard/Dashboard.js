@@ -134,7 +134,7 @@ const Dashboard = ( props ) => {
         {header: "Total Power Consumption", iconBgClassName: "icon-wrapper-bg opacity-5 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8" , accessor: "power_usage", prefix: "", suffix: " KWh"},
         {header: "Uptime (Lamp Up / Total Lamp)", iconBgClassName: "icon-wrapper-bg opacity-5 bg-success", iconClassName: "lnr-checkmark-circle text-dark opacity-8", accessor: "uptime_percentage_text", prefix: "", suffix: ""},
         {header: "Accumulated Electricity Bill", iconBgClassName: "icon-wrapper-bg opacity-5 bg-primary", iconClassName: "lnr-chart-bars text-dark opacity-8", accessor: "electricity_bill", prefix: "RM ", suffix: ""},
-        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_kg", prefix: "", suffix: " KG"},
+        {header: "Accumulated Carbon Footprint", iconBgClassName: "icon-wrapper-bg opacity-7 bg-success", iconClassName: "lnr-leaf text-dark opacity-8", accessor: "carbon_footprint_metric_ton", prefix: "", suffix: " Metric Ton"},
         {header: "Energy Savings", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-calculator text-dark opacity-8", accessor: "energy_savings", prefix: "", suffix: " KWh"},
         {header: "Total Current In Use Now", iconBgClassName: "icon-wrapper-bg opacity-5 bg-warning", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "total_current_in_use", prefix: "", suffix: " A"},
     ]
@@ -204,8 +204,8 @@ const Dashboard = ( props ) => {
                     accessor: 'electricity_bill'
                 },
                 {
-                    Header: 'Accumulated Carbon Footprint (KG)',
-                    accessor: 'carbon_footprint_kg'
+                    Header: 'Accumulated Carbon Footprint (Metric Ton)',
+                    accessor: 'carbon_footprint_metric_ton'
                 },
                 {
                     Header: 'Energy Savings (KWh)',
@@ -249,7 +249,7 @@ const Dashboard = ( props ) => {
         <Fragment>
             <Layout {...props}>
                 <PageTitle
-                    heading = "Dashboard"
+                    heading = "Dashboard - MBSA Super User Dashboard (Accumulated = Refresh At 31st December 7pm)"
                     icon = "pe-7s-home opacity-6"
                     enableBreadcrumb
                     breadcrumbItems = {breadcrumbItems}

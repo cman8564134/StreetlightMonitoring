@@ -12,6 +12,7 @@ import {
 } from 'react-vertical-timeline-component';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 
 const ProfileCard = ( props ) => {
     const {
@@ -36,7 +37,6 @@ const ProfileCard = ( props ) => {
                     <div className="menu-header-content btn-pane-right">
                         <div>
                         <h5 className="menu-header-title">{profileHeaderTitle}</h5>
-                            {/* <h6 className="menu-header-subtitle"><span className="badge badge-success">{profileSubtitle}</span></h6> */}
                         </div>
                     </div>
                 </div>
@@ -45,6 +45,7 @@ const ProfileCard = ( props ) => {
             <Card className="main-card">
                 <CardBody>
                     <CardTitle>{profileBodyTitle}</CardTitle>
+                    <CardSubtitle>{profileSubtitle}</CardSubtitle>
                     <div className="scroll-area-sm-md">
                         <PerfectScrollbar>
                             <VerticalTimeline className="vertical-time-icons" layout="1-column">

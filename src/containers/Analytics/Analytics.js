@@ -5,19 +5,27 @@ import Layout from '../../hoc/Layout/Layout';
 import Loader from "react-loaders";
 
 import * as actions from '../../store/actions/index';
+
 import { connect } from "react-redux";
+
 import { 
     Card, 
     CardHeader, 
     Col,
-    Row
+    Row,
+    Button
 } from "reactstrap";
+
+import ReactSpeedometer from "react-d3-speedometer"
+
 import BasicApexChart from "../../components/ChartBoxes/ApexChart/BasicApexChart";
 import PageTitle from '../../components/Layout/PageTitle/PageTitle';
 import SearchFilters from "../../components/SearchFilters/SearchFilters";
 import BallClipLoader from "../../components/Loader/BallClipRotateMultiple/BallClipRotateMultiple";
 
-import { checkFormValidity, formatDateByDateFormat, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfYear, getLastDayOfYear } from "../../shared/utility";
+
+
+import { checkFormValidity } from "../../shared/utility";
 
 import { HANDLE_ANALYTICS_INPUT_CHANGED_SUCCESS, FETCH_ANALYTICS_CONCESSION_NAME_MAP_SUCCESS } from '../../store/actions/actionTypes';
 
@@ -35,6 +43,8 @@ const Analytics = ( props ) => {
         onFetchSubsectionNameMapBySectionId,
         onFetchRoadNameMapBySubsectionId,
         onFetchFeederPillarNameMapByRoadId,
+        neutralCurrent,
+        speedometerText,
     } = props;
 
     const [isSearchFilterValid, setIsSearchFilterValid] = useState(true);
@@ -90,7 +100,8 @@ const Analytics = ( props ) => {
         }
     }
 
-    const [barChartTitle, setBarChartTitle] = useState("");
+    const [barChartTitle, setBarChartTitle] = useState(null);
+    const [unbalancedAmpereReminder, setUnbalancedAmpereReminder] = useState("");
 
     const onApplyFilterHandler = (site, tab) => {
         const isFormValid = checkFormValidity(searchFilters);
@@ -105,13 +116,21 @@ const Analytics = ( props ) => {
                 feederPillarId: feederPillarId,
             })
             .then(response => {
-                setBarChartTitle (
-                    <Fragment>
-                        <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i> 
-                        Unbalanced Cable Stress Detected
-                    </Fragment>
-                    
-                );
+                if(response.isUnbalancedAmpere){
+                    setBarChartTitle (
+                        <Fragment>
+                            <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i> 
+                            Unbalanced Cable Stress Detected
+                        </Fragment>
+                        
+                    );
+
+                    setUnbalancedAmpereReminder("* Check Device");
+                }else{
+                    setBarChartTitle(null);
+                    setUnbalancedAmpereReminder("");
+                }
+                
             });
 
             
@@ -161,12 +180,11 @@ const Analytics = ( props ) => {
                 </Row>
                 
                 <Row>
-                    <Col sm="12" md="12" xl="12">
+                    <Col sm="9" md="9" xl="9">
                         <Card className="mb-3">
                             <CardHeader className="card-header-tab">
                                 <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                    
-                                    {/* {}Unbalanced Cable Stress Detected */}{barChartTitle}
+                                    {barChartTitle}
                                 </div>
                             </CardHeader>
                             <div className="p-2 center-elem w-100">
@@ -174,9 +192,38 @@ const Analytics = ( props ) => {
                             </div>
 
                             <div className="widget-subheading text-secondary text-center">
-                                *Check device
+                                {unbalancedAmpereReminder}
                             </div>
                         </Card>
+                    </Col>
+
+                    <Col sm="3" md="3" xl="3">
+                    <Card className="mb-3">
+                            <CardHeader className="card-header-tab">
+                                <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
+                                    Neutral Current
+                                </div>
+                            </CardHeader>
+                            <div className="p-2 center-elem w-100">
+                                <ReactSpeedometer
+                                    value={neutralCurrent}
+                                    height={"22"}
+                                    currentValueText={speedometerText}
+                                    needleColor="black"
+                                    minValue={0}
+                                    maxValue={30}
+                                    customSegmentStops={[0, 5, 10, 15, 20, 30]}
+                                    segmentColors={["#BEE6D0", "#67b668", "#FDE26C", "#FFB144", "#CD5C5C", "#D30000"]} 
+                                />
+                                <div className="mb-2 mr-2 badge badge-pill badge-lightgreen">Good</div>
+                                <div className="mb-2 mr-2 badge badge-pill badge-green">Good</div>
+                                <div className="mb-2 mr-2 badge badge-pill badge-yellow">Moderate</div>
+                                <div className="mb-2 mr-2 badge badge-pill badge-orange">Moderate</div>
+                                <div className="mb-2 mr-2 badge badge-pill badge-red">Need Attention</div>
+                            </div>
+
+                        </Card>
+                        
                     </Col>
                     
                     <Col sm="12" md="12" xl="12">
@@ -203,6 +250,8 @@ const mapStateToProps = state => {
         imbalanceAmpereChartData: state.Analytics.imbalanceAmpereChartData,
         searchFilters: state.Analytics.searchFilters,
         loadingImbalanceAmpere: state.Analytics.loadingImbalanceAmpere,
+        neutralCurrent: state.Analytics.neutralCurrent,
+        speedometerText: state.Analytics.speedometerText,
     }
 }
 
