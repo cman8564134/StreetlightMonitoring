@@ -100,7 +100,7 @@ const Analytics = ( props ) => {
         }
     }
 
-    const [barChartTitle, setBarChartTitle] = useState(null);
+    const [ampereStatus, setAmpereStatus] = useState(null);
     const [unbalancedAmpereReminder, setUnbalancedAmpereReminder] = useState("");
 
     const onApplyFilterHandler = (site, tab) => {
@@ -117,17 +117,11 @@ const Analytics = ( props ) => {
             })
             .then(response => {
                 if(response.isUnbalancedAmpere){
-                    setBarChartTitle (
-                        <Fragment>
-                            <i className="header-icon lnr-warning icon-gradient bg-warm-flame"> </i> 
-                            Unbalanced Cable Stress Detected
-                        </Fragment>
-                        
-                    );
+                    setAmpereStatus (<span style={{color:"red"}}>Unbalance</span>);
 
                     setUnbalancedAmpereReminder("* Check Device");
                 }else{
-                    setBarChartTitle(null);
+                    setAmpereStatus (<span style={{color:"green"}}>Balance</span>);
                     setUnbalancedAmpereReminder("");
                 }
                 
@@ -184,7 +178,7 @@ const Analytics = ( props ) => {
                         <Card className="mb-3">
                             <CardHeader className="card-header-tab">
                                 <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                    {barChartTitle}
+                                    Underground Cable Status: {ampereStatus}
                                 </div>
                             </CardHeader>
                             <div className="p-2 center-elem w-100">
@@ -201,13 +195,13 @@ const Analytics = ( props ) => {
                     <Card className="mb-3">
                             <CardHeader className="card-header-tab">
                                 <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                    Neutral Current
+                                    Analytics
                                 </div>
                             </CardHeader>
                             <div className="p-2 center-elem w-100">
                                 <ReactSpeedometer
                                     value={neutralCurrent}
-                                    height={"22"}
+                                    height={250}
                                     currentValueText={speedometerText}
                                     needleColor="black"
                                     minValue={0}

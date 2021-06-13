@@ -16,6 +16,7 @@ const BasicModal = ( props ) => {
             animation='zoom'
             showMask={true}
             width={modalWidth}
+            customStyles={{height: '80%'}}
         >
             {props.children}
         </Rodal>
