@@ -119,11 +119,11 @@ const Analytics = ( props ) => {
             })
             .then(response => {
                 if(response.isUnbalancedAmpere){
-                    setAmpereStatus (<span style={{color:"red"}}> Unbalance</span>);
+                    setAmpereStatus (<span style={{color:"red",marginLeft:"0.5em"}}>Unbalance</span>);
 
                     setUnbalancedAmpereReminder("* Check Device");
                 }else{
-                    setAmpereStatus (<span style={{color:"green"}}> Balance</span>);
+                    setAmpereStatus (<span style={{color:"green",marginLeft:"0.5em"}}>Balance</span>);
                     setUnbalancedAmpereReminder("");
                 }
                 
