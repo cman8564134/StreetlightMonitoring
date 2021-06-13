@@ -104,6 +104,13 @@ export const subtractDaysFromDate = (date, day) => {
     return subtractedDate;
 }
 
+export const addDaysToDate = (date, day) => {
+    let newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + day);
+    
+    return newDate;
+}
+
 export const setDayAndMonthOfDate = (date, day, month) => {
     let newDate = new Date(date);
     newDate.setMonth(month, day);

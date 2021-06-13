@@ -22,7 +22,7 @@ import SearchFilters from '../../components/SearchFilters/SearchFilters';
 import HighlightsBox from '../../components/Dashboard/HighlightsBox/HighlightsBox';
 import CenterProgressCircle from '../../components/Progress/ProgressCircles/CenterProgressCircle/CenterProgressCircle';
 import GraphCardTabs from '../../components/Tab/GraphCardTabs/GraphCardTabs';
-import { checkFormValidity, formatDateByDateFormat, calculateDifferenceBetweenDates, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfYear, getLastDayOfYear } from "../../shared/utility";
+import { checkFormValidity, formatDateByDateFormat, addDaysToDate, subtractDaysFromDate, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfYear, getLastDayOfYear } from "../../shared/utility";
 import DatePickerDropdown from "../../components/Form/DatePicker/DatePickerDropdown/DatePickerDropdown";
 import ExportDropdown from "../../components/Form/ExportDropdown/ExportDropdown";
 import LabelInputFormGroup from "../../components/Form/LabelInputFormGroup/LabelInputFormGroup";
@@ -242,6 +242,9 @@ const Report = ( props ) => {
                     break;
             }
 
+            if(activeTab && activeTab === "dailyYieldTab"){
+                chartType = "daily"
+            }
         
             onFetchReportData({
                 feederPillarId: feederPillarId,
