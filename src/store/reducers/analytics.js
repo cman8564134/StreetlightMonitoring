@@ -115,7 +115,9 @@ const initialState = {
 
 const fetchImbalanceAmpereChartDataStart = ( state, action ) => {
     return updateObject(state, {
-        loadingImbalanceAmpere: action.loading
+        loadingImbalanceAmpere: action.loading,
+        neutralCurrent: 0,
+        speedometerText: ""
     });
 }
 

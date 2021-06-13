@@ -104,6 +104,8 @@ const Analytics = ( props ) => {
     const [unbalancedAmpereReminder, setUnbalancedAmpereReminder] = useState("");
 
     const onApplyFilterHandler = (site, tab) => {
+        setAmpereStatus ("");
+        setUnbalancedAmpereReminder("");
         const isFormValid = checkFormValidity(searchFilters);
 
         setIsSearchFilterValid(isFormValid);
@@ -117,11 +119,11 @@ const Analytics = ( props ) => {
             })
             .then(response => {
                 if(response.isUnbalancedAmpere){
-                    setAmpereStatus (<span style={{color:"red"}}>Unbalance</span>);
+                    setAmpereStatus (<span style={{color:"red"}}> Unbalance</span>);
 
                     setUnbalancedAmpereReminder("* Check Device");
                 }else{
-                    setAmpereStatus (<span style={{color:"green"}}>Balance</span>);
+                    setAmpereStatus (<span style={{color:"green"}}> Balance</span>);
                     setUnbalancedAmpereReminder("");
                 }
                 
