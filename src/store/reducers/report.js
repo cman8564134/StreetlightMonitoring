@@ -546,7 +546,7 @@ const initialState = {
         thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         neutralCurrentTab: {navTitle: "NEUTRAL CURRENT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        dailyYieldTab: {navTitle: "DAILY YIELD", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        dailyYieldTab: {navTitle: "DAILY YIELD", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'bar'},
     }],
     loadingHighlights: false,
     loadingChart: false,

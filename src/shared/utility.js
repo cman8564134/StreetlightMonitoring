@@ -424,6 +424,7 @@ export const baseChartOptions = () => {
         },
         xaxis: {
             type:'datetime'
+
         },
         yaxis: {
             title: {

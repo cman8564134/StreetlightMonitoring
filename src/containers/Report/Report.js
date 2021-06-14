@@ -292,6 +292,10 @@ const Report = ( props ) => {
                     break;
             }
 
+            if(tab && tab === "dailyYieldTab"){
+                chartType = "daily"
+            }
+
             
             onFetchReportChartDataByActiveTab({
                 feederPillarId: feederPillarId,
