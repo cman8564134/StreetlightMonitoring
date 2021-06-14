@@ -246,14 +246,16 @@ export const fetchExportableReportDataStart = (fileType) => {
     }
 }
 
-export const fetchExportableReportDataSuccess = (reportData, fileName, selectedMetrics) => {
+export const fetchExportableReportDataSuccess = (reportData, fileName, selectedMetrics, dailyYield) => {
+    console.log("fetchExportableReportDataSuccess", dailyYield)
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_SUCCESS,
         generatingExcel: false,
         generatingCSV: false,
         reportData: reportData,
         fileName: fileName,
-        selectedMetrics: selectedMetrics
+        selectedMetrics: selectedMetrics,
+        dailyYield: dailyYield
     }
 }
 
@@ -273,7 +275,7 @@ export const fetchExportableReportData = ( params ) => {
 
         return getPaginatedExportableData(params)
         .then(response => {
-            dispatch(fetchExportableReportDataSuccess(response.metrics, response.fileName, params.selectedMetrics));
+            dispatch(fetchExportableReportDataSuccess(response.metrics, response.fileName, params.selectedMetrics, response.dailyYield));
             return Promise.resolve({isSuccessful: true});
             
         }).catch(error => {
@@ -289,6 +291,7 @@ const getPaginatedExportableData = async (params) => {
     let metrics = data.metrics;
     let fileName = data.fileName;
     let metricsData = data.metrics.data;
+    const dailyYield = data.dailyYield;
     
     if(metrics){
         const currentPage = metrics.current_page;
@@ -300,7 +303,7 @@ const getPaginatedExportableData = async (params) => {
         }
     }
     
-    const exportableData = {metrics: metricsData, fileName: fileName};
+    const exportableData = {metrics: metricsData, fileName: fileName, dailyYield: dailyYield};
 
     return exportableData; 
   }

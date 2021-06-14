@@ -515,20 +515,27 @@ const initialState = {
                 valid: true,
                 touched: false,
                 errorMessage: ''
+            },
+            daily_yield: {
+                elementLabel: 'Daily Yield',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
             }
             
         }
     ],
     selectedMetrics: ["id", "pillar_id", "created_at"],
     csvData: [],
-    excelSheets: [
-        {
-            "Metrics": {
-                data: [],
-                columns: []
-            }
-        }
-    ],
+    excelSheets: [{}],
     // report: {id: 1, concession_name: "ABC Sdn Bhd", power_usage: "1000", uptime_percentage: "100", downtime_percentage: "0", electrical_bill: "10,000", carbon_footprint: "2000", energy_savings: "2500"},
     report: {},
     activeTab: "powerUsageTab",
@@ -583,8 +590,16 @@ const metricColumnsName = {
     thdp1: {label: "THDP R", accessor: "thdp1"},
     thdp2: {label: "THDP Y", accessor: "thdp2"},
     thdp3: {label: "THDP B", accessor: "thdp3"},
-    current_n: {label: "Neutral Current", accessor: "current_n"},
+    current_n: {label: "Neutral Current", accessor: "current_n"}
 }
+
+const dailyYieldSheetColumnName = [
+    {label: "ID", accessor: "id"},
+    {label: "Pillar ID", accessor: "pillar_id"},
+    {label: "Created At", accessor: "created_at"},
+    {label: "Daily Yield", accessor: "daily_yield"},
+]
+   
 
 const fetchReportConcessionNameMapSuccess = ( state, action ) => {
     const arrayId = "searchFilters";
@@ -845,30 +860,63 @@ const fetchExportableReportDataStart = ( state, action ) => {
 }
 
 const fetchExportableReportDataSuccess = ( state, action ) => {
+    //TO POPULATE DATA FOR EXCEL REPORT START
     const selectedMetrics = action.selectedMetrics;
     const sheet1Title = 'Metrics';
+    const sheet2Title = 'Daily Yield';
 
     let updatedExcelSheetsColumnLabel = [];
+    let updatedExcel = [];
+    let updatedExcelSheets = {};
+    let isDailyYieldMetricSelected = false;
 
     selectedMetrics.map((metric) => {
-        updatedExcelSheetsColumnLabel = [...updatedExcelSheetsColumnLabel, metricColumnsName[metric]];
+        if(metric !== "daily_yield"){
+            updatedExcelSheetsColumnLabel = [...updatedExcelSheetsColumnLabel, metricColumnsName[metric]];
+        }
     })
 
-    const updatedExcelSheetsDataColumn = updateObject(state["excelSheets"][0][sheet1Title], {data: action.reportData, columns: updatedExcelSheetsColumnLabel});
-    const updatedBilling = updateObject(state["excelSheets"][0], {[sheet1Title] : updatedExcelSheetsDataColumn});
+    if(selectedMetrics.includes("daily_yield")){
+        isDailyYieldMetricSelected = true;
+    }
+
+    if((selectedMetrics.includes("daily_yield") && selectedMetrics.length >= 5) || (!selectedMetrics.includes("daily_yield") && selectedMetrics.length >= 4)){
+        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet1Title]:{data: action.reportData, columns: updatedExcelSheetsColumnLabel}})
+    }
+
+    if(isDailyYieldMetricSelected){
+        const updatedExcelDailyYieldSheetColumnLabel = [...dailyYieldSheetColumnName];
+        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet2Title]:{data: action.dailyYield, columns: updatedExcelDailyYieldSheetColumnLabel}})
+    }
+    
+    updatedExcel = updateObject(updatedExcel[0], updatedExcelSheets);
 
     const updatedArray = state["excelSheets"].map((item, index) => {
         if(index === 0){
-            return updatedBilling;
+            return updatedExcel;
         }
 
         return item[index];
     })
+    //TO POPULATE DATA FOR EXCEL REPORT END
 
-    
-    
+    //TO POPULATE DATA FOR CSV REPORT START
+    let csvData = [];
+    if(action.reportData){
+        if(action.dailyYield){
+            csvData = action.reportData.concat(action.dailyYield);
+        }else{
+            csvData = action.reportData
+        }
+        
+    }else{
+        if(action.dailyYield)
+            csvData = action.dailyYield
+    }
+    //TO POPULATE DATA FOR CSV REPORT END
+
     return updateObject(state, {
-        csvData: action.reportData,
+        csvData: csvData,
         excelSheets: updatedArray,
         fileName: action.fileName,
         generatingExcel: action.generatingExcel,
