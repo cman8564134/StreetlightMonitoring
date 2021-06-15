@@ -413,6 +413,7 @@ const ElectricityBilling = ( props ) => {
                 modalWidth="100%"
                 visible={showBreakdownModal}
                 showOrHideModal={showOrHideBreakdownModal}
+                height="70%"
             >
                 <BreakdownModal
                     breadcrumbItems={modalBreadcrumbItems}

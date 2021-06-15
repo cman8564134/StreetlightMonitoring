@@ -6,7 +6,8 @@ const BasicModal = ( props ) => {
     let {
         visible,
         showOrHideModal,
-        modalWidth
+        modalWidth,
+        height
     } = props;
     
     return (
@@ -16,7 +17,7 @@ const BasicModal = ( props ) => {
             animation='zoom'
             showMask={true}
             width={modalWidth}
-            customStyles={{height: '80%'}}
+            customStyles={{height: {height}}}
         >
             {props.children}
         </Rodal>

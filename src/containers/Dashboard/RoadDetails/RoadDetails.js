@@ -417,6 +417,7 @@ const RoadDetails = ( props ) => {
             </Layout>
             <BasicModal 
                 modalWidth={"100%"}
+                height="70%"
                 visible={isPillarDetailsModalVisible}
                 showOrHideModal={showOrHidePillarDetailsModal}
             >

@@ -5,8 +5,7 @@ import {
     updateElementArray, 
     updateElementOptionArray,
     checkValidity,
-    formatDateByDateFormat,
-    updateFormElementArray
+    updateSubElement
  } from '../../shared/utility';
 
 import {darkRYB} from '../../shared/colors';
@@ -179,7 +178,16 @@ const fetchAnalyticsConcessionNameMapSuccess = ( state, action ) => {
     
     const updatedConcessionObject = {options: concessionOptions};
 
-    const updatedArray = updateElementOptionArray(state[arrayId], 0, "concession", "elementConfig", updatedConcessionObject);
+    const emptyValueObj = {value: "", valid: false, touched: false};
+
+    //CLEAR LOWER LEVEL DROPDOWN VALUE TO ""
+    let updatedArray = updateElementArray(state, arrayId, 0, "concession", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "section", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "subsection", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "road", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "feeder_pillar", emptyValueObj);
+
+    updatedArray = updateElementOptionArray(updatedArray, 0, "concession", "elementConfig", updatedConcessionObject);
 
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
@@ -192,7 +200,14 @@ const fetchAnalyticsSectionNameMapByConcessionIdSuccess = ( state, action ) => {
     
     const updatedSectionObject = {options: sectionOptions};
 
-    const updatedArray = updateElementOptionArray(state[arrayId], 0, "section", "elementConfig", updatedSectionObject);
+    const emptyValueObj = {value: "", valid: false, touched: false};
+
+    let updatedArray = updateElementArray(state, arrayId, 0, "section", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "subsection", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "road", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "feeder_pillar", emptyValueObj);
+
+    updatedArray = updateElementOptionArray(updatedArray, 0, "section", "elementConfig", updatedSectionObject);
 
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
@@ -204,7 +219,13 @@ const fetchSubsectionNameMapBySectionIdSuccess = ( state, action ) => {
     const subsectionOptions = createMasterCodeOptions(action.subsectionNameMap);
     const updatedSubsectionObject = {options: subsectionOptions};
 
-    const updatedArray = updateElementOptionArray(state[arrayId], 0, "subsection", "elementConfig", updatedSubsectionObject);
+    const emptyValueObj = {value: "", valid: false, touched: false};
+    
+    let updatedArray = updateElementArray(state, arrayId, 0, "subsection", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "road", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "feeder_pillar", emptyValueObj);
+
+    updatedArray = updateElementOptionArray(updatedArray, 0, "subsection", "elementConfig", updatedSubsectionObject);
     
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
@@ -217,7 +238,12 @@ const fetchRoadNameMapBySubsectionIdSuccess = ( state, action ) => {
     
     const updatedRoadObject = {options: roadOptions};
 
-    const updatedArray = updateElementOptionArray(state[arrayId], 0, "road", "elementConfig", updatedRoadObject);
+    const emptyValueObj = {value: "", valid: false, touched: false};
+
+    let updatedArray = updateElementArray(state, arrayId, 0, "road", emptyValueObj);
+    updatedArray = updateSubElement(updatedArray, 0, "feeder_pillar", emptyValueObj);
+
+    updatedArray = updateElementOptionArray(updatedArray, 0, "road", "elementConfig", updatedRoadObject);
 
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
@@ -230,7 +256,8 @@ const fetchFeederPillarNameMapBySubsectionIdSuccess = ( state, action ) => {
     
     const updatedFeederPillarObject = {options: feederPillarOptions};
 
-    const updatedArray = updateElementOptionArray(state[arrayId], 0, "feeder_pillar", "elementConfig", updatedFeederPillarObject);
+    let updatedArray = updateElementArray(state, arrayId, 0, "feeder_pillar", {value: "", valid: false, touched: false});
+    updatedArray = updateElementOptionArray(updatedArray, 0, "feeder_pillar", "elementConfig", updatedFeederPillarObject);
 
     return updateObject(state, {
         [arrayId]: Object.values(updatedArray)
@@ -250,7 +277,7 @@ const handleReportInputChanged = ( state, action ) => {
     };
 
     
-    updatedObject = updateObject(updatedObject, {valid: checkValidity(value, updatedArray.validation)})
+    updatedObject = updateObject(updatedObject, {valid: checkValidity(value, updatedArray[elementRowIndex][elementId].validation)})
     updatedArray = updateElementArray(state, arrayId, elementRowIndex, elementId, updatedObject);
     
     const updatedObjectArray= Object.values(updatedArray);

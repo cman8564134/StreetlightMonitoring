@@ -200,7 +200,7 @@ const Analytics = ( props ) => {
                                     Analytics
                                 </div>
                             </CardHeader>
-                            <div className="p-2 center-elem w-100">
+                            <div className="p-2 text-center w-100">
                                 <ReactSpeedometer
                                     value={neutralCurrent}
                                     height={250}

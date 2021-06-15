@@ -48,6 +48,7 @@ const TrafficLightForm = (props) =>{
         <BasicModal
             modalWidth={1000}
             visible={isVisible}
+            height="80%"
         >
             <Container fluid>
                 <Form id ="StreetLightForm" >

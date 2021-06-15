@@ -142,7 +142,7 @@ const FeederPillarDetails = ( props ) => {
 
     if(!loading) {
         return (
-            <Card className="card-shadow-primary profile-responsive card-border">
+            <Card className="card-shadow-primary profile-responsive card-border feeder-pillar-modal-height">
                 <div className="dropdown-menu-header">
                     <div className="dropdown-menu-header-inner bg-focus">
                         <div className="menu-header-image opacity-3"
@@ -168,7 +168,7 @@ const FeederPillarDetails = ( props ) => {
                 </CardHeader>
 
                 <CardBody>
-                    <div className="scroll-area-xl">
+                    <div className="scroll-area-lg">
                         <PerfectScrollbar>
                             <div className="widget-content">
                                 

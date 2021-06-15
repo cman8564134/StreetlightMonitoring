@@ -214,6 +214,19 @@ export const updateFormElementArraySubElement = (array, arrayIndex, subElementId
     return updatedSubElement;
 }
 
+export const updateSubElement = (array, arrayIndex, subElementId, updatedObject) => {
+    const updatedSubElement = updateObject(array[arrayIndex][subElementId], updatedObject);
+    const updatedArrayAtIndex = updateObject(array[arrayIndex], {
+        [subElementId]: updatedSubElement
+    });
+
+    const updatedArray = updateObject(array, {
+        [arrayIndex]: updatedArrayAtIndex
+    });
+
+    return updatedArray;
+}
+
 export const updateElementArray = (state, arrayId, elementRowIndex, elementId, updatedObject) => {
 
     const updatedElement = updateObject(state[arrayId][elementRowIndex][elementId], updatedObject);
