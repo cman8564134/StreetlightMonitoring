@@ -78,7 +78,7 @@ const LoginBoxed = (props) => {
                                         </h4>
                                     </div>
                                     
-                                    <p className="text-center"><b>MBSA  Techwon  Concession B  Concession C  Concession D</b></p>
+                                    <p className="text-center"><b><span style={{marginRight: "1em"}}>MBSA</span><span style={{marginRight: "1em"}}>Techwon</span><span style={{marginRight: "1em"}}>Concession B</span><span style={{marginRight: "1em"}}>Concession C</span><span style={{marginRight: "1em"}}>Concession D</span></b></p>
                                     
                                     {errorMessage}
                                     <Form>
