@@ -13,17 +13,8 @@ const Nav = ( props ) => {
         toggleMobileSidebar,
         user,
         mainNav,
-        analyticsNav,
-        updateMainNavItemByUserConcessionId,
-        userConcessionId
+        analyticsNav
     } = props;
-
-    useEffect(() => {
-        updateMainNavItemByUserConcessionId(userConcessionId);
-    }, [
-        updateMainNavItemByUserConcessionId,
-        userConcessionId
-    ]);
 
     return (
         <Fragment>
@@ -49,12 +40,6 @@ const mapStateToProp = state => ({
     mainNav: state.Navigation.mainNav,
     analyticsNav: state.Navigation.analyticsNav,
   });
-
-  const mapDispatchToProps = dispatch => {
-    return {
-        updateMainNavItemByUserConcessionId: (params) => dispatch(actions.updateMainNavItemByUserConcessionId(params))
-    }
-}
   
 
-export default withRouter(connect(mapStateToProp, mapDispatchToProps)(Nav));
+export default withRouter(connect(mapStateToProp)(Nav));

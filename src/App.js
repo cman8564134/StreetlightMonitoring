@@ -68,7 +68,8 @@ const App = ( props ) => {
     enableMobileMenu,
     enablePageTabsAlt,
     onTryAutoSignIn,
-    location
+    location,
+    onUpdateMainNavItemByUserConcessionId
   } = props;
 
   const [userConcessionId, setUserConcessionId] = useState(null);
@@ -76,14 +77,16 @@ const App = ( props ) => {
   useEffect (() => {
     onTryAutoSignIn({pathname: location.pathname})
       .then(response => {
+        setUserConcessionId(response.concessionId);
+        onUpdateMainNavItemByUserConcessionId(response.concessionId);
         if(response.isLoggedIn && response.isPageNotFound){
           props.history.push('/page-not-found');
         }else if(!response.isLoggedIn){
           props.history.push('/');
         }
-        setUserConcessionId(response.concessionId);
+        
       });
-  }, [onTryAutoSignIn, props.history, location.pathname]);
+  }, [onTryAutoSignIn, props.history, location.pathname, onUpdateMainNavItemByUserConcessionId]);
 
   return (
     <ResizeDetector 
@@ -145,7 +148,8 @@ const mapStateToProp = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onTryAutoSignIn: (params) => dispatch(actions.authCheckState(params))
+  onTryAutoSignIn: (params) => dispatch(actions.authCheckState(params)),
+  onUpdateMainNavItemByUserConcessionId: (params) => dispatch(actions.updateMainNavItemByUserConcessionId(params))
 });
 
 export default withRouter(connect(mapStateToProp, mapDispatchToProps)(App));
