@@ -7,7 +7,52 @@ import {
 const initialState = {
     loadingConcessionMultiLevelNavMenu: false,
     concessionMultiLevelNavMenu: {},
-    concessionNavMenuExpandState: {}
+    concessionNavMenuExpandState: {},
+    mainNav: [
+        {
+            icon: 'pe-7s-home',
+            label: 'Dashboard',
+            to: '/dashboard',
+        },
+        {
+            icon: 'pe-7s-calculator',
+            label: 'Electricity Billing',
+            to: '/billing',
+        },
+        {
+            icon: 'pe-7s-bell',
+            label: 'Alert',
+            to: '/alert',
+        }
+    ],
+    
+    analyticsNav: [
+        {
+            icon: 'pe-7s-graph',
+            label: 'Report',
+            to: '/report',
+        },
+        {
+            icon: 'lnr-chart-bars',
+            label: 'Analytics',
+            to: '/analytics'
+        }
+    ],
+    
+    administrationNav: [
+        {
+            icon: 'pe-7s-tools',
+            label: 'Configuration',
+            to: '/configurations',
+            
+        },
+        // {
+        //     icon: 'pe-7s-config',
+        //     label: 'Batch Process',
+        //     to: '#/charts/apexcharts',
+            
+        // }
+    ]
 };
 
 const fetchConcessionNavItemsStart = ( state, action ) => {
@@ -58,6 +103,24 @@ const updateCustomMultiLevelMenuExpandState = ( state, action ) => {
     });
 }
 
+const updateMainNavItemByUserConcessionId = ( state, action ) => {
+    const userConcessionId = action.userConcessionId; 
+    let to = "/dashboard";
+
+    if(userConcessionId){
+        to = to + "/" + userConcessionId;
+    }
+
+    const updatedMainNavItems = updateObject(state.mainNav[0], {to: to});
+
+    const updatedMainNavAtIndex = updateObject(state.mainNav, {0: updatedMainNavItems});
+    const updatedMainNav= Object.values(updatedMainNavAtIndex);
+
+    return updateObject(state, {
+        mainNav: updatedMainNav
+    });
+}
+
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -69,6 +132,8 @@ const reducer = (state = initialState, action) => {
             return fetchConcessionNavItemsFail( state, action );
         case actionTypes.UPDATE_CUSTOM_MULTI_LEVEL_MENU_EXPAND_STATE:
             return updateCustomMultiLevelMenuExpandState( state, action );
+        case actionTypes.UPDATE_MAIN_NAV_ITEM_BY_USER_CONCESSION_ID:
+            return updateMainNavItemByUserConcessionId( state, action );
         default:
             return state;
     }

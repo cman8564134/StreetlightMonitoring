@@ -18,7 +18,8 @@ const appSidebar = ( props ) => {
         toggleMobileSidebar,
         enableClosedSidebar,
         toggleEnableClosedSidebar,
-        toggleMobileSmall
+        toggleMobileSmall,
+        userConcessionId
     } = props;
 
     return (
@@ -42,6 +43,7 @@ const appSidebar = ( props ) => {
                     <div className="app-sidebar__inner">
                         <VerticalNavWrapper 
                             toggleMobileSidebar = {toggleMobileSidebar}
+                            userConcessionId = {userConcessionId}
                         />
                     </div>
                 </PerfectScrollbar>

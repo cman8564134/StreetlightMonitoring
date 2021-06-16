@@ -49,3 +49,12 @@ export const updateCustomMultiLevelMenuExpandState =  (id) => {
         }); 
     }
 }
+
+export const updateMainNavItemByUserConcessionId =  (userConcessionId) => {
+    return dispatch => {
+        dispatch({
+            type: actionTypes.UPDATE_MAIN_NAV_ITEM_BY_USER_CONCESSION_ID,
+            userConcessionId: userConcessionId
+        }); 
+    }
+}

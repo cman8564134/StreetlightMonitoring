@@ -1,24 +1,36 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import MetisMenu from 'react-metismenu';
 
-import {MainNav, AnalyticsNav, AdministrationNav} from './NavItems';
+import * as actions from '../../../store/actions/index';
+
 // import RoleBasedAccessControl from '../../RoleBasedAcessControl/RoleBasedAccessControl';
 
 
 const Nav = ( props ) => {
     let {
         toggleMobileSidebar,
-        user
+        user,
+        mainNav,
+        analyticsNav,
+        updateMainNavItemByUserConcessionId,
+        userConcessionId
     } = props;
+
+    useEffect(() => {
+        updateMainNavItemByUserConcessionId(userConcessionId);
+    }, [
+        updateMainNavItemByUserConcessionId,
+        userConcessionId
+    ]);
 
     return (
         <Fragment>
             <h5 className="app-sidebar__heading">Main</h5>
-            <MetisMenu content={MainNav} onSelected={toggleMobileSidebar} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
+            <MetisMenu content={mainNav} onSelected={toggleMobileSidebar} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
             <h5 className="app-sidebar__heading">Analytics</h5>
-            <MetisMenu content={AnalyticsNav}  onSelected={toggleMobileSidebar} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
+            <MetisMenu content={analyticsNav}  onSelected={toggleMobileSidebar} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
 
             {/* <h5 className="app-sidebar__heading">Administration</h5>
             <RoleBasedAccessControl 
@@ -34,6 +46,15 @@ const Nav = ( props ) => {
 
 const mapStateToProp = state => ({
     user: state.Authentication.user,
+    mainNav: state.Navigation.mainNav,
+    analyticsNav: state.Navigation.analyticsNav,
   });
 
-export default withRouter(connect(mapStateToProp)(Nav));
+  const mapDispatchToProps = dispatch => {
+    return {
+        updateMainNavItemByUserConcessionId: (params) => dispatch(actions.updateMainNavItemByUserConcessionId(params))
+    }
+}
+  
+
+export default withRouter(connect(mapStateToProp, mapDispatchToProps)(Nav));

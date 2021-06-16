@@ -75,6 +75,7 @@ const Layout = ( props ) => {
             />
             <div className="app-main">
                 <AppSidebar 
+                    {...props}
                     backgroundColor = {backgroundColor}
                     enableBackgroundImage = {enableBackgroundImage} 
                     enableSidebarShadow = {enableSidebarShadow}

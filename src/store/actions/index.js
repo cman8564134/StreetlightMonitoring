@@ -182,5 +182,6 @@ export {
 
 export {
     fetchConcessionNavItems,
-    updateCustomMultiLevelMenuExpandState
+    updateCustomMultiLevelMenuExpandState,
+    updateMainNavItemByUserConcessionId
 } from './navigation';
