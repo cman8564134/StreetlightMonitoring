@@ -37,6 +37,7 @@ const appSidebar = ( props ) => {
                     toggleEnableClosedSidebar = {toggleEnableClosedSidebar}
                     toggleMobileSidebar = {toggleMobileSidebar}
                     toggleMobileSmall = {toggleMobileSmall}
+                    isShowLogo = {true}
                 /> */}
                 <PerfectScrollbar>
                     <div className="app-sidebar__inner">

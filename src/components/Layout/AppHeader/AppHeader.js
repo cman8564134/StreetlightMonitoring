@@ -40,6 +40,7 @@ const Header = ( props ) => {
                     toggleEnableClosedSidebar = {toggleEnableClosedSidebar}
                     toggleMobileSidebar = {toggleMobileSidebar}
                     toggleMobileSmall = {toggleMobileSmall}
+                    isShowLogo = {false}
                 />
 
                 <div className={cx(

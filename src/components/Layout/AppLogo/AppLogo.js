@@ -10,15 +10,21 @@ const HeaderLogo = ( props ) => {
         enableClosedSidebar,
         toggleEnableClosedSidebar,
         toggleMobileSidebar,
-        toggleMobileSmall
+        toggleMobileSmall,
+        isShowLogo
     } = props;
 
     const [ active, setActive ] = useState(false);
+    let logoClassName = "";
+
+    if(isShowLogo)
+        logoClassName = "logo-src";
+
 
     return (
         <Fragment>
             <div className="app-header__logo">
-                <div className="logo-src"  style={{backgroundRepeat: "no-repeat"}}/>
+                <div className={logoClassName}  style={{backgroundRepeat: "no-repeat"}}/>
                 <div className="header__pane ml-auto">
                     <div onClick={toggleEnableClosedSidebar}>
                     <Slider 
