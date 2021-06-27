@@ -59,9 +59,6 @@ const FeederPillarDetails = ( props ) => {
         {header: "Current R", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_p1", prefix: "", suffix: " Amp"},
         {header: "Current Y", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_p2", prefix: "", suffix: " Amp"},
         {header: "Current B", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_p3", prefix: "", suffix: " Amp"},
-        {header: "Power Factor R", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_p1", prefix: "", suffix: ""},
-        {header: "Power Factor Y", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_p2", prefix: "", suffix: ""},
-        {header: "Power Factor B", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_p3", prefix: "", suffix: ""},
         {header: "THDVR", iconBgClassName: "icon-wrapper-bg opacity-6 bg-danger", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "thdv1", prefix: "", suffix: ""},
         {header: "THDVY", iconBgClassName: "icon-wrapper-bg opacity-6 bg-warning", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "thdv2", prefix: "", suffix: ""},
         {header: "THDVB", iconBgClassName: "icon-wrapper-bg opacity-4 bg-info", iconClassName: "pe-7s-plug text-dark opacity-8", accessor: "thdv3", prefix: "", suffix: ""},
@@ -74,6 +71,7 @@ const FeederPillarDetails = ( props ) => {
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
         {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " KWh"},
         {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " A"},
+        {header: "Average Power Factor", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_avg", prefix: "", suffix: ""},    
     ]
     
     const electricityBillCostBreakdown = [
