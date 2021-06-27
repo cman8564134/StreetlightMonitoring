@@ -22,7 +22,6 @@ const initialState = {
             "amperage": {title: "Amperage (Amp)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "voltage": {title: "Voltage (V)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "activePower": {title: "Active Power (W)", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
-            "powerFactor": {title: "Power Factor", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "thdv": {title: "THDV", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "thdc": {title: "THDC", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},
             "thdp": {title: "THDP", chart_options: updateObject(baseChartOptions(), {colors: darkRYB}), chart_series: baseChartSeries(), chart_type: "line"},

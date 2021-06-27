@@ -321,48 +321,6 @@ const initialState = {
                 touched: false,
                 errorMessage: ''
             },
-            power_factor_p1: {
-                elementLabel: 'Power Factor R',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
-            power_factor_p2: {
-                elementLabel: 'Power Factor Y',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
-            power_factor_p3: {
-                elementLabel: 'Power Factor B',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
             total_yield: {
                 elementLabel: 'Total Yield',
                 elementType: 'checkbox',
@@ -530,7 +488,21 @@ const initialState = {
                 valid: true,
                 touched: false,
                 errorMessage: ''
-            }
+            },
+            power_factor_avg: {
+                elementLabel: 'Average Power Factor',
+                elementType: 'checkbox',
+                elementConfig: {
+                    type: "checkbox"
+                },
+                value: false,
+                validation: {
+                    required: false
+                },
+                valid: true,
+                touched: false,
+                errorMessage: ''
+            },
             
         }
     ],
@@ -548,7 +520,7 @@ const initialState = {
         amperageTab: {navTitle: "AMPERAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         activePowerTab: {navTitle: "ACTIVE POWER", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        powerFactorTab: {navTitle: "POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
+        powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
         thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
@@ -591,7 +563,8 @@ const metricColumnsName = {
     thdp1: {label: "THDP R", accessor: "thdp1"},
     thdp2: {label: "THDP Y", accessor: "thdp2"},
     thdp3: {label: "THDP B", accessor: "thdp3"},
-    current_n: {label: "Neutral Current", accessor: "current_n"}
+    current_n: {label: "Neutral Current", accessor: "current_n"},
+    power_factor_avg: {label: "Average Power Factor", accessor: "power_factor_avg"},
 }
 
 const dailyYieldSheetColumnName = [
