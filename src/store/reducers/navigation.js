@@ -23,6 +23,11 @@ const initialState = {
             icon: 'pe-7s-bell',
             label: 'Alert',
             to: '/alert',
+        },
+        {
+            icon: 'pe-7s-ticket',
+            label: 'Tickets',
+            to: '/tickets',
         }
     ],
     

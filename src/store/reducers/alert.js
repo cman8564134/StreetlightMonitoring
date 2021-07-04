@@ -104,7 +104,7 @@ const initialState = {
                     elementType: 'textArea',
                     elementConfig:{
                         type: "textArea",
-                        minLine: 3,
+                        minLine: 1,
                         maxLine: 6,
                         disabled: true
                     },
@@ -133,21 +133,21 @@ const initialState = {
                     touched: false,
                     errorMessage: 'Please select an item in the list'
                 },
-                attended_by: {
-                    elementLabel: 'Attended By *',
-                    elementType: 'select',
-                    elementConfig: {
-                        type: "select",
-                        options: []
-                    },
-                    value: '',
-                    validation: {
-                        required: true
-                    },
-                    valid: false,
-                    touched: false,
-                    errorMessage: 'Please select an item in the list'
-                }
+                // attended_by: {
+                //     elementLabel: 'Attended By *',
+                //     elementType: 'select',
+                //     elementConfig: {
+                //         type: "select",
+                //         options: []
+                //     },
+                //     value: '',
+                //     validation: {
+                //         required: true
+                //     },
+                //     valid: false,
+                //     touched: false,
+                //     errorMessage: 'Please select an item in the list'
+                // }
             },
             {
                 remarks: {
@@ -226,7 +226,7 @@ const fetchAlertByIdSuccess = ( state, action ) => {
     const updatedEvent = {value: alert.event};
     
     const updatedStatus ={value: alert.status, valid: checkValidity(alert.status, formElementArray[3]["status"]["validation"])}
-    const updatedAttendedBy = {value: alert.attended_by != null ? alert.attended_by : "", valid: checkValidity(alert.attended_by, formElementArray[3]["status"]["validation"])};
+    // const updatedAttendedBy = {value: alert.attended_by != null ? alert.attended_by : "", valid: checkValidity(alert.attended_by, formElementArray[3]["status"]["validation"])};
     const updatedRemarks = {value: alert.remarks != null ? alert.remarks : ""};
     const arrayId = "alertElementArray";
 
@@ -237,7 +237,7 @@ const fetchAlertByIdSuccess = ( state, action ) => {
     const loggedTimeSubElement = updateElementArraySubElement(state, arrayId, 2, "loggedTime", updatedLoggedTime);
     const eventSubElement = updateElementArraySubElement(state, arrayId, 2, "event", updatedEvent);
     const statusSubElement = updateElementArraySubElement(state, arrayId, 3, "status", updatedStatus);
-    const attendedBySubElement = updateElementArraySubElement(state, arrayId, 3, "attended_by", updatedAttendedBy);
+    // const attendedBySubElement = updateElementArraySubElement(state, arrayId, 3, "attended_by", updatedAttendedBy);
     const remarksSubElement = updateElementArraySubElement(state, arrayId, 4, "remarks", updatedRemarks);
 
     const firstRowObject = updateObject(state[arrayId][0], {
@@ -257,7 +257,7 @@ const fetchAlertByIdSuccess = ( state, action ) => {
     
     const forthRowObject = updateObject(state[arrayId][3], {
         status: statusSubElement,
-        attended_by: attendedBySubElement
+        // attended_by: attendedBySubElement
     });
     
     const fifthRowObject = updateObject(state[arrayId][4], {

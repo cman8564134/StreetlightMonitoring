@@ -45,6 +45,10 @@ const Alert = React.lazy(() => {
   return import('./containers/Alert/Alert');
 });
 
+const Tickets = React.lazy(() => {
+  return import('./containers/Tickets/Tickets');
+});
+
 // const Configurations = React.lazy(() => {
 //   return import('./containers/Configurations/Configurations');
 // });
@@ -121,6 +125,7 @@ const App = ( props ) => {
               <Route path="/billing" render={(props) => <ElectricityBilling {...props}/>}/>
               {/* <Route path="/inverter" render={(props) => <Inverter {...props}/>}/> */}
               <Route path="/alert" render={(props) => <Alert {...props}/>}/>
+              <Route path="/tickets" render={(props) => <Tickets {...props}/>}/>
               {/* <Route path="/configurations" render={(props) => <Configurations {...props}/>}/> */}
               <Route path="/report" render={(props) => <Report {...props}/>}/>
               <Route path="/analytics" render={(props) => <Analytics {...props}/>}/>

@@ -69,6 +69,8 @@ const DataTable = ( props ) => {
                     defaultFilterMethod={(filter, row) => filterCaseInsensitive(filter, row) }
                     SubComponent={subComponentCallback ? (row) => subComponentCallback(row) : null}
                     loading={loading}
+                    collapseOnDataChange={false}
+                    collapseOnPageChange={false}
                     // LoadingComponent={Loader}
                 />
             </CardBody>
