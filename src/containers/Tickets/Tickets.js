@@ -85,7 +85,7 @@ const Tickets = ( props ) => {
             title: "Ticket",
             href: null,
             onClickHandler: null,
-            children: (<span><FontAwesomeIcon icon={faHome}/> Alert</span> ),
+            children: (<span><FontAwesomeIcon icon={faHome}/> Ticket</span> ),
             isActive: true
         }
     ]
