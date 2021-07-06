@@ -101,7 +101,7 @@ export {
 // } from './formInput';
 
 export {
-    fetchUserMaster,
+    fetchUserMap,
     fetchUserMasterById,
     pushPasswordIntoFormElementArray,
     removePasswordFromFormElementArray,
@@ -185,3 +185,10 @@ export {
     updateCustomMultiLevelMenuExpandState,
     updateMainNavItemByUserConcessionId
 } from './navigation';
+
+export {
+    fetchAlertAndRemarksOrderByDesc,
+    fetchTicketById,
+    saveTicket,
+    fetchTicketByAlertCode
+} from './tickets';

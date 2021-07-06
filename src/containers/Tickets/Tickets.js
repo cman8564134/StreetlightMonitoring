@@ -8,7 +8,9 @@ import {
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-import { Container, Button } from 'reactstrap';
+import { Container, Button, Row, Col  } from 'reactstrap';
+
+
 
 import {
     toast,
@@ -23,38 +25,40 @@ import DataTable from '../../components/Tables/DataTable/DataTable';
 import Modal from '../../components/Modal/Modal';
 import FormContent from '../../components/Form/FormContent/FormContent';
 import Loader from '../../components/Loader/BallClipRotateMultiple/BallClipRotateMultiple';
+import TicketStageLegend from "../../components/Tickets/TicketStageLegend";
 
 import * as actions from '../../store/actions/index';
 import * as formInputActions from '../../store/actions/formInput';
 import { 
-    HANDLE_ALERT_INPUT_CHANGED_SUCCESS, 
-    FETCH_ALERT_USERS_SUCCESS, 
+    HANDLE_TICKET_INPUT_CHANGED_SUCCESS, 
     FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS, 
     FETCH_ALERT_CODE_MASTER_CODE_SUCCESS,
-    HANDLE_ALERT_SEARCH_FILTER_CHANGED_SUCCESS
+    HANDLE_TICKET_SEARCH_FILTER_CHANGED_SUCCESS
 } from '../../store/actions/actionTypes';
 import SearchFilters from '../../components/SearchFilters/SearchFilters';
+
 
 
 const Tickets = ( props ) => {
     const {
         onFetchAlertOrderByDesc,
-        loadingAlertTable,
+        loadingTicketTable,
         alertTableData,
-        alertElementArray,
-        onFetchAlertById,
+        allRemarks,
+        ticketElementArray,
+        onFetchTicketById,
         loadingModal,
         onFetchMasterCodeMapByMasterCode,
-        onFetchUsers,
         onHandleInputChanged,
         formIsValid,
-        onSaveAlert,
+        onSaveTicket,
         savingAlert,
-        selectedAlertId,
+        selectedTicketId,
         onMarkAlertAsRead,
         alertStatusMasterCode,
         searchFilters,
-        onFetchAlertByAlertCode
+        onFetchTicketByAlertCode,
+        ticketRemarks,
     } = props;
 
     useEffect(() => {
@@ -73,13 +77,12 @@ const Tickets = ( props ) => {
     const showOrHideModal = (id) => {
         setVisible(!visible);
         onFetchMasterCodeMapByMasterCode({masterCode: 'ALERTSTATUS', type: FETCH_ALERT_STATUS_MASTER_CODE_SUCCESS});
-        // onFetchUsers(FETCH_ALERT_USERS_SUCCESS);
-        onFetchAlertById({id: id})
+        onFetchTicketById({id: id})
     }
 
     const breadcrumbItems = [
         {
-            title: "Alert",
+            title: "Ticket",
             href: null,
             onClickHandler: null,
             children: (<span><FontAwesomeIcon icon={faHome}/> Alert</span> ),
@@ -112,6 +115,10 @@ const Tickets = ( props ) => {
                     Header: 'Event',
                     width: 400,
                     accessor: 'event'
+                },
+                {
+                    Header: 'Stage',
+                    accessor: 'stage'
                 },
                 {
                     Header: 'Logged Time',
@@ -177,11 +184,6 @@ const Tickets = ( props ) => {
         }
     ];
 
-    const remarks = [
-        {id: 1, created_at: "2021-07-01 12:00:00", remark: "Status has been changed from Pending Investigation to Investigation in Progress", remark_by: "Admin"},
-        {id: 2, created_at: "2021-07-03 12:00:00", remark: "Status has been changed from Pending Investigation to Closed", remark_by: "John Doe"},
-    ]
-
     const remarksTableColumn = [
         {
             columns: [
@@ -191,7 +193,7 @@ const Tickets = ( props ) => {
                 },
                 {
                     Header: 'Remark',
-                    accessor: 'remark'
+                    accessor: 'remarks'
                 },
                 {
                     Header: 'Remark By',
@@ -203,10 +205,13 @@ const Tickets = ( props ) => {
 
 
     const subComponent = row => {
+        const alertId = row.original.id;
+        const remarksTableData = allRemarks[alertId];
         return (
+            
             <div style={{padding: "20px"}}>
                 <DataTable 
-                    data={remarks}
+                    data={remarksTableData}
                     columns={remarksTableColumn}
                     pageSize={3}
                     header={null}
@@ -218,15 +223,14 @@ const Tickets = ( props ) => {
     }
 
     const inputChangedHandler = (event, elementRowIndex, elementId, validationRules) => {
-        onHandleInputChanged(HANDLE_ALERT_INPUT_CHANGED_SUCCESS, event.target.value, elementRowIndex, elementId, validationRules);
+        onHandleInputChanged(HANDLE_TICKET_INPUT_CHANGED_SUCCESS, event.target.value, elementRowIndex, elementId, validationRules);
     }
 
     const onSaveHandler = () => {
-        const status = alertElementArray[2].status.value;
-        const attendedBy = alertElementArray[2].attendedBy.value;
-        const remarks = alertElementArray[3].remarks.value;
+        const status = ticketElementArray[3].status.value;
+        const remarks = ticketElementArray[4].remarks.value;
         
-        onSaveAlert({id: selectedAlertId, status: status, attendedBy: attendedBy, remarks: remarks})
+        onSaveTicket({id: selectedTicketId, status: status, remarks: remarks})
             .then(data => {
                 showToast(data.message)
             });
@@ -242,25 +246,24 @@ const Tickets = ( props ) => {
     }
 
     const onApplyFilterHandler = () => {
-        console.log("categories value", searchFilters[0].categories.value);
-            onFetchAlertByAlertCode({
+            onFetchTicketByAlertCode({
                 alertCode:searchFilters[0].categories.value
             });            
             
     };
 
     const searchFilterChangedHandler = (event, elementRowIndex, elementId, validationRules) => {
-        onHandleInputChanged(HANDLE_ALERT_SEARCH_FILTER_CHANGED_SUCCESS, event.target.value, elementRowIndex, elementId, validationRules);
+        onHandleInputChanged(HANDLE_TICKET_SEARCH_FILTER_CHANGED_SUCCESS, event.target.value, elementRowIndex, elementId, validationRules);
     }
 
     const ticketModalForm =  (
             <Fragment>
                 <div className="scroll-area-lg">
                     <PerfectScrollbar>
-                        <FormContent formElementArray={alertElementArray} inputChangedHandler={inputChangedHandler}/>
+                        <FormContent formElementArray={ticketElementArray} inputChangedHandler={inputChangedHandler}/>
 
                         <DataTable 
-                                data={remarks}
+                                data={ticketRemarks}
                                 columns={remarksTableColumn}
                                 pageSize={3}
                                 header={null}
@@ -279,7 +282,7 @@ const Tickets = ( props ) => {
     return (
         <Layout {...props}>
             <PageTitle
-                heading = "Alert"
+                heading = "Tickets"
                 icon = "pe-7s-home opacity-6"
                 enableBreadcrumb
                 breadcrumbItems = {breadcrumbItems}
@@ -287,6 +290,12 @@ const Tickets = ( props ) => {
             </PageTitle>
 
             <Container fluid>
+                <Row>
+                    <Col md="12" lg="12">
+                        <TicketStageLegend/>
+                    </Col>
+                </Row>
+
                 <SearchFilters 
                     filterElementArray={searchFilters}
                     inputChangedHandler={searchFilterChangedHandler}
@@ -302,7 +311,7 @@ const Tickets = ( props ) => {
                     header={null}
                     filterable
                     subComponentCallback={subComponent}
-                    loading={loadingAlertTable}
+                    loading={loadingTicketTable}
                 />
 
                 <Modal 
@@ -311,7 +320,7 @@ const Tickets = ( props ) => {
                     visible={visible}
                     showOrHideModal={showOrHideModal}
                     loading={loadingModal}
-                    heading="Alert"
+                    heading="Ticket"
                 >
                     {saveButton}
 
@@ -325,28 +334,30 @@ const Tickets = ( props ) => {
 
 const mapStateToProps = state => {
     return {
-        loadingAlertTable: state.Alert.loadingAlertTable,
-        alertTableData: state.Alert.alertTableData,
-        alertElementArray: state.Alert.alertElementArray,
-        loadingModal: state.Alert.loadingModal,
-        formIsValid: state.Alert.formIsValid,
-        savingAlert: state.Alert.savingAlert,
-        selectedAlertId: state.Alert.selectedAlertId,
+        loadingTicketTable: state.Ticket.loadingTicketTable,
+        alertTableData: state.Ticket.alertTableData,
+        allRemarks: state.Ticket.allRemarks,
+        userMap: state.User.userMap,
+        ticketElementArray: state.Ticket.ticketElementArray,
+        loadingModal: state.Ticket.loadingModal,
+        formIsValid: state.Ticket.formIsValid,
+        savingAlert: state.Ticket.savingAlert,
+        selectedTicketId: state.Ticket.selectedTicketId,
         alertStatusMasterCode: state.Alert.alertStatusMasterCode,
-        searchFilters: state.Alert.searchFilters,
+        searchFilters: state.Ticket.searchFilters,
+        ticketRemarks: state.Ticket.ticketRemarks
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchAlertOrderByDesc: () => dispatch(actions.fetchAlertOrderByDesc()),
-        onFetchAlertById: (params) => dispatch(actions.fetchAlertById(params)),
+        onFetchAlertOrderByDesc: () => dispatch(actions.fetchAlertAndRemarksOrderByDesc()),
+        onFetchTicketById: (params) => dispatch(actions.fetchTicketById(params)),
         onFetchMasterCodeMapByMasterCode: (params) => dispatch(actions.fetchMasterCodeMapByMasterCode(params)),
-        onFetchUsers: (type) => dispatch(actions.fetchUsers(type)),
         onHandleInputChanged: (type, value, elementRowIndex, elementId, validationRules) => dispatch(formInputActions.handleInputChanged(type, value, elementRowIndex, elementId, validationRules)),
-        onSaveAlert: (params) => dispatch(actions.saveAlert(params)),
-        onMarkAlertAsRead: () => dispatch(actions.markAlertAsRead()),
-        onFetchAlertByAlertCode: (params) => dispatch(actions.fetchAlertByAlertCode(params)),
+        onSaveTicket: (params) => dispatch(actions.saveTicket(params)),
+        // onMarkAlertAsRead: () => dispatch(actions.markAlertAsRead()),
+        onFetchTicketByAlertCode: (params) => dispatch(actions.fetchTicketByAlertCode(params)),
     }
 }
 

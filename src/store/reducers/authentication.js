@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     isLoggedIn: false,
-    user: {name: 'Admin'},
+    user: {},
     error: '',
     loading: false,
     unreadAlertCount: 0,

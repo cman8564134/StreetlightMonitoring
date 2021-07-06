@@ -1,6 +1,26 @@
 import * as actionTypes from './actionTypes';
 
-// import axios from '../../axios-backend';
+import axios from '../../axios-backend';
+
+export const fetchUserMapSuccess = (userMap) => {
+    return {
+        type: actionTypes.FETCH_USER_MAP_SUCCESS,
+        userMap: userMap
+    }
+}
+
+export const fetchUserMap = () => {
+    return dispatch => {
+        axios.get('/getUserMap')
+            .then(response => {
+                dispatch(fetchUserMapSuccess(response.data.userMap));
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    
+}
 
 export const fetchUserMasterStart = () => {
     return {
