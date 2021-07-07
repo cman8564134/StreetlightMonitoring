@@ -118,7 +118,18 @@ const Tickets = ( props ) => {
                 },
                 {
                     Header: 'Stage',
-                    accessor: 'stage'
+                    accessor: 'stage',
+                    Cell: row => {
+                        return (
+                            <div className="d-block w-100 text-center">
+                                <div>
+                                    {row.value}
+                                </div>     
+                            </div>
+                            
+                        )
+                    }
+                    
                 },
                 {
                     Header: 'Logged Time',
