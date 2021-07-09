@@ -213,7 +213,8 @@ const Alert = ( props ) => {
     const onApplyFilterHandler = () => {
         console.log("categories value", searchFilters[0].categories.value);
             onFetchAlertByAlertCode({
-                alertCode:searchFilters[0].categories.value
+                alertCode:searchFilters[0].categories.value,
+                statusCode:searchFilters[0].status.value,
             });            
             
     };

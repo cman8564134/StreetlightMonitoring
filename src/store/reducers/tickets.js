@@ -171,6 +171,21 @@ const initialState = {
         ],
     searchFilters: [
             {
+                status: {
+                    elementLabel: 'Status:',
+                    elementType: 'select',
+                    elementConfig: {
+                        type: "select",
+                        options: []
+                    },
+                    value: '',
+                    validation: {
+                        required: false
+                    },
+                    valid: false,
+                    touched: false,
+                    errorMessage: ''
+                },
                 categories: {
                     elementLabel: 'Categories:',
                     elementType: 'select',
@@ -286,10 +301,12 @@ const fetchTicketByIdFail = ( state, action ) => {
 const fetchAlertStatusMasterCodeSuccess = ( state, action ) => {
     const updatedOption = {options: createMasterCodeOptions(action.masterCodeMap)};
     const updatedArray = updateElementOptionArray(state.ticketElementArray, 3, "status", "elementConfig", updatedOption);
+    const updatedSearchFilter = updateElementOptionArray(state.searchFilters, 0, "status", "elementConfig", updatedOption);
     
     return updateObject(state, {
         ticketElementArray: Object.values(updatedArray),
-        alertStatusMasterCode: action.masterCodeMap
+        alertStatusMasterCode: action.masterCodeMap,
+        searchFilters: Object.values(updatedSearchFilter),
     });
 }
 

@@ -169,7 +169,7 @@ export const fetchTicketByAlertCode = (params) => {
     return dispatch => {
         dispatch(fetchTicketByAlertCodeStart());
         
-        axios.post('/getTicketByAlertCode', params)
+        axios.post('/getTicketByAlertCodeAndStatusCode', params)
             .then(response => {
                 dispatch(fetchTicketByAlertCodeSuccess(response.data.alerts));
             })

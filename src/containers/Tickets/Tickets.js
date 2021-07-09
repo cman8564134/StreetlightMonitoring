@@ -258,7 +258,8 @@ const Tickets = ( props ) => {
 
     const onApplyFilterHandler = () => {
             onFetchTicketByAlertCode({
-                alertCode:searchFilters[0].categories.value
+                alertCode:searchFilters[0].categories.value,
+                statusCode: searchFilters[0].status.value,
             });            
             
     };
