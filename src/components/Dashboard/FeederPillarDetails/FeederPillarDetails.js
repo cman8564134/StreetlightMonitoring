@@ -71,7 +71,7 @@ const FeederPillarDetails = ( props ) => {
         {header: "Frequency", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "frequency", prefix: "", suffix: " Hz"},
         {header: "Total Yield", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-graph1 text-dark opacity-8", accessor: "total_yield", prefix: "", suffix: " KWh"},
         {header: "Neutral Current", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-gleam text-dark opacity-8", accessor: "current_n", prefix: "", suffix: " A"},
-        {header: "Average Power Factor", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_avg", prefix: "", suffix: ""},    
+        {header: "Average Power Factor", iconBgClassName: "icon-wrapper-bg opacity-8 bg-primary", iconClassName: "pe-7s-power text-dark opacity-8", accessor: "power_factor_avg", prefix: "", suffix: " kW"},    
     ]
     
     const electricityBillCostBreakdown = [

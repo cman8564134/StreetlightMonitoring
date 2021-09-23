@@ -520,7 +520,7 @@ const initialState = {
         amperageTab: {navTitle: "AMPERAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'A'},
         voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'V'},
         activePowerTab: {navTitle: "ACTIVE POWER", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'W'},
-        powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'kW'},
         thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
         thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
         thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
