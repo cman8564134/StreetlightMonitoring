@@ -68,6 +68,8 @@ export const formatDateByDateFormat = (date, dateFormat) => {
                 return `${year}-${month}-${day}`;
             case 'd/m/y':
                 return `${day}/${month}/${year}`;
+            case 'd M':
+                return `${day} ${monthName}`;
             case 'D, d M':
                 return `${weekday}, ${day} ${monthName}`;
             case 'm/y':
@@ -174,6 +176,9 @@ export const getBasicChartOptions = ( labels, yAxisTitle ) => {
                 opacityTo: 0.55,
                 stops: [0, 100, 100, 100]
             }
+        },
+        dataLabels: {
+            textAnchor: "middle"
         },
         labels: labels,
         markers: {
@@ -436,12 +441,11 @@ export const baseChartOptions = () => {
             size: 0
         },
         xaxis: {
-            type:'datetime'
-
+            type:'datetime',
         },
         yaxis: {
             title: {
-                text: 'Total Power Consumption',
+                text: '',
             },
             min: (min) => {
                 if(min === 5e-324)
@@ -575,8 +579,8 @@ export const updateCharts = (metricCharts, chartsData) => {
 export const updateChart = (metricCharts, chartKey, chartLabels, chartData, chartSeries, chartType, chartTitle, chartOptions) => {
     const isXAxisDateTime = chartOptions.xaxis.hasOwnProperty('type');
     const chartSeriesArray = generateChartSeriesArray(chartData, chartSeries, chartType, chartLabels, isXAxisDateTime);
-
     const updatedChartOptions = generateChartOptions(chartTitle, chartLabels, chartOptions, chartSeries);
+    
     const updatedChart = updateObject(metricCharts[0][chartKey], {
         chart_options: updatedChartOptions, 
         chart_series: chartSeriesArray
@@ -635,7 +639,7 @@ export const generateChartSeriesDateTimeDataArray = (labels, data) => {
         seriesData.push([dateTime.getTime(), data[i]]);
         i++;
     }
-
+    
     return seriesData;
 }
 

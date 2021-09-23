@@ -73,7 +73,7 @@ const AdvancedOverview = ( props ) => {
             let realTimeChartFailType = "";
             let chartType = "";
             const concessions = props.match.params.concessionId;
-            const dataKey = ["thdc1"];
+            const dataKey = ["total_yield"];
 
 
             switch(tab) {
@@ -134,7 +134,7 @@ const AdvancedOverview = ( props ) => {
             let realTimeChartFailType = "";
             let chartType = "";
             const concessions = props.match.params.concessionId;
-            const dataKey = ["thdc1"];
+            const dataKey = ["total_yield"];
 
 
             switch(tab) {

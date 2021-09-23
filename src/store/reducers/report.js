@@ -513,20 +513,20 @@ const initialState = {
     report: {},
     activeTab: "powerUsageTab",
     graphCardTabsNavItemsArray: [{
-        powerUsageTab: {navTitle: "TOTAL POWER CONSUMPTION", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        electricityBillTab: {navTitle: "ELECTRICITY BILL", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        carbonFootprintTab: {navTitle: "CARBON FOOTPRINT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        energySavingsTab: {navTitle: "ENERGY USED", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        amperageTab: {navTitle: "AMPERAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        activePowerTab: {navTitle: "ACTIVE POWER", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        neutralCurrentTab: {navTitle: "NEUTRAL CURRENT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line'},
-        dailyYieldTab: {navTitle: "DAILY YIELD", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'bar'},
+        powerUsageTab: {navTitle: "TOTAL POWER CONSUMPTION", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'KWh'},
+        electricityBillTab: {navTitle: "ELECTRICITY BILL", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'RM'},
+        carbonFootprintTab: {navTitle: "CARBON FOOTPRINT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'KG'},
+        energySavingsTab: {navTitle: "ENERGY SAVINGS", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'KWh'},
+        amperageTab: {navTitle: "AMPERAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'A'},
+        voltageTab: {navTitle: "VOLTAGE", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'V'},
+        activePowerTab: {navTitle: "ACTIVE POWER", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'W'},
+        powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'Hz'},
+        neutralCurrentTab: {navTitle: "NEUTRAL CURRENT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'A'},
+        dailyYieldTab: {navTitle: "DAILY YIELD", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'bar', unit: 'KWh'}
     }],
     loadingHighlights: false,
     loadingChart: false,
@@ -781,7 +781,15 @@ const fetchReportDataSuccess = ( state, action ) => {
         updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {xaxis: {}});
     }
 
-    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
+    const activeTabConfig = state.graphCardTabsNavItemsArray[0][activeTab]
+    const unit = activeTabConfig.unit;
+    let yAxisTitle = activeTabConfig.navTitle;
+
+    if(unit !== ""){
+        yAxisTitle = yAxisTitle + " (" + unit + ")";
+    }
+
+    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, yAxisTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
 
@@ -829,8 +837,16 @@ const fetchReportChartDataByActiveTabSuccess = ( state, action ) => {
     if(viewType === "YEAR") {
         updatedBaseChartOptions = updateObject(updatedBaseChartOptions, {xaxis: {}});
     }
+    
+    const activeTabConfig = state.graphCardTabsNavItemsArray[0][activeTab]
+    const unit = activeTabConfig.unit;
+    let yAxisTitle = activeTabConfig.navTitle;
 
-    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, state.graphCardTabsNavItemsArray[0][activeTab].navTitle, updatedBaseChartOptions);
+    if(unit !== ""){
+        yAxisTitle = yAxisTitle + " (" + unit + ")";
+    }
+
+    const updatedGraphCardTabsArray = updateChart(state.graphCardTabsNavItemsArray, activeTab, reportData.labels, reportData.data, reportData.series, state.graphCardTabsNavItemsArray[0][activeTab].chart_type, yAxisTitle, updatedBaseChartOptions);
     const updatedGraphCardTabsAtIndex = updateObject(state.graphCardTabsNavItemsArray[0], {[activeTab]: updatedGraphCardTabsArray});
     
 

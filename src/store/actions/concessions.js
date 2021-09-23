@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-backend';
+import {formatDateByDateFormat, updateObject} from '../../shared/utility';
 
 export const fetchConcessionsStart = () => {
     return {
@@ -125,7 +126,28 @@ export const getConcessionsChartData = (dispatch, params) => {
         
     axios.post('/getConcessionsChartData', params)
         .then(response => {
-            dispatch(getConcessionsChartDataSuccess(response.data.chartData, params.successType));
+            let chartData = response.data.chartData;
+            let chartId = "";
+            const labelsArray = [];
+            if(chartData){
+                if((params.successType).includes("POWER_USAGE")){
+                    chartId = "power_usage"
+                }else{
+                    chartId = "power_quality"
+                }
+
+                const labels = chartData[chartId].labels
+                    
+                    if(labels){
+                        for(let index in labels){
+                            labelsArray.push(formatDateByDateFormat(new Date(labels[index]), "d M"))
+                        }
+                        const updatedLabels = updateObject(chartData[chartId], {labels: labelsArray})
+                        chartData = updateObject(chartData, {[chartId]: updatedLabels})
+                    }   
+            }
+
+            dispatch(getConcessionsChartDataSuccess(chartData, params.successType));
         })
         .catch(error => {
             console.log(error);

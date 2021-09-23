@@ -73,7 +73,12 @@ const fetchConcessionsPowerQualitySummaryChartStart = ( state, action ) => {
 }
 
 const fetchConcessionsPowerQualitySummaryChartSuccess = ( state, action ) => {
-    const updatedChart = updateCharts(state.summaryChart, action.chartsData);
+    const updatedChartOptions = updateObject(state.summaryChart[0].power_quality.chart_options, {xaxis:  {tickPlacement: "on"}});
+    const updatedPowerQuality = updateObject(state.summaryChart[0].power_quality, {chart_options: updatedChartOptions});
+    const updatedSummaryChartAtIndex = updateObject(state.summaryChart[0], {power_quality: updatedPowerQuality});
+    const updatedSummaryChart = updateObject(state.summaryChart, {0: updatedSummaryChartAtIndex});
+    const updatedChart = updateCharts(Object.values(updatedSummaryChart), action.chartsData);
+    
     return updateObject(state, {
         loadingPowerQualityChart: action.loading,
         summaryChart: updatedChart
@@ -93,7 +98,12 @@ const fetchConcessionsPowerUsageSummaryChartStart = ( state, action ) => {
 }
 
 const fetchConcessionsPowerUsageSummaryChartSuccess = ( state, action ) => {
-    const updatedChart = updateCharts(state.summaryChart, action.chartsData);
+    const updatedChartOptions = updateObject(state.summaryChart[0].power_usage.chart_options, {xaxis:  {tickPlacement: "on"}});
+    const updatedPowerUsage = updateObject(state.summaryChart[0].power_usage, {chart_options: updatedChartOptions});
+    const updatedSummaryChartAtIndex = updateObject(state.summaryChart[0], {power_usage: updatedPowerUsage});
+    const updatedSummaryChart = updateObject(state.summaryChart, {0: updatedSummaryChartAtIndex});
+    const updatedChart = updateCharts(Object.values(updatedSummaryChart), action.chartsData);
+    
     return updateObject(state, {
         loadingPowerUsageChart: action.loading,
         summaryChart: updatedChart
