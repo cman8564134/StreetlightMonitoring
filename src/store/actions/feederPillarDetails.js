@@ -29,8 +29,6 @@ export const fetchFeederPillarByFeederPillarId =  (params) => {
     return dispatch => {
         if(!params.isRefresh)
             dispatch(fetchFeederPillarByFeederPillarIdStart());
-
-            console.log("params.feederPillarId", params.feederPillarId);
         axios.post('/getFeederPillarMetricsByFeederPillarId', params)
         .then(response => {
             dispatch(fetchFeederPillarByFeederPillarIdSuccess(response.data.feederPillar, params.feederPillarId));

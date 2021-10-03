@@ -176,7 +176,6 @@ const Alert = ( props ) => {
     ];
 
     const subComponent = row => {
-        console.log(row);
         return (
             <div style={{padding: "20px"}}>
                 <em>
@@ -211,7 +210,6 @@ const Alert = ( props ) => {
     }
 
     const onApplyFilterHandler = () => {
-        console.log("categories value", searchFilters[0].categories.value);
             onFetchAlertByAlertCode({
                 alertCode:searchFilters[0].categories.value,
                 statusCode:searchFilters[0].status.value,

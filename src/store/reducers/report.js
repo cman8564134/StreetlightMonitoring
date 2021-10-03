@@ -419,48 +419,48 @@ const initialState = {
                 touched: false,
                 errorMessage: ''
             },
-            thdp1: {
-                elementLabel: 'THDP R',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
-            thdp2: {
-                elementLabel: 'THDP Y',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
-            thdp3: {
-                elementLabel: 'THDP B',
-                elementType: 'checkbox',
-                elementConfig: {
-                    type: "checkbox"
-                },
-                value: false,
-                validation: {
-                    required: false
-                },
-                valid: true,
-                touched: false,
-                errorMessage: ''
-            },
+            // thdp1: {
+            //     elementLabel: 'THDP R',
+            //     elementType: 'checkbox',
+            //     elementConfig: {
+            //         type: "checkbox"
+            //     },
+            //     value: false,
+            //     validation: {
+            //         required: false
+            //     },
+            //     valid: true,
+            //     touched: false,
+            //     errorMessage: ''
+            // },
+            // thdp2: {
+            //     elementLabel: 'THDP Y',
+            //     elementType: 'checkbox',
+            //     elementConfig: {
+            //         type: "checkbox"
+            //     },
+            //     value: false,
+            //     validation: {
+            //         required: false
+            //     },
+            //     valid: true,
+            //     touched: false,
+            //     errorMessage: ''
+            // },
+            // thdp3: {
+            //     elementLabel: 'THDP B',
+            //     elementType: 'checkbox',
+            //     elementConfig: {
+            //         type: "checkbox"
+            //     },
+            //     value: false,
+            //     validation: {
+            //         required: false
+            //     },
+            //     valid: true,
+            //     touched: false,
+            //     errorMessage: ''
+            // },
             current_n: {
                 elementLabel: 'Neutral Current',
                 elementType: 'checkbox',
@@ -523,7 +523,7 @@ const initialState = {
         powerFactorTab: {navTitle: "AVERAGE POWER FACTOR", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'kW'},
         thdvTab: {navTitle: "THDV", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
         thdcTab: {navTitle: "THDC", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
-        thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
+        // thdpTab: {navTitle: "THDP", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: ''},
         frequencyTab: {navTitle: "FREQUENCY", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'Hz'},
         neutralCurrentTab: {navTitle: "NEUTRAL CURRENT", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'line', unit: 'A'},
         dailyYieldTab: {navTitle: "DAILY YIELD", chart_options: {...baseChartOptions()}, chart_series: [...baseChartSeries()], chart_type: 'bar', unit: 'KWh'}
@@ -537,42 +537,46 @@ const initialState = {
 };
 
 const metricColumnsName = {
-    id: {label: "ID", accessor: "id"},
-    pillar_id: {label: "Pillar ID", accessor: "pillar_id"},
-    created_at: {label: "Created At", accessor: "created_at"},
-    active_power_l1: {label: "Active Power R", accessor: "active_power_l2"},
-    active_power_l2: {label: "Active Power Y", accessor: "active_power_l2"},
-    active_power_l3: {label: "Active Power B", accessor: "active_power_l3"},
-    voltage_l1_n: {label: "Voltage R", accessor: "voltage_l1_n"},
-    voltage_l2_n: {label: "Voltage Y", accessor: "voltage_l2_n"},
-    voltage_l3_n: {label: "Voltage B", accessor: "voltage_l3_n"},
-    current_p1: {label: "Current R", accessor: "current_p1"},
-    current_p2: {label: "Current Y", accessor: "current_p2"},
-    current_p3: {label: "Current B", accessor: "current_p3"},
-    frequency: {label: "Frequency", accessor: "frequency"},
-    power_factor_p1: {label: "Power Factor R", accessor: "power_factor_p1"},
-    power_factor_p2: {label: "Power Factor Y", accessor: "power_factor_p2"},
-    power_factor_p3: {label: "Power Factor B", accessor: "power_factor_p3"},
-    total_yield: {label: "Total Yield", accessor: "total_yield"},
-    thdv1: {label: "THDV R", accessor: "thdv1"},
-    thdv2: {label: "THDV Y", accessor: "thdv2"},
-    thdv3: {label: "THDV B", accessor: "thdv3"},
-    thdc1: {label: "THDC R", accessor: "thdc1"},
-    thdc2: {label: "THDC Y", accessor: "thdc2"},
-    thdc3: {label: "THDC B", accessor: "thdc3"},
-    thdp1: {label: "THDP R", accessor: "thdp1"},
-    thdp2: {label: "THDP Y", accessor: "thdp2"},
-    thdp3: {label: "THDP B", accessor: "thdp3"},
-    current_n: {label: "Neutral Current", accessor: "current_n"},
-    power_factor_avg: {label: "Average Power Factor", accessor: "power_factor_avg"},
+    id: {title: "ID", accessor: "id"},
+    pillar_id: {title: "Pillar ID", accessor: "pillar_id"},
+    created_at: {title: "Created At", accessor: "created_at"},
+    active_power_l1: {title: "Active Power R", accessor: "active_power_l2"},
+    active_power_l2: {title: "Active Power Y", accessor: "active_power_l2"},
+    active_power_l3: {title: "Active Power B", accessor: "active_power_l3"},
+    voltage_l1_n: {title: "Voltage R", accessor: "voltage_l1_n"},
+    voltage_l2_n: {title: "Voltage Y", accessor: "voltage_l2_n"},
+    voltage_l3_n: {title: "Voltage B", accessor: "voltage_l3_n"},
+    current_p1: {title: "Current R", accessor: "current_p1"},
+    current_p2: {title: "Current Y", accessor: "current_p2"},
+    current_p3: {title: "Current B", accessor: "current_p3"},
+    frequency: {title: "Frequency", accessor: "frequency"},
+    power_factor_p1: {title: "Power Factor R", accessor: "power_factor_p1"},
+    power_factor_p2: {title: "Power Factor Y", accessor: "power_factor_p2"},
+    power_factor_p3: {title: "Power Factor B", accessor: "power_factor_p3"},
+    total_yield: {title: "Total Yield", accessor: "total_yield"},
+    thdv1: {title: "THDV R", accessor: "thdv1"},
+    thdv2: {title: "THDV Y", accessor: "thdv2"},
+    thdv3: {title: "THDV B", accessor: "thdv3"},
+    thdc1: {title: "THDC R", accessor: "thdc1"},
+    thdc2: {title: "THDC Y", accessor: "thdc2"},
+    thdc3: {title: "THDC B", accessor: "thdc3"},
+    // thdp1: {title: "THDP R", accessor: "thdp1"},
+    // thdp2: {title: "THDP Y", accessor: "thdp2"},
+    // thdp3: {title: "THDP B", accessor: "thdp3"},
+    current_n: {title: "Neutral Current", accessor: "current_n"},
+    power_factor_avg: {title: "Average Power Factor", accessor: "power_factor_avg"},
+    daily_yield: {title: "Daily Yield", accessor: "daily_yield"},
 }
 
 const dailyYieldSheetColumnName = [
-    {label: "ID", accessor: "id"},
-    {label: "Pillar ID", accessor: "pillar_id"},
-    {label: "Created At", accessor: "created_at"},
-    {label: "Daily Yield", accessor: "daily_yield"},
+    {title: "ID", accessor: "id"},
+    {title: "Pillar ID", accessor: "pillar_id"},
+    {title: "Created At", accessor: "created_at"},
+    {title: "Total Yield", accessor: "total_yield"},
+    {title: "Daily Yield", accessor: "daily_yield"},
 ]
+
+const dailyYieldSheetMetrics = ["id", "pillar_id", "created_at", "daily_yield", "total_yield"];
    
 
 const fetchReportConcessionNameMapSuccess = ( state, action ) => {
@@ -880,7 +884,7 @@ const fetchExportableReportDataStart = ( state, action ) => {
 
 const fetchExportableReportDataSuccess = ( state, action ) => {
     //TO POPULATE DATA FOR EXCEL REPORT START
-    const selectedMetrics = action.selectedMetrics;
+    const selectedMetrics = Object.values(action.selectedMetrics);
     const sheet1Title = 'Metrics';
     const sheet2Title = 'Daily Yield';
 
@@ -888,6 +892,10 @@ const fetchExportableReportDataSuccess = ( state, action ) => {
     let updatedExcel = [];
     let updatedExcelSheets = {};
     let isDailyYieldMetricSelected = false;
+    
+    if(selectedMetrics.includes("daily_yield")){
+        isDailyYieldMetricSelected = true;
+    }
 
     selectedMetrics.map((metric) => {
         if(metric !== "daily_yield"){
@@ -895,17 +903,18 @@ const fetchExportableReportDataSuccess = ( state, action ) => {
         }
     })
 
-    if(selectedMetrics.includes("daily_yield")){
-        isDailyYieldMetricSelected = true;
-    }
-
+    
+    
     if((selectedMetrics.includes("daily_yield") && selectedMetrics.length >= 5) || (!selectedMetrics.includes("daily_yield") && selectedMetrics.length >= 4)){
-        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet1Title]:{data: action.reportData, columns: updatedExcelSheetsColumnLabel}})
+        const reportData = action.reportData;
+        const filteredMetrics = selectedMetrics.filter(item => item !== "daily_yield");
+        const reportDataArray = createExcelReportArray(reportData, filteredMetrics, metricColumnsName);
+        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet1Title]:{data: reportDataArray, columns: updatedExcelSheetsColumnLabel}})
     }
 
     if(isDailyYieldMetricSelected){
-        const updatedExcelDailyYieldSheetColumnLabel = [...dailyYieldSheetColumnName];
-        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet2Title]:{data: action.dailyYield, columns: updatedExcelDailyYieldSheetColumnLabel}})
+        const reportDataArray = createExcelReportArray(action.dailyYield, dailyYieldSheetMetrics, metricColumnsName);
+        updatedExcelSheets = updateObject(updatedExcelSheets, {[sheet2Title]:{data: reportDataArray, columns: dailyYieldSheetColumnName}})
     }
     
     updatedExcel = updateObject(updatedExcel[0], updatedExcelSheets);
@@ -942,6 +951,30 @@ const fetchExportableReportDataSuccess = ( state, action ) => {
         generatingCSV: action.generatingCSV,
         
     });
+}
+
+const createExcelReportArray = (reportData, columnLabel, accessors) => {
+    const reportDataArray = [];
+    
+    reportData.forEach(function (objects, index) {
+        let rowArray = [];
+
+        columnLabel.forEach(function (columnName, index){
+            const accessorId = accessors[columnName].accessor;
+            const value = objects[accessorId];
+            let columnData = {};
+            
+            if(accessorId !== "id" && !isNaN(value)){
+                columnData = {value: Number(value), style:{numFmt: "0.00"}};
+            }else{
+                columnData = {value: value};
+            }
+            rowArray.push(columnData);
+        })
+        reportDataArray.push(rowArray);
+    });
+
+    return reportDataArray;
 }
 
 const fetchExportableReportDataFail = ( state, action ) => {

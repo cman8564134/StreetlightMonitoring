@@ -18,8 +18,6 @@ const TrafficLightFormStart = ( state, action ) => {
 }
 
 const PostTrafficLightFormSuccess = ( state, action ) => {
-
-    console.log("Action: " + action);
     return updateObject(state, {
         trafficLightConfig: action.formData
     });

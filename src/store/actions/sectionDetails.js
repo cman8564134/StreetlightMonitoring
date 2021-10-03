@@ -65,7 +65,6 @@ export const fetchSubsectionsBySectionFail = (error) => {
 }
 
 export const fetchSubsectionsBySection =  (params) => {
-    console.log('fetchSubsectionsBySection', params);
     return dispatch => {
         dispatch(fetchSubsectionsBySectionStart());
 

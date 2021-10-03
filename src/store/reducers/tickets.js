@@ -233,7 +233,6 @@ const fetchTicketByIdStart = ( state, action ) => {
 }
 
 const fetchTicketByIdSuccess = ( state, action ) => {
-    console.log("action", action);
     const ticket = action.ticket;
     const formElementArray = state.ticketElementArray;
     const updatedConcession = {value: ticket.concession_name};

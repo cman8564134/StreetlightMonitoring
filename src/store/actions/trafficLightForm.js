@@ -14,12 +14,10 @@ export const getTrafficLightInfo = (params) =>{
     return dispatch => {
         axios.post('/getTrafficLightForm',params,{timeout:10000 })
             .then(res => {
-                console.log("getTrafficLightInfo res.data: ", res.data);
                 const data = res.data;
                 dispatch(fetchTrafficDetails(data));
             })
             .catch(error => {
-                console.log("action:getTrafficLightInfo:" + error + params.values);
                 alert("action:getTrafficLightInfo:" + error.data + params.values);
             });
     }

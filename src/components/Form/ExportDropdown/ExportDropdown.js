@@ -95,27 +95,29 @@ const ExportDropdown = (props) => {
                             >
                                 Excel
                             </LaddaButton>
-                            <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("Exporting Data to Excel")}>Excel</button>}>
+                            <ExcelFile filename={fileName} element={<button ref={excelLinkRef} hidden={true} onClick={() => console.log("Exporting Data to Excel")}>Excel</button>}>    
                                 {excelSheets.map((sheets, index) => {
                                     const sheetObjects = [];
 
                                     for (let title in sheets){
                                         sheetObjects.push({
                                             title: title,
-                                            config: sheets[title]
+                                            config: [sheets[title]]
                                         })
                                     }
 
                                     return (
                                         sheetObjects.map((sheet) => {
                                             return (
-                                                <ExcelSheet key={sheet.title} data={sheet.config.data} name={sheet.title}>
-                                                    {sheet.config.columns.map(column => {
-                                                        return (
-                                                            <ExcelColumn key={column.accessor} label={column.label} value={column.accessor}/>
-                                                        )
-                                                    })}
-                                                </ExcelSheet>    
+                                                
+                                                <ExcelSheet dataSet={sheet.config} name={sheet.title}/>
+                                                // <ExcelSheet key={sheet.title} data={sheet.config.data} name={sheet.title}>
+                                                //     {sheet.config.columns.map(column => {
+                                                //         return (
+                                                //             <ExcelColumn key={column.accessor} label={column.label} value={column.accessor}/>
+                                                //         )
+                                                //     })}
+                                                // </ExcelSheet>    
                                             )
                                         })
                                     )

@@ -247,7 +247,6 @@ export const fetchExportableReportDataStart = (fileType) => {
 }
 
 export const fetchExportableReportDataSuccess = (reportData, fileName, selectedMetrics, dailyYield) => {
-    console.log("fetchExportableReportDataSuccess", dailyYield)
     return {
         type: actionTypes.FETCH_EXPORTABLE_REPORT_DATA_SUCCESS,
         generatingExcel: false,

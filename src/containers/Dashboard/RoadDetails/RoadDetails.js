@@ -90,7 +90,6 @@ const RoadDetails = ( props ) => {
     }
 
     const showTrafficLightForm = (pillarID) => {
-        console.log("showTrafficLightForm: " + pillarID)
         //post, retrieve value if exist, set them into form and display
         onFetchTrafficLightForm({feederPillarId: pillarID});
         setIsTrafficLightForm(!isTrafficLightForm);
